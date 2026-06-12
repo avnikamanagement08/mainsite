@@ -114,6 +114,9 @@
 
   <!-- ===== NAV ===== -->
   <nav class="navbar" id="navbar">
+    <div class="announcement-bar">
+      For COD Orders Connect on Instagram <a href="https://www.instagram.com/manvish.co" target="_blank" style="color: #ffffff; text-decoration: underline;">@manvish.co</a>
+    </div>
     <div class="nav-container">
       <a href="#" class="nav-logo" style="display: flex; align-items: center; gap: 0.8rem; text-decoration: none;">
         <img src="images/logo.png" alt="AVANIKA.CO" class="nav-logo-img" />
@@ -155,6 +158,70 @@
   <section class="hero" id="home">
     <div class="hero-particles" id="heroParticles"></div>
     <div class="hero-bg-gradient"></div>
+
+    <!-- Circular Categories Scroll Bar -->
+    <div class="categories-bar">
+      <div class="categories-container">
+        <div class="categories-scroll" id="categoriesScroll">
+          <div class="category-item" onclick="window.open('collection.html?category=anti-tarnished-earrings', '_blank')">
+            <div class="category-circle-wrap">
+              <div class="category-circle">
+                <img src="https://d28arj6mdig261.cloudfront.net/1770298514550.jpg" alt="Anti-Tarnished Earrings" />
+              </div>
+            </div>
+            <span class="category-name">Anti-Tarnished Earrings</span>
+          </div>
+          <div class="category-item" onclick="window.open('collection.html?category=anti-tarnished-neckchains', '_blank')">
+            <div class="category-circle-wrap">
+              <div class="category-circle">
+                <img src="https://d28arj6mdig261.cloudfront.net/1770298539595.jpg" alt="Anti-Tarnished Neckchains" />
+              </div>
+            </div>
+            <span class="category-name">Anti-Tarnished Neckchains</span>
+          </div>
+          <div class="category-item" onclick="window.open('collection.html?category=anti-tarnished-bracelet', '_blank')">
+            <div class="category-circle-wrap">
+              <div class="category-circle">
+                <img src="https://d28arj6mdig261.cloudfront.net/1770298569027.jpg" alt="Anti-Tarnished Bracelet" />
+              </div>
+            </div>
+            <span class="category-name">Anti-Tarnished Bracelet</span>
+          </div>
+          <div class="category-item" onclick="window.open('collection.html?category=kashmiri-earrings', '_blank')">
+            <div class="category-circle-wrap">
+              <div class="category-circle">
+                <img src="https://d28arj6mdig261.cloudfront.net/1770298589914.jpg" alt="Kashmiri Earrings" />
+              </div>
+            </div>
+            <span class="category-name">Kashmiri Earrings</span>
+          </div>
+          <div class="category-item" onclick="window.open('collection.html?category=kashmiri-necklace', '_blank')">
+            <div class="category-circle-wrap">
+              <div class="category-circle">
+                <img src="https://d28arj6mdig261.cloudfront.net/1770298615039.jpg" alt="Kashmiri Necklace" />
+              </div>
+            </div>
+            <span class="category-name">Kashmiri Necklace</span>
+          </div>
+          <div class="category-item" onclick="window.open('collection.html?category=oxidised-earrings', '_blank')">
+            <div class="category-circle-wrap">
+              <div class="category-circle">
+                <img src="https://d28arj6mdig261.cloudfront.net/1773827599526.jpg" alt="Oxidised Earrings" />
+              </div>
+            </div>
+            <span class="category-name">Oxidised Earrings</span>
+          </div>
+          <div class="category-item" onclick="window.open('collection.html?category=tulip-bracelet', '_blank')">
+            <div class="category-circle-wrap">
+              <div class="category-circle">
+                <img src="https://d28arj6mdig261.cloudfront.net/1778328000857.jpg" alt="Tulip Bracelet" />
+              </div>
+            </div>
+            <span class="category-name">Tulip Bracelet</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="hero-content">
       <div class="hero-left">
@@ -200,7 +267,23 @@
       <div class="hero-right">
         <div class="hero-image-frame reveal-right">
           <div class="hero-image-glow"></div>
-          <img src="images/hero_jewelry.png" alt="AVANIKA.CO Signature Jewelry" class="hero-img" />
+          <div class="hero-slider" id="heroSlider">
+            <div class="hero-slide active">
+              <img src="https://d28arj6mdig261.cloudfront.net/1781070193363.webp" alt="Manvish Jewellery Banner 1" />
+            </div>
+            <div class="hero-slide">
+              <img src="https://d28arj6mdig261.cloudfront.net/1778335806781.webp" alt="Manvish Jewellery Banner 2" />
+            </div>
+            <div class="hero-slide">
+              <img src="https://d28arj6mdig261.cloudfront.net/1776255880782.webp" alt="Manvish Jewellery Banner 3" />
+            </div>
+            <!-- Slider dots inside the image frame -->
+            <div class="slider-dots" id="sliderDots">
+              <span class="dot active" data-slide="0"></span>
+              <span class="dot" data-slide="1"></span>
+              <span class="dot" data-slide="2"></span>
+            </div>
+          </div>
           <div class="hero-floating-card card-1">
             <div class="fc-icon">💎</div>
             <div class="fc-text">
@@ -452,119 +535,449 @@
     </div>
   </section>
 
-  <!-- ===== FEATURED PRODUCTS ===== -->
+  <!-- ===== PRODUCT CATEGORIES GRID ===== -->
+  
+  <!-- 1. OXIDIZED JHUMKA -->
   <section class="featured" id="featured">
     <div class="section-container">
       <div class="section-header">
-        <div class="section-tag reveal-up">Featured Pieces</div>
-        <h2 class="section-title reveal-up delay-1">Most <em>Loved</em> This Season</h2>
+        <div class="section-tag reveal-up">Traditional Handcrafted</div>
+        <h2 class="section-title reveal-up delay-1">Oxidised <em>Jhumka</em></h2>
       </div>
 
       <div class="products-grid">
-        <div class="product-card reveal-up" id="p1">
+        <!-- Card 1 -->
+        <div class="product-card reveal-up" id="ox-1">
           <div class="product-img-wrap">
-            <img src="images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.35 PM.jpeg" alt="Meera Anti-Tarnish Kundan Chandbalis" class="product-img" />
+            <img src="https://d28arj6mdig261.cloudfront.net/1778940158923.jpg" alt="Our &quot;ananya&quot; oxidised jhumka" class="product-img" />
             <div class="product-actions">
               <button class="product-btn wishlist" aria-label="Wishlist">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
               </button>
-              <a href="collection.html?product=p1" target="_blank" class="product-btn quick-view" aria-label="Quick View">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              </a>
             </div>
-            <div class="product-badge">Best Seller</div>
+            <div class="product-badge">-37%</div>
           </div>
           <div class="product-info">
-            <span class="product-category">Earrings · 1-Year Color Guarantee</span>
-            <h3 class="product-name">Meera Kundan Chandbalis</h3>
+            <span class="product-category">Oxidised Earrings</span>
+            <h3 class="product-name">Our "Ananya" Jhumka</h3>
             <div class="product-rating">
               <span class="stars">★★★★★</span>
-              <span class="rating-count">(104)</span>
+              <span class="rating-count">(42)</span>
             </div>
             <div class="product-price-row">
-              <span class="product-price">₹1,899</span>
-              <a href="collection.html?product=p1" class="add-to-cart" style="display:flex; align-items:center; justify-content:center; text-decoration:none;">View Details</a>
+              <span class="product-price">₹200 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹320</span></span>
+              <a href="collection.html?product=ox-1" class="add-to-cart">View Details</a>
             </div>
           </div>
         </div>
 
-        <div class="product-card reveal-up delay-1" id="p2">
+        <!-- Card 2 -->
+        <div class="product-card reveal-up delay-1" id="ox-2">
           <div class="product-img-wrap">
-            <img src="images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.03 AM.jpeg" alt="Aura Celestial Gold Plated Hoops" class="product-img" />
+            <img src="https://d28arj6mdig261.cloudfront.net/1776255880782.webp" alt="Our &quot;kunali&quot; oxidised jhumka" class="product-img" />
             <div class="product-actions">
               <button class="product-btn wishlist" aria-label="Wishlist">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
               </button>
-              <a href="collection.html?product=p2" target="_blank" class="product-btn quick-view" aria-label="Quick View">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              </a>
             </div>
-            <div class="product-badge">Daily Wear</div>
+            <div class="product-badge">-37%</div>
           </div>
           <div class="product-info">
-            <span class="product-category">Earrings · Anti-Tarnish</span>
-            <h3 class="product-name">Aura Celestial Hoops</h3>
+            <span class="product-category">Oxidised Earrings</span>
+            <h3 class="product-name">Our "Kunali" Jhumka</h3>
             <div class="product-rating">
               <span class="stars">★★★★★</span>
-              <span class="rating-count">(87)</span>
+              <span class="rating-count">(28)</span>
             </div>
             <div class="product-price-row">
-              <span class="product-price">₹1,299</span>
-              <a href="collection.html?product=p2" class="add-to-cart" style="display:flex; align-items:center; justify-content:center; text-decoration:none;">View Details</a>
+              <span class="product-price">₹200 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹320</span></span>
+              <a href="collection.html?product=ox-2" class="add-to-cart">View Details</a>
             </div>
           </div>
         </div>
 
-        <div class="product-card reveal-up delay-2" id="p3">
+        <!-- Card 3 -->
+        <div class="product-card reveal-up delay-2" id="ox-3">
           <div class="product-img-wrap">
-            <img src="images/earrings/3/WhatsApp Image 2026-06-12 at 10.52.55 AM.jpeg" alt="Ziya Simulated Emerald Drop Jhumkas" class="product-img" />
+            <img src="https://d28arj6mdig261.cloudfront.net/1773826983988.jpg" alt="Our &quot;hema&quot; oxidised jhumka" class="product-img" />
             <div class="product-actions">
               <button class="product-btn wishlist" aria-label="Wishlist">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
               </button>
-              <a href="collection.html?product=p3" target="_blank" class="product-btn quick-view" aria-label="Quick View">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              </a>
             </div>
-            <div class="product-badge">New Arrival</div>
+            <div class="product-badge">-37%</div>
           </div>
           <div class="product-info">
-            <span class="product-category">Earrings · 100% Waterproof</span>
-            <h3 class="product-name">Ziya Emerald Jhumkas</h3>
+            <span class="product-category">Oxidised Earrings</span>
+            <h3 class="product-name">Our "Hema" Jhumka</h3>
             <div class="product-rating">
               <span class="stars">★★★★★</span>
-              <span class="rating-count">(64)</span>
+              <span class="rating-count">(34)</span>
             </div>
             <div class="product-price-row">
-              <span class="product-price">₹1,699</span>
-              <a href="collection.html?product=p3" class="add-to-cart" style="display:flex; align-items:center; justify-content:center; text-decoration:none;">View Details</a>
+              <span class="product-price">₹200 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹320</span></span>
+              <a href="collection.html?product=ox-3" class="add-to-cart">View Details</a>
             </div>
           </div>
         </div>
 
-        <div class="product-card reveal-up delay-3" id="p6">
+        <!-- Card 4 -->
+        <div class="product-card reveal-up delay-3" id="ox-4">
           <div class="product-img-wrap">
-            <img src="images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg" alt="Tara Rose Gold Starburst Dangles" class="product-img" />
+            <img src="https://d28arj6mdig261.cloudfront.net/1778940374969.jpg" alt="Our &quot;vidhi&quot; oxidised jhumka" class="product-img" />
             <div class="product-actions">
               <button class="product-btn wishlist" aria-label="Wishlist">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
               </button>
-              <a href="collection.html?product=p6" target="_blank" class="product-btn quick-view" aria-label="Quick View">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              </a>
             </div>
-            <div class="product-badge limited">Rose Gold</div>
+            <div class="product-badge">-37%</div>
           </div>
           <div class="product-info">
-            <span class="product-category">Earrings · Premium Alloy</span>
-            <h3 class="product-name">Tara Starburst Dangles</h3>
+            <span class="product-category">Oxidised Earrings</span>
+            <h3 class="product-name">Our "Vidhi" Jhumka</h3>
             <div class="product-rating">
               <span class="stars">★★★★★</span>
-              <span class="rating-count">(95)</span>
+              <span class="rating-count">(49)</span>
             </div>
             <div class="product-price-row">
-              <span class="product-price">₹1,599</span>
-              <a href="collection.html?product=p6" class="add-to-cart" style="display:flex; align-items:center; justify-content:center; text-decoration:none;">View Details</a>
+              <span class="product-price">₹200 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹320</span></span>
+              <a href="collection.html?product=ox-4" class="add-to-cart">View Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. KASHMIRI EARINGS -->
+  <section class="featured" id="kashmiri-earings-section" style="padding-top: 2rem;">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-tag reveal-up">Classic Heritage</div>
+        <h2 class="section-title reveal-up delay-1">Kashmiri <em>Earrings</em></h2>
+      </div>
+
+      <div class="products-grid">
+        <!-- Card 1 -->
+        <div class="product-card reveal-up" id="ke-1">
+          <div class="product-img-wrap">
+            <img src="https://d28arj6mdig261.cloudfront.net/1771151964558.jpg" alt="Our &quot;Amrita&quot; kashmiri earing" class="product-img" />
+            <div class="product-actions">
+              <button class="product-btn wishlist" aria-label="Wishlist">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+            </div>
+            <div class="product-badge">-37%</div>
+          </div>
+          <div class="product-info">
+            <span class="product-category">Kashmiri Earrings</span>
+            <h3 class="product-name">Our "Amrita" Earing</h3>
+            <div class="product-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(19)</span>
+            </div>
+            <div class="product-price-row">
+              <span class="product-price">₹200 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹320</span></span>
+              <a href="collection.html?product=ke-1" class="add-to-cart">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="product-card reveal-up delay-1" id="ke-2">
+          <div class="product-img-wrap">
+            <img src="https://d28arj6mdig261.cloudfront.net/1775718594147.jpg" alt="Our &quot;Suhani&quot; kashmiri earing" class="product-img" />
+            <div class="product-actions">
+              <button class="product-btn wishlist" aria-label="Wishlist">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+            </div>
+            <div class="product-badge">-37%</div>
+          </div>
+          <div class="product-info">
+            <span class="product-category">Kashmiri Earrings</span>
+            <h3 class="product-name">Our "Suhani" Earing</h3>
+            <div class="product-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(31)</span>
+            </div>
+            <div class="product-price-row">
+              <span class="product-price">₹200 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹320</span></span>
+              <a href="collection.html?product=ke-2" class="add-to-cart">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="product-card reveal-up delay-2" id="ke-3">
+          <div class="product-img-wrap">
+            <img src="https://d28arj6mdig261.cloudfront.net/1771152261787.jpg" alt="Our &quot;Parvati&quot; kashmiri earing" class="product-img" />
+            <div class="product-actions">
+              <button class="product-btn wishlist" aria-label="Wishlist">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+            </div>
+            <div class="product-badge">-37%</div>
+          </div>
+          <div class="product-info">
+            <span class="product-category">Kashmiri Earrings</span>
+            <h3 class="product-name">Our "Parvati" Earing</h3>
+            <div class="product-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(22)</span>
+            </div>
+            <div class="product-price-row">
+              <span class="product-price">₹200 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹320</span></span>
+              <a href="collection.html?product=ke-3" class="add-to-cart">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="product-card reveal-up delay-3" id="ke-4">
+          <div class="product-img-wrap">
+            <img src="https://d28arj6mdig261.cloudfront.net/1776273005054.jpg" alt="Our &quot;Karuna&quot; kashmiri earing" class="product-img" />
+            <div class="product-actions">
+              <button class="product-btn wishlist" aria-label="Wishlist">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+            </div>
+            <div class="product-badge">-37%</div>
+          </div>
+          <div class="product-info">
+            <span class="product-category">Kashmiri Earrings</span>
+            <h3 class="product-name">Our "Karuna" Earing</h3>
+            <div class="product-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(45)</span>
+            </div>
+            <div class="product-price-row">
+              <span class="product-price">₹200 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹320</span></span>
+              <a href="collection.html?product=ke-4" class="add-to-cart">View Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. TULIP BRACELETS -->
+  <section class="featured" id="tulip-bracelets-section" style="padding-top: 2rem;">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-tag reveal-up">Vibrant & Chic</div>
+        <h2 class="section-title reveal-up delay-1">Tulip <em>Bracelets</em></h2>
+      </div>
+
+      <div class="products-grid">
+        <!-- Card 1 -->
+        <div class="product-card reveal-up" id="tb-1">
+          <div class="product-img-wrap">
+            <img src="https://d28arj6mdig261.cloudfront.net/1776535858068.jpg" alt="Our &quot;Aris&quot; tulip bracelet" class="product-img" />
+            <div class="product-actions">
+              <button class="product-btn wishlist" aria-label="Wishlist">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+            </div>
+            <div class="product-badge">-37%</div>
+          </div>
+          <div class="product-info">
+            <span class="product-category">Tulip Bracelet</span>
+            <h3 class="product-name">Our "Aris" Bracelet</h3>
+            <div class="product-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(61)</span>
+            </div>
+            <div class="product-price-row">
+              <span class="product-price">₹200 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹320</span></span>
+              <a href="collection.html?product=tb-1" class="add-to-cart">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="product-card reveal-up delay-1" id="tb-2">
+          <div class="product-img-wrap">
+            <img src="https://d28arj6mdig261.cloudfront.net/1777533294853.jpg" alt="Our &quot;Deniz&quot; tulip bracelet" class="product-img" />
+            <div class="product-actions">
+              <button class="product-btn wishlist" aria-label="Wishlist">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+            </div>
+            <div class="product-badge">-37%</div>
+          </div>
+          <div class="product-info">
+            <span class="product-category">Tulip Bracelet</span>
+            <h3 class="product-name">Our "Deniz" Bracelet</h3>
+            <div class="product-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(29)</span>
+            </div>
+            <div class="product-price-row">
+              <span class="product-price">₹200 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹320</span></span>
+              <a href="collection.html?product=tb-2" class="add-to-cart">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="product-card reveal-up delay-2" id="tb-3">
+          <div class="product-img-wrap">
+            <img src="https://d28arj6mdig261.cloudfront.net/1777371114881.jpg" alt="Our &quot;Auris&quot; tulip bracelet" class="product-img" />
+            <div class="product-actions">
+              <button class="product-btn wishlist" aria-label="Wishlist">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+            </div>
+            <div class="product-badge">-37%</div>
+          </div>
+          <div class="product-info">
+            <span class="product-category">Tulip Bracelet</span>
+            <h3 class="product-name">Our "Auris" Bracelet</h3>
+            <div class="product-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(37)</span>
+            </div>
+            <div class="product-price-row">
+              <span class="product-price">₹200 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹320</span></span>
+              <a href="collection.html?product=tb-3" class="add-to-cart">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="product-card reveal-up delay-3" id="tb-4">
+          <div class="product-img-wrap">
+            <img src="https://d28arj6mdig261.cloudfront.net/1776423875022.jpg" alt="Our &quot;Aria&quot; Tulip bracelet" class="product-img" />
+            <div class="product-actions">
+              <button class="product-btn wishlist" aria-label="Wishlist">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+            </div>
+            <div class="product-badge">-37%</div>
+          </div>
+          <div class="product-info">
+            <span class="product-category">Tulip Bracelet</span>
+            <h3 class="product-name">Our "Aria" Bracelet</h3>
+            <div class="product-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(83)</span>
+            </div>
+            <div class="product-price-row">
+              <span class="product-price">₹200 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹320</span></span>
+              <a href="collection.html?product=tb-4" class="add-to-cart">View Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. ANTI-TARNISH CHAIN -->
+  <section class="featured" id="anti-tarnish-chains-section" style="padding-top: 2rem; padding-bottom: 2rem;">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-tag reveal-up">Enduring Elegance</div>
+        <h2 class="section-title reveal-up delay-1">Anti-Tarnish <em>Chains</em></h2>
+      </div>
+
+      <div class="products-grid">
+        <!-- Card 1 -->
+        <div class="product-card reveal-up" id="atc-1">
+          <div class="product-img-wrap">
+            <img src="https://d28arj6mdig261.cloudfront.net/1775055618105.jpg" alt="Our &quot;Jode&quot; Anti-tarnish neck chain" class="product-img" />
+            <div class="product-actions">
+              <button class="product-btn wishlist" aria-label="Wishlist">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+            </div>
+            <div class="product-badge">-37%</div>
+          </div>
+          <div class="product-info">
+            <span class="product-category">Anti-Tarnish Chains</span>
+            <h3 class="product-name">Our "Jode" Neck Chain</h3>
+            <div class="product-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(91)</span>
+            </div>
+            <div class="product-price-row">
+              <span class="product-price">₹200 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹320</span></span>
+              <a href="collection.html?product=atc-1" class="add-to-cart">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="product-card reveal-up delay-1" id="atc-2">
+          <div class="product-img-wrap">
+            <img src="https://d28arj6mdig261.cloudfront.net/1779546981366.jpg" alt="Our &quot;Starlit&quot; hand ring chain" class="product-img" />
+            <div class="product-actions">
+              <button class="product-btn wishlist" aria-label="Wishlist">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+            </div>
+            <div class="product-badge">-37%</div>
+          </div>
+          <div class="product-info">
+            <span class="product-category">Anti-Tarnish Chains</span>
+            <h3 class="product-name">Our "Starlit" Hand Ring</h3>
+            <div class="product-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(47)</span>
+            </div>
+            <div class="product-price-row">
+              <span class="product-price">₹261 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹417</span></span>
+              <a href="collection.html?product=atc-2" class="add-to-cart">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="product-card reveal-up delay-2" id="atc-3">
+          <div class="product-img-wrap">
+            <img src="https://d28arj6mdig261.cloudfront.net/1778941252793.jpg" alt="Our &quot;Prerna&quot; (Pink) necklace" class="product-img" />
+            <div class="product-actions">
+              <button class="product-btn wishlist" aria-label="Wishlist">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+            </div>
+            <div class="product-badge">-37%</div>
+          </div>
+          <div class="product-info">
+            <span class="product-category">Anti-Tarnish Chains</span>
+            <h3 class="product-name">Our "Prerna" Necklace</h3>
+            <div class="product-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(53)</span>
+            </div>
+            <div class="product-price-row">
+              <span class="product-price">₹261 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹417</span></span>
+              <a href="collection.html?product=atc-3" class="add-to-cart">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="product-card reveal-up delay-3" id="atc-4">
+          <div class="product-img-wrap">
+            <img src="https://d28arj6mdig261.cloudfront.net/1778054108455.jpg" alt="Our &quot;Purl&quot; Anti-tarnish neck chain" class="product-img" />
+            <div class="product-actions">
+              <button class="product-btn wishlist" aria-label="Wishlist">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+            </div>
+            <div class="product-badge">-37%</div>
+          </div>
+          <div class="product-info">
+            <span class="product-category">Anti-Tarnish Chains</span>
+            <h3 class="product-name">Our "Purl" Neck Chain</h3>
+            <div class="product-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-count">(39)</span>
+            </div>
+            <div class="product-price-row">
+              <span class="product-price">₹200 <span style="font-size:0.8rem; color:#999; text-decoration:line-through; font-weight:normal; margin-left:5px;">₹320</span></span>
+              <a href="collection.html?product=atc-4" class="add-to-cart">View Details</a>
             </div>
           </div>
         </div>

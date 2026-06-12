@@ -194,6 +194,12 @@ function initAnimations() {
   
   // 9. Curved Marquee Animation
   initCurvedMarquee();
+
+  // 10. Hero Slider Carousel
+  initHeroSlider();
+
+  // 11. Categories Scroll Drag
+  initCategoriesDrag();
 }
 
 // ===== TEXT SPLITTING UTILITY =====
@@ -1074,3 +1080,83 @@ function initCurvedMarquee() {
   }
   requestAnimationFrame(step);
 }
+
+// ===== HERO SLIDER =====
+function initHeroSlider() {
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('#sliderDots .dot');
+  if (slides.length === 0) return;
+  
+  let currentSlide = 0;
+  let slideInterval;
+  
+  function showSlide(index) {
+    slides.forEach(slide => slide.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+    
+    slides[index].classList.add('active');
+    dots[index].classList.add('active');
+    currentSlide = index;
+  }
+  
+  function nextSlide() {
+    let next = (currentSlide + 1) % slides.length;
+    showSlide(next);
+  }
+  
+  function startSlideShow() {
+    slideInterval = setInterval(nextSlide, 5000); // 5 seconds duration
+  }
+  
+  function stopSlideShow() {
+    clearInterval(slideInterval);
+  }
+  
+  // Dot clicks
+  dots.forEach(dot => {
+    dot.addEventListener('click', (e) => {
+      stopSlideShow();
+      const slideIndex = parseInt(e.target.getAttribute('data-slide'));
+      showSlide(slideIndex);
+      startSlideShow();
+    });
+  });
+  
+  startSlideShow();
+}
+
+// ===== CATEGORIES SCROLL DRAG =====
+function initCategoriesDrag() {
+  const slider = document.getElementById('categoriesScroll');
+  if (!slider) return;
+  
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+  
+  slider.addEventListener('mousedown', (e) => {
+    isDown = true;
+    slider.classList.add('active');
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  });
+  
+  slider.addEventListener('mouseleave', () => {
+    isDown = false;
+    slider.classList.remove('active');
+  });
+  
+  slider.addEventListener('mouseup', () => {
+    isDown = false;
+    slider.classList.remove('active');
+  });
+  
+  slider.addEventListener('mousemove', (e) => {
+    if(!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 2; // scroll-fast multiplier
+    slider.scrollLeft = scrollLeft - walk;
+  });
+}
+

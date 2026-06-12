@@ -7,54 +7,54 @@
 
 /* ===== SECTION SPECIFIC THEMES (LIGHT & DARK MIXED) ===== */
 .theme-dark {
-  --section-bg: #0A1611; /* Deep Luxurious Forest Green */
-  --section-bg-alt: #050C08; /* Darker green-black */
-  --section-card-bg: #12241C; /* Dark green card background */
-  --section-border: #1D362B; /* Sage green border lines */
-  --section-text: #F2EFE8; /* Soft Ivory headings */
-  --section-text-muted: #B3C0B8; /* Muted sage-gray body text */
-  --section-btn-bg: var(--gold);
-  --section-btn-text: #0A1611;
-  --section-btn-bg-hover: #FFFFFF;
-  --section-btn-text-hover: #0A1611;
+  --section-bg: #FFF5F6; /* Warm rose background instead of dark green */
+  --section-bg-alt: #ffffff;
+  --section-card-bg: #ffffff;
+  --section-border: rgba(107, 21, 66, 0.08);
+  --section-text: #111111;
+  --section-text-muted: #666666;
+  --section-btn-bg: #6b1542;
+  --section-btn-text: #ffffff;
+  --section-btn-bg-hover: #df1b5c;
+  --section-btn-text-hover: #ffffff;
 
-  /* Remap legacy variables locally to ensure correct scope resolution in dark theme */
+  /* Remap legacy variables locally */
   --black: var(--section-bg);
   --black-1: var(--section-bg-alt);
   --black-2: var(--section-card-bg);
-  --black-3: var(--section-bg-alt);
+  --black-3: #FFFBFB;
   --black-4: var(--section-border);
   --cream: var(--section-text);
   --cream-muted: var(--section-text-muted);
 }
 
 :root {
-  --gold: #DFB76C; /* Brand Metallic Gold */
-  --gold-light: #EAD09E; /* Light Gold */
-  --gold-dark: #AC8B49; /* Rich Bronze/Dark Gold */
-  --rose-gold: #DFB76C; 
-  --rose-pink: #E8AFA8; /* Brand Accent Rose Pink */
+  --gold: #df1b5c; /* Primary brand accent - crimson rose */
+  --gold-light: #ff6090; /* Light rose */
+  --gold-dark: #6b1542; /* Secondary brand accent - deep maroon-rose */
+  --rose-gold: #df1b5c; 
+  --rose-pink: #FFF5F6; /* Brand Accent Rose Pink */
   --white: #FFFFFF; /* High contrast white fallback */
-  --btn-radius: 0px; /* Sharp button corners like Coitonic */
-  --other-radius: 0px; /* Sharp bento/card corners for blocky look */
+  --btn-radius: 9999px; /* Rounded pill buttons like Manvish */
+  --other-radius: 16px; /* Smooth rounded card corners like Manvish */
 
   /* Default Light Theme Variables */
   --section-bg: #FFFFFF;
-  --section-bg-alt: #F8F8F8;
+  --section-bg-alt: #FFF5F6;
   --section-card-bg: #FFFFFF;
-  --section-border: #DCDCDC;
-  --section-text: #000000;
-  --section-text-muted: #333333;
-  --section-btn-bg: #000000;
+  --section-border: rgba(107, 21, 66, 0.08);
+  --section-text: #111111;
+  --section-text-muted: #666666;
+  --section-btn-bg: #6b1542;
   --section-btn-text: #FFFFFF;
-  --section-btn-bg-hover: #DFB76C;
-  --section-btn-text-hover: #000000;
+  --section-btn-bg-hover: #df1b5c;
+  --section-btn-text-hover: #FFFFFF;
 
   /* Map legacy variables to section theme tokens for automatic toggle */
   --black: var(--section-bg);
   --black-1: var(--section-bg-alt);
   --black-2: var(--section-card-bg);
-  --black-3: var(--section-bg-alt);
+  --black-3: #FFFBFB;
   --black-4: var(--section-border);
   --cream: var(--section-text);
   --cream-muted: var(--section-text-muted);
@@ -186,29 +186,53 @@ em {
 
 @keyframes fadeIn { to { opacity: 1; } }
 
+/* ===== ANNOUNCEMENT BAR ===== */
+.announcement-bar {
+  background: linear-gradient(90deg, #df1b5c, #ff6090, #df1b5c);
+  color: #ffffff;
+  text-align: center;
+  padding: 8px 16px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  width: 100%;
+  z-index: 1001;
+  text-transform: uppercase;
+}
+.announcement-bar a {
+  font-weight: 700;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+}
+.announcement-bar a:hover {
+  opacity: 0.9;
+}
+
 /* ===== NAVBAR ===== */
 .navbar {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 1000;
-  height: var(--nav-h);
-  padding: 0 5%;
+  display: flex;
+  flex-direction: column;
   transition: background 0.5s ease, backdrop-filter 0.5s ease, box-shadow 0.5s ease;
 }
 
 .navbar.scrolled {
-  background: rgba(10, 22, 17, 0.96) !important;
+  background: rgba(255, 255, 255, 0.94) !important;
   backdrop-filter: blur(20px);
-  box-shadow: 0 1px 0 rgba(223, 183, 108, 0.15);
+  box-shadow: 0 1px 10px rgba(107, 21, 66, 0.06);
 }
 
 .nav-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
+  height: var(--nav-h);
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  padding: 0 5%;
 }
 
 .nav-logo {
@@ -456,6 +480,105 @@ em {
   z-index: 1;
 }
 
+/* ===== HORIZONTAL CATEGORY BAR ===== */
+.categories-bar {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--black-4);
+  background: var(--white);
+}
+
+.categories-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+.categories-scroll {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 0.5rem;
+  justify-content: center;
+  /* Hide scrollbar */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.categories-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 992px) {
+  .categories-scroll {
+    justify-content: flex-start;
+    gap: 1.5rem;
+  }
+}
+
+.category-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  min-width: 90px;
+  transition: transform var(--transition);
+}
+
+.category-item:hover {
+  transform: translateY(-4px);
+}
+
+.category-circle-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-dark);
+  padding: 2px;
+  margin-bottom: 0.75rem;
+  transition: border-color var(--transition);
+}
+
+.category-item:hover .category-circle-wrap {
+  border-color: var(--gold);
+}
+
+.category-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--black-1);
+}
+
+.category-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition);
+}
+
+.category-item:hover .category-circle img {
+  transform: scale(1.08);
+}
+
+.category-name {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--cream);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+  max-width: 110px;
+}
+
+
 .hero-particles {
   position: absolute;
   inset: 0;
@@ -631,14 +754,61 @@ em {
   to { opacity: 1; transform: scale(1.1); }
 }
 
-.hero-img {
+.hero-slider {
+  position: relative;
   width: 100%;
   height: 580px;
-  object-fit: cover;
-  border-radius: 4px;
-  position: relative;
+  border-radius: var(--other-radius);
+  overflow: hidden;
   z-index: 1;
+  border: 1px solid var(--black-4);
+  box-shadow: 0 20px 40px rgba(107, 21, 66, 0.05);
   animation: heroFloat 6s ease-in-out infinite;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-slide.active {
+  opacity: 1;
+}
+
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slider-dots {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.slider-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.slider-dots .dot.active {
+  background: var(--gold);
+  width: 20px;
+  border-radius: 4px;
 }
 
 @keyframes heroFloat {
@@ -652,14 +822,14 @@ em {
   z-index: 3;
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(223, 183, 108, 0.25);
+  border: 1px solid rgba(223, 27, 92, 0.15);
   border-radius: var(--other-radius);
   padding: 0.9rem 1.2rem;
   display: flex;
   align-items: center;
   gap: 0.8rem;
   animation: cardFloat 4s ease-in-out infinite;
-  box-shadow: 0 10px 30px rgba(223, 183, 108, 0.08);
+  box-shadow: 0 10px 30px rgba(107, 21, 66, 0.06);
 }
 
 .card-1 {
@@ -886,13 +1056,13 @@ em {
 
 .product-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 60px rgba(13, 42, 28, 0.08);
+  box-shadow: 0 20px 60px rgba(107, 21, 66, 0.08);
 }
 
 .product-img-wrap {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 5;
   background: var(--black-3);
 }
 
@@ -922,7 +1092,7 @@ em {
   width: 36px; height: 36px;
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(223, 183, 108, 0.2);
+  border: 1px solid rgba(223, 27, 92, 0.2);
   border-radius: 50%;
   color: var(--cream);
   display: flex;
@@ -931,7 +1101,7 @@ em {
   transition: background var(--transition), color var(--transition);
 }
 
-.product-btn:hover { background: var(--gold); color: var(--black); }
+.product-btn:hover { background: var(--gold); color: var(--white); }
 
 .product-badge {
   position: absolute;
@@ -999,16 +1169,16 @@ em {
   text-transform: uppercase;
   color: var(--cream-muted);
   background: transparent;
-  border: 1px solid rgba(200, 191, 176, 0.2);
-  padding: 0.4rem 0.8rem;
-  border-radius: 2px;
+  border: 1px solid rgba(223, 27, 92, 0.2);
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--btn-radius);
   transition: all var(--transition);
   font-family: var(--font-sans);
 }
 
 .add-to-cart:hover {
   background: var(--gold);
-  color: var(--black);
+  color: var(--white);
   border-color: var(--gold);
 }
 
@@ -2262,6 +2432,16 @@ em {
   .nav-cta { display: none; }
   .hamburger { display: flex; position: relative; z-index: 1010; }
 
+  /* Hide the brand name text to prevent overlapping header icons on mobile */
+  .nav-logo-text {
+    display: none !important;
+  }
+
+  /* Tighten spacing between actions on mobile/tablet */
+  .nav-actions {
+    gap: 0.8rem !important;
+  }
+
   /* Morph hamburger to 'X' */
   .hamburger.open span:nth-child(1) {
     transform: translateY(6px) rotate(45deg);
@@ -2273,13 +2453,12 @@ em {
     transform: translateY(-6px) rotate(-45deg);
   }
 
-  /* Full screen premium mobile menu overlay */
   .nav-links.mobile-open {
     display: flex;
     flex-direction: column;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(10, 22, 17, 0.98);
+    background: rgba(255, 245, 246, 0.98);
     backdrop-filter: blur(20px);
     justify-content: center;
     align-items: center;
@@ -2289,15 +2468,11 @@ em {
   }
   .nav-links.mobile-open .nav-link {
     font-size: 1.5rem;
-    color: #F2EFE8;
+    color: #111111;
   }
 }
 
 @media (max-width: 768px) {
-  /* Hide the brand name text to prevent overlapping header icons on mobile */
-  .nav-logo-text {
-    display: none !important;
-  }
 
   /* Hide less critical social and wishlist buttons in the header on mobile to free up horizontal space */
   .nav-actions .nav-icon-btn[aria-label="Instagram"],

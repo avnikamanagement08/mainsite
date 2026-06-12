@@ -221,8 +221,8 @@ function updatePDPPriceAndInventory() {
         btnCart.querySelector('span').textContent = 'Pre-Order Now';
         btnCart.disabled = false; // Allow pre-orders
       } else if (stock <= 3) {
-        indicator.style.color = '#DFB76C';
-        indicator.querySelector('.stock-dot').style.background = '#DFB76C';
+        indicator.style.color = 'var(--gold)';
+        indicator.querySelector('.stock-dot').style.background = 'var(--gold)';
         indicatorText.textContent = `🔥 Only ${stock} items left!`;
         btnCart.querySelector('span').textContent = 'Add to Cart';
         btnCart.disabled = false;
@@ -590,11 +590,12 @@ function showCartToast(productName) {
   const toast = document.createElement('div');
   toast.className = 'cart-toast';
   toast.style.cssText = `
-    background: #0A1611;
-    color: #F2EFE8;
-    border: 1px solid #DFB76C;
+    background: var(--black-1);
+    color: var(--cream);
+    border: 1px solid var(--gold);
+    border-radius: var(--other-radius);
     padding: 1.2rem 1.6rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 30px rgba(107,21,66,0.08);
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
@@ -606,14 +607,14 @@ function showCartToast(productName) {
   `;
   
   toast.innerHTML = `
-    <div style="font-weight: 600; font-size: 0.88rem; display: flex; align-items: center; gap: 0.5rem; color: #F2EFE8;">
-      <span style="color: #DFB76C;">✨</span> Item Added to Cart
+    <div style="font-weight: 600; font-size: 0.88rem; display: flex; align-items: center; gap: 0.5rem; color: var(--cream);">
+      <span style="color: var(--gold);">✨</span> Item Added to Cart
     </div>
-    <div style="font-size: 0.82rem; color: #B3C0B8; line-height: 1.4;">
+    <div style="font-size: 0.82rem; color: var(--cream-muted); line-height: 1.4;">
       "${productName}" is now in your cart.
     </div>
     <div style="display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 0.4rem;">
-      <a href="checkout.html" style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: #DFB76C; font-weight: 600; text-decoration: none; border-bottom: 1px solid #DFB76C; padding-bottom: 1px;">Checkout Now</a>
+      <a href="checkout.html" style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gold); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 1px;">Checkout Now</a>
     </div>
   `;
   
