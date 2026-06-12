@@ -7,8 +7,8 @@
 
 (function() {
   // Default API configuration keys (Modify here, or paste in Developer Dashboard UI)
-  const DEFAULT_SUPABASE_URL = "YOUR_SUPABASE_URL";
-  const DEFAULT_SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+  const DEFAULT_SUPABASE_URL = "https://wazynxirytsmknrcnmxr.supabase.co";
+  const DEFAULT_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhenlueGlyeXRzbWtucmNubXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyNTk1NTIsImV4cCI6MjA5NjgzNTU1Mn0.rNRbesXs_wfCLpYJzMoz7DNiOb1w3mylHcXINdvKMls";
 
   // Check localStorage for developer overrides first
   const supabaseUrl = localStorage.getItem('avanika_supabase_url') || DEFAULT_SUPABASE_URL;
