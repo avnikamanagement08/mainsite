@@ -808,9 +808,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnPlaceOrder = document.getElementById('btnPlaceOrder');
   const gatewayOverlay = document.getElementById('paymentGatewayOverlay');
   
+  let pendingOrderId = null;
+
   if (btnPlaceOrder) {
     btnPlaceOrder.addEventListener('click', () => {
       const orderId = generateOrderID();
+      pendingOrderId = orderId;
       
       if (selectedPaymentMode === 'prepaid') {
         const subtotal = checkoutCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -818,6 +821,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const prepaidDiscount = 100;
         const totalTax = checkoutCart.reduce((sum, item) => sum + calculateGST(item), 0);
         const payableINR = Math.max(0, subtotal + deliveryCharge + totalTax - prepaidDiscount - couponDiscountAmount);
+
+        // Generate dynamic UPI pay URI
+        const upiUrl = `upi://pay?pa=9315125305@ybl&pn=Avanika.co&am=${payableINR.toFixed(2)}&cu=INR&tn=${encodeURIComponent('Order ' + orderId)}`;
+
+        // Set mobile VPA deep link href
+        const gatewayUPILink = document.getElementById('gatewayUPILink');
+        if (gatewayUPILink) {
+          gatewayUPILink.href = upiUrl;
+        }
+
+        // Fetch dynamic QR code image from secure API
+        const gatewayQRCode = document.getElementById('gatewayQRCode');
+        if (gatewayQRCode) {
+          gatewayQRCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=${encodeURIComponent(upiUrl)}`;
+        }
 
         // Update gateway overlay values
         document.getElementById('gatewayRef').textContent = `TXN-${Math.floor(100000 + Math.random() * 900000)}`;
@@ -842,15 +860,19 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnGatewaySuccess && gatewayOverlay) {
     btnGatewaySuccess.addEventListener('click', () => {
       gatewayOverlay.style.display = 'none';
-      const orderId = generateOrderID();
-      submitOrderRecord(orderId);
+      if (pendingOrderId) {
+        submitOrderRecord(pendingOrderId);
+      } else {
+        const orderId = generateOrderID();
+        submitOrderRecord(orderId);
+      }
     });
   }
 
   if (btnGatewayFailure && gatewayOverlay) {
     btnGatewayFailure.addEventListener('click', () => {
       gatewayOverlay.style.display = 'none';
-      alert('❌ Sandbox Gateway: Payment Transaction Aborted/Failed. Order not created.');
+      alert('❌ UPI Payment: Transaction aborted or failed. Order not created.');
     });
   }
 

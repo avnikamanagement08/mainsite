@@ -243,27 +243,48 @@
 
   <!-- ===== SIMULATED PAYMENT GATEWAY OVERLAY ===== -->
   <div id="paymentGatewayOverlay" class="checkout-success-overlay" style="display: none; z-index: 2500; font-family: 'Inter', sans-serif;">
-    <div class="checkout-success-card" style="background: #12241C; border: 1px solid var(--gold); max-width: 450px; padding: 2.5rem 2rem; border-radius: 0px;">
-      <div style="text-align: center; margin-bottom: 1.5rem;">
+    <div class="checkout-success-card" style="background: #12241C; border: 1px solid var(--gold); max-width: 450px; padding: 2.2rem 2rem; border-radius: 0px; width: 90%;">
+      <div style="text-align: center; margin-bottom: 1.2rem;">
         <span style="font-size: 2rem; filter: sepia(100%) hue-rotate(5deg) saturate(300%);">💳</span>
-        <h3 style="font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--gold); text-transform: uppercase; margin-top: 0.5rem; letter-spacing: 0.05em;">Avanika Secure Pay</h3>
-        <p style="font-size: 0.78rem; color: var(--cream-muted); margin-top: 0.2rem;">Simulated UPI & Card Checkout Portal</p>
+        <h3 style="font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--gold); text-transform: uppercase; margin-top: 0.5rem; letter-spacing: 0.05em;">Avanika UPI Pay</h3>
+        <p style="font-size: 0.78rem; color: var(--cream-muted); margin-top: 0.2rem;">Secure UPI Payment Portal</p>
       </div>
-      <div style="background: var(--black-2); border: 1px solid var(--black-4); padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0px;">
-        <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.5rem;"><span style="color: var(--cream-muted);">Merchant</span><span style="font-weight: 600; color: var(--cream);">Avanika.co</span></div>
-        <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.5rem;"><span style="color: var(--cream-muted);">Transaction Reference</span><span id="gatewayRef" style="font-family: monospace; color: var(--cream);">REF-382910</span></div>
-        <div style="display: flex; justify-content: space-between; font-size: 0.95rem; border-top: 1px dashed var(--black-4); padding-top: 0.8rem; font-weight: bold;"><span style="color: var(--cream);">Amount Payable</span><span id="gatewayAmount" style="color: var(--gold);">₹0.00</span></div>
+
+      <!-- Transaction details card -->
+      <div style="background: var(--black-2); border: 1px solid var(--black-4); padding: 1rem; margin-bottom: 1.2rem; border-radius: 0px;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.4rem;"><span style="color: var(--cream-muted);">Merchant VPA</span><span style="font-weight: 600; color: var(--cream); font-family: monospace;">9315125305@ybl</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.4rem;"><span style="color: var(--cream-muted);">Transaction Ref</span><span id="gatewayRef" style="font-family: monospace; color: var(--cream);">REF-382910</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.95rem; border-top: 1px dashed var(--black-4); padding-top: 0.6rem; font-weight: bold;"><span style="color: var(--cream);">Amount Payable</span><span id="gatewayAmount" style="color: var(--gold);">₹0.00</span></div>
       </div>
-      <div style="display: flex; flex-direction: column; gap: 0.8rem;">
-        <button type="button" class="btn-primary" id="btnGatewaySuccess" style="background: #2a9d8f; border-color: #2a9d8f; color: #fff; border-radius: 0px; cursor: pointer;">
-          <span>Simulate Payment Success</span>
+
+      <!-- UPI QR Code display (visible on desktop by default) -->
+      <div id="gatewayQRCodeContainer" style="text-align: center; margin-bottom: 1.2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;">
+        <div style="background: #fff; padding: 0.8rem; display: inline-flex; border-radius: 0px; border: 1px solid var(--gold); box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+          <img id="gatewayQRCode" src="" alt="UPI QR Code" style="width: 200px; height: 200px; display: block;" />
+        </div>
+        <p style="font-size: 0.72rem; color: var(--cream-muted); line-height: 1.4; max-width: 280px; margin-top: 0.2rem;">Scan this QR code using GPay, PhonePe, Paytm, or any UPI App to pay</p>
+      </div>
+
+      <!-- Mobile Pay Button (visible on mobile layout only) -->
+      <div id="gatewayMobileLinkContainer" style="margin-bottom: 1.2rem; text-align: center;">
+        <a id="gatewayUPILink" href="" class="btn-primary" style="display: inline-flex; text-decoration: none; background: var(--gold); color: #000; font-weight: bold; border-radius: 0px; justify-content: center; align-items: center; gap: 0.5rem; width: 100%;">
+          <span>Pay via UPI App</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+        </a>
+        <p style="font-size: 0.72rem; color: var(--cream-muted); margin-top: 0.4rem;">Tap button to open your preferred UPI payment app</p>
+      </div>
+
+      <!-- Actions -->
+      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+        <button type="button" class="btn-primary" id="btnGatewaySuccess" style="background: #2a9d8f; border-color: #2a9d8f; color: #fff; border-radius: 0px; cursor: pointer; width: 100%;">
+          <span>Verify & Confirm Order</span>
         </button>
-        <button type="button" class="btn-primary" id="btnGatewayFailure" style="background: #c94c4c; border-color: #c94c4c; color: #fff; border-radius: 0px; cursor: pointer;">
-          <span>Simulate Payment Failure</span>
+        <button type="button" class="btn-primary" id="btnGatewayFailure" style="background: #c94c4c; border-color: #c94c4c; color: #fff; border-radius: 0px; cursor: pointer; width: 100%;">
+          <span>Cancel Payment</span>
         </button>
       </div>
-      <p style="font-size: 0.7rem; color: var(--cream-muted); text-align: center; margin-top: 1.2rem;">
-        * This is a sandbox testing interface. No real funds will be deducted.
+      <p style="font-size: 0.68rem; color: var(--cream-muted); text-align: center; margin-top: 1rem; line-height: 1.4;">
+        * Once the transfer is complete, tap <strong>"Verify & Confirm Order"</strong> to submit your order.
       </p>
     </div>
   </div>

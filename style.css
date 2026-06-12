@@ -2309,6 +2309,14 @@ em {
   .nav-actions {
     gap: 0.8rem !important;
   }
+
+  /* Switch VPA payment components on mobile screens */
+  #gatewayQRCodeContainer {
+    display: none !important;
+  }
+  #gatewayMobileLinkContainer {
+    display: block !important;
+  }
 }
 
 @media (max-width: 700px) {
@@ -2891,6 +2899,18 @@ em {
   transform: translateY(30px);
   opacity: 0;
   font-family: var(--font-sans);
+}
+
+/* UPI Payment Gateway Responsive Containers */
+#gatewayQRCodeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#gatewayMobileLinkContainer {
+  display: none;
 }
 
 .success-icon-wrap {
