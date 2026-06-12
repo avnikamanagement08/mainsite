@@ -506,9 +506,9 @@ if (newsletterForm) {
   newsletterForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const name = document.getElementById('nameInput').value.trim();
-    const email = document.getElementById('emailInput').value.trim();
+    const mobile = document.getElementById('mobileInput').value.trim();
 
-    if (!name || !email) return;
+    if (!name || !mobile) return;
 
     const btn = newsletterForm.querySelector('.btn-primary');
     const originalHTML = btn.innerHTML;
@@ -1076,6 +1076,17 @@ function initCategorySelector() {
       
       const category = item.dataset.category;
       
+      // Update dynamic category name in section title after "OUR"
+      const dynamicCategoryName = document.getElementById('dynamicCategoryName');
+      if (dynamicCategoryName) {
+        let catDisplayName = "Earrings";
+        if (category === 'earrings') catDisplayName = "Earrings";
+        else if (category === 'bracelets') catDisplayName = "Bracelets";
+        else if (category === 'necklace') catDisplayName = "Necklaces";
+        else if (category === 'rings') catDisplayName = "Rings";
+        dynamicCategoryName.textContent = catDisplayName;
+      }
+      
       if (category === 'earrings') {
         if (earringsGrid) earringsGrid.style.display = 'grid';
         if (comingSoonContainer) comingSoonContainer.style.display = 'none';
@@ -1502,9 +1513,9 @@ if (spCloseBtn) {
   });
 }
 
-// Start social proof rotation
-setTimeout(showSocialProof, 8000); // 8s after load
-setInterval(showSocialProof, 22000); // Every 22s
+// Start social proof rotation (Disabled by user request)
+// setTimeout(showSocialProof, 8000); // 8s after load
+// setInterval(showSocialProof, 22000); // Every 22s
 
 // 5. STICKY MOBILE CART BAR
 const stickyMobileCartBar = document.getElementById('stickyMobileCartBar');

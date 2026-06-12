@@ -242,7 +242,7 @@
     <div class="section-container">
       <div class="section-header">
         <div class="section-tag reveal-up">Exclusive Collection</div>
-        <h2 class="section-title reveal-up">Our <em>Earrings</em></h2>
+        <h2 class="section-title reveal-up">Our <em id="dynamicCategoryName">Earrings</em></h2>
         <p class="section-subtitle reveal-up">100% anti-tarnish, allergy-free premium jewelry.</p>
       </div>
 
@@ -652,7 +652,7 @@
             <input type="text" id="nameInput" placeholder="Your Name" class="form-input" />
           </div>
           <div class="form-group">
-            <input type="email" id="emailInput" placeholder="Your Email Address" class="form-input" />
+            <input type="tel" id="mobileInput" placeholder="Your Mobile Number" class="form-input" required pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number" />
           </div>
           <button type="submit" class="btn-primary full-width">
             <span>Join the Circle</span>
@@ -741,44 +741,32 @@
       <div class="footer-links-group">
         <h4 class="footer-heading">Collections</h4>
         <ul>
-          <li><a href="collection.html" target="_blank">Celestial Collection</a></li>
-          <li><a href="collection.html" target="_blank">Eternal Rings</a></li>
-          <li><a href="collection.html" target="_blank">Lumina Bracelets</a></li>
-          <li><a href="collection.html" target="_blank">Pearl Series</a></li>
-          <li><a href="#">Limited Editions</a></li>
+          <li><a href="collection.html">Earrings Collection</a></li>
+          <li><a href="#earringsGrid">Best Sellers</a></li>
+          <li><a href="#earringsGrid">New Arrivals</a></li>
         </ul>
       </div>
 
       <div class="footer-links-group">
         <h4 class="footer-heading">Company</h4>
         <ul>
-          <li><a href="#">Our Story</a></li>
-          <li><a href="#">Craftsmanship</a></li>
-          <li><a href="#">Sustainability</a></li>
-          <li><a href="#">Press & Awards</a></li>
-          <li><a href="#">Careers</a></li>
+          <li><a href="#about">Our Story</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+          <li><a href="https://www.instagram.com/avnika.co?igsh=dWdoZHZ0a3UxMzZh&utm_source=qr" target="_blank">Instagram Portfolio</a></li>
         </ul>
       </div>
 
       <div class="footer-links-group">
         <h4 class="footer-heading">Support</h4>
         <ul>
-          <li><a href="#">Size Guide</a></li>
-          <li><a href="#">Care Instructions</a></li>
-          <li><a href="#">Shipping & Returns</a></li>
-          <li><a href="#">Warranty</a></li>
-          <li><a href="#">Contact Us</a></li>
+          <li><a href="returns.html">Shipping & Returns</a></li>
+          <li><a href="https://wa.me/919315125305?text=Hi!%20I%27m%20interested%20in%20AVANIKA.CO%27s%20jewelry%20collections." target="_blank">WhatsApp Chat Support</a></li>
         </ul>
       </div>
     </div>
 
-    <div class="footer-bottom">
+    <div class="footer-bottom" style="justify-content: center; text-align: center;">
       <p>&copy; 2026 AVANIKA.CO. All rights reserved. | Crafted with ✦</p>
-      <div class="footer-bottom-links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Cookie Settings</a>
-      </div>
     </div>
   </footer>
 
@@ -913,20 +901,7 @@
     </div>
   </div>
 
-  <!-- ===== SOCIAL PROOF POPUP ===== -->
-  <div class="social-proof-popup" id="socialProofPopup">
-    <button class="sp-close-btn" id="spCloseBtn" aria-label="Close Popup">×</button>
-    <div class="sp-image-wrap">
-      <img src="images/logo.png" alt="Product purchased" id="spProductImg" />
-    </div>
-    <div class="sp-content">
-      <p class="sp-text">
-        <strong id="spCustomerName">Simran</strong> from <span id="spCustomerCity">Delhi</span>
-        <br />purchased <strong id="spProductName">Aura Celestial Hoops</strong>
-      </p>
-      <span class="sp-time" id="spTimeAgo">5 mins ago</span>
-    </div>
-  </div>
+
 
   <!-- ===== FLOATING WHATSAPP BUTTON ===== -->
   <a href="https://wa.me/919315125305?text=Hi!%20I%27m%20interested%20in%20AVANIKA.CO%27s%20jewelry%20collections." target="_blank" class="whatsapp-float-btn" aria-label="Chat on WhatsApp">
