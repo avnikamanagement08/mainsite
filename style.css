@@ -430,7 +430,7 @@ em {
 }
 
 /* ===== SCROLL ANIMATIONS ===== */
-.reveal-up, .reveal-left, .reveal-right {
+.reveal-up, .reveal-left, .reveal-right { opacity: 1; transform: none; }
   opacity: 0;
 }
 
