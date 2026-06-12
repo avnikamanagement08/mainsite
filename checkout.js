@@ -27,15 +27,59 @@ function formatPrice(priceInINR) {
   return `${CURRENCY_SYMBOLS[currentCurrency]}${converted.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
-// Log conversion funnel analytics mock events
+// Log conversion funnel analytics events
 function logAnalyticsEvent(eventName, params = {}) {
-  const events = JSON.parse(localStorage.getItem('avanika_analytics_events') || '[]');
-  events.push({
-    event: eventName,
-    params: params,
-    timestamp: new Date().toISOString()
+  const pagePath = window.location.pathname;
+  let referrerVal = document.referrer ? document.referrer.trim() : 'Direct';
+  
+  try {
+    if (referrerVal !== 'Direct') {
+      const urlObj = new URL(referrerVal);
+      referrerVal = urlObj.hostname;
+      if (referrerVal.startsWith('www.')) {
+        referrerVal = referrerVal.substring(4);
+      }
+    }
+  } catch (e) {}
+
+  let deviceType = 'desktop';
+  const ua = navigator.userAgent.toLowerCase();
+  if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+    deviceType = 'tablet';
+  } else if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+    deviceType = 'mobile';
+  }
+
+  let sessionId = sessionStorage.getItem('avanika_session_id');
+  if (!sessionId) {
+    sessionId = 'sess-' + Math.floor(100000 + Math.random() * 900000) + '-' + Date.now();
+    sessionStorage.setItem('avanika_session_id', sessionId);
+  }
+
+  const logData = {
+    page_path: pagePath,
+    referrer: referrerVal,
+    device_type: deviceType,
+    session_id: sessionId,
+    event_name: eventName
+  };
+
+  if (window.isSupabaseConfigured && window.supabaseClient) {
+    window.supabaseClient
+      .from('traffic_logs')
+      .insert([logData])
+      .then(({ error }) => {
+        if (error) console.error('❌ Error logging event:', error);
+      });
+  }
+
+  const offlineLogs = JSON.parse(localStorage.getItem('avanika_simulated_traffic') || '[]');
+  offlineLogs.push({
+    ...logData,
+    created_at: new Date().toISOString()
   });
-  localStorage.setItem('avanika_analytics_events', JSON.stringify(events));
+  if (offlineLogs.length > 2000) offlineLogs.shift();
+  localStorage.setItem('avanika_simulated_traffic', JSON.stringify(offlineLogs));
 }
 
 // Load cart state from localStorage
@@ -586,6 +630,9 @@ async function submitOrderRecord(orderId) {
       { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: 'back.out(1.5)' }
     );
 
+    // Log purchase event
+    logAnalyticsEvent('purchase', { order_id: orderId });
+
     // 7. Clear cart
     checkoutCart = [];
     saveCart();
@@ -698,7 +745,8 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCartItems();
   updatePriceSummary();
 
-  // Log checkout start event
+  // Log checkout page view and start event
+  logAnalyticsEvent('page_view');
   logAnalyticsEvent('checkout_start', { cart_items: checkoutCart });
 
   // 1. Currency selector sync

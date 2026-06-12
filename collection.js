@@ -642,19 +642,59 @@ function showCartToast(productName) {
   });
 }
 
-// Log conversion funnel analytics mock events
+// Log conversion funnel analytics events
 function logAnalyticsEvent(eventName, params = {}) {
-  const events = JSON.parse(localStorage.getItem('avanika_analytics_events') || '[]');
-  events.push({
-    event: eventName,
-    params: params,
-    timestamp: new Date().toISOString()
-  });
-  localStorage.setItem('avanika_analytics_events', JSON.stringify(events));
+  const pagePath = window.location.pathname;
+  let referrerVal = document.referrer ? document.referrer.trim() : 'Direct';
   
-  if (window.isSupabaseConfigured && window.supabaseClient) {
-    // Optionally log event rows in DB
+  try {
+    if (referrerVal !== 'Direct') {
+      const urlObj = new URL(referrerVal);
+      referrerVal = urlObj.hostname;
+      if (referrerVal.startsWith('www.')) {
+        referrerVal = referrerVal.substring(4);
+      }
+    }
+  } catch (e) {}
+
+  let deviceType = 'desktop';
+  const ua = navigator.userAgent.toLowerCase();
+  if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+    deviceType = 'tablet';
+  } else if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+    deviceType = 'mobile';
   }
+
+  let sessionId = sessionStorage.getItem('avanika_session_id');
+  if (!sessionId) {
+    sessionId = 'sess-' + Math.floor(100000 + Math.random() * 900000) + '-' + Date.now();
+    sessionStorage.setItem('avanika_session_id', sessionId);
+  }
+
+  const logData = {
+    page_path: pagePath,
+    referrer: referrerVal,
+    device_type: deviceType,
+    session_id: sessionId,
+    event_name: eventName
+  };
+
+  if (window.isSupabaseConfigured && window.supabaseClient) {
+    window.supabaseClient
+      .from('traffic_logs')
+      .insert([logData])
+      .then(({ error }) => {
+        if (error) console.error('❌ Error logging event:', error);
+      });
+  }
+
+  const offlineLogs = JSON.parse(localStorage.getItem('avanika_simulated_traffic') || '[]');
+  offlineLogs.push({
+    ...logData,
+    created_at: new Date().toISOString()
+  });
+  if (offlineLogs.length > 2000) offlineLogs.shift();
+  localStorage.setItem('avanika_simulated_traffic', JSON.stringify(offlineLogs));
 }
 
 // Convert Base64 upload to Blobs
@@ -908,6 +948,9 @@ async function loadDynamicProducts() {
 
 // Document Ready Initialization
 document.addEventListener('DOMContentLoaded', async () => {
+  // Log page view event
+  logAnalyticsEvent('page_view');
+
   // Load dynamic products before anything else
   await loadDynamicProducts();
 

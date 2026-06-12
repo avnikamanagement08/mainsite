@@ -618,6 +618,9 @@ function closeCart() {
 
 // Add item to cart state
 function addToCart(id, name, price, image, category, qty = 1, openCartDrawer = true) {
+  // Log traffic event
+  logTrafficEvent('add_to_cart');
+
   // Clean price value from symbols and commas
   const numericPrice = typeof price === 'number' ? price : parseFloat(price.replace(/[^0-9.]/g, ''));
   const rawString = typeof price === 'number' ? `₹${price}` : price;
@@ -1078,6 +1081,77 @@ function initCategoriesDrag() {
   });
 }
 
+// ===== REAL-TIME TRAFFIC VISITOR EVENT TRACKING =====
+function logTrafficEvent(eventName = 'page_view') {
+  const pagePath = window.location.pathname;
+  let referrerVal = document.referrer ? document.referrer.trim() : 'Direct';
+  
+  // Clean up referrer for cleaner reports
+  try {
+    if (referrerVal !== 'Direct') {
+      const urlObj = new URL(referrerVal);
+      referrerVal = urlObj.hostname;
+      if (referrerVal.startsWith('www.')) {
+        referrerVal = referrerVal.substring(4);
+      }
+    }
+  } catch (e) {
+    // Fail-safe
+  }
+
+  // Determine device type
+  let deviceType = 'desktop';
+  const ua = navigator.userAgent.toLowerCase();
+  if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+    deviceType = 'tablet';
+  } else if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+    deviceType = 'mobile';
+  }
+
+  // Session ID inside sessionStorage
+  let sessionId = sessionStorage.getItem('avanika_session_id');
+  if (!sessionId) {
+    sessionId = 'sess-' + Math.floor(100000 + Math.random() * 900000) + '-' + Date.now();
+    sessionStorage.setItem('avanika_session_id', sessionId);
+  }
+
+  const logData = {
+    page_path: pagePath,
+    referrer: referrerVal,
+    device_type: deviceType,
+    session_id: sessionId,
+    event_name: eventName
+  };
+
+  // Write to Supabase if configured
+  if (window.isSupabaseConfigured && window.supabaseClient) {
+    window.supabaseClient
+      .from('traffic_logs')
+      .insert([logData])
+      .then(({ error }) => {
+        if (error) console.error('❌ Error writing traffic log:', error);
+      });
+  }
+
+  // Always write to localStorage as offline simulation / backup
+  const offlineLogs = JSON.parse(localStorage.getItem('avanika_simulated_traffic') || '[]');
+  offlineLogs.push({
+    ...logData,
+    created_at: new Date().toISOString()
+  });
+  // Keep size capped to prevent local storage bloat
+  if (offlineLogs.length > 2000) {
+    offlineLogs.shift();
+  }
+  localStorage.setItem('avanika_simulated_traffic', JSON.stringify(offlineLogs));
+}
+
+// Make traffic logger globally accessible
+window.logTrafficEvent = logTrafficEvent;
+
+// Trigger page view event on load
+logTrafficEvent('page_view');
+
 // ===== DYNAMIC CATALOG DATA FETCH & SYNC =====
 async function loadDynamicProducts() {
   let dbProducts = [];
@@ -1113,10 +1187,13 @@ async function loadDynamicProducts() {
 
   // Populate dynamic database records
   dbProducts.forEach(prod => {
+    const rawPrice = parseFloat(prod.gemstone_cost || 0) + parseFloat(prod.base_price_making || 300);
+    const rawCompare = prod.compare_at_price ? parseFloat(prod.compare_at_price) : Math.round(rawPrice * 1.6);
     allProductsDatabase[prod.id] = {
       id: prod.id,
       name: prod.name,
-      price: "₹300",
+      price: "₹" + rawPrice.toFixed(0),
+      compare_at_price: "₹" + rawCompare.toFixed(0),
       image: prod.image,
       category: prod.category,
       gallery: prod.gallery || [prod.image],
@@ -1176,7 +1253,7 @@ function renderHomepageCategory(categoryName) {
             <span class="rating-count">(${Math.floor(40 + Math.random() * 60)})</span>
           </div>
           <div class="product-price-row">
-            <span class="product-price">${prod.price || "₹300"} <span style="font-size:0.8rem; color:var(--cream-muted); text-decoration:line-through; font-weight:normal; margin-left:5px;">₹500</span></span>
+            <span class="product-price">${prod.price || "₹300"} <span style="font-size:0.8rem; color:var(--cream-muted); text-decoration:line-through; font-weight:normal; margin-left:5px;">${prod.compare_at_price || "₹500"}</span></span>
             <button class="add-to-cart">View</button>
           </div>
         </div>
@@ -1281,23 +1358,24 @@ function initCategorySelector() {
 }
 
   // Handle coming soon notify form submit
-  if (csNotifyForm) {
-    csNotifyForm.addEventListener('submit', (e) => {
+  const csNotifyFormGlobal = document.getElementById('csNotifyForm');
+  const csNotifySuccessGlobal = document.getElementById('csNotifySuccess');
+  if (csNotifyFormGlobal) {
+    csNotifyFormGlobal.addEventListener('submit', (e) => {
       e.preventDefault();
       const email = document.getElementById('csEmailInput').value.trim();
       if (!email) return;
       
       // Simulate API call success
-      if (csNotifyForm) csNotifyForm.style.display = 'none';
-      if (csNotifySuccess) csNotifySuccess.style.display = 'block';
+      if (csNotifyFormGlobal) csNotifyFormGlobal.style.display = 'none';
+      if (csNotifySuccessGlobal) csNotifySuccessGlobal.style.display = 'block';
       
-      gsap.fromTo(csNotifySuccess,
+      gsap.fromTo(csNotifySuccessGlobal,
         { scale: 0.8, opacity: 0 },
         { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2)' }
       );
     });
   }
-}
 
 // =========================================================================
 // ===== ADDITIONAL PRD WIDGETS LOGIC (WISHLIST, SEARCH, TOASTS, STICKY CART) =====
@@ -1753,7 +1831,7 @@ function openQuickViewModal(productId) {
   }
   
   if (qvPriceDiscounted) qvPriceDiscounted.textContent = product.price || "₹300";
-  if (qvPriceOriginal) qvPriceOriginal.textContent = "₹500";
+  if (qvPriceOriginal) qvPriceOriginal.textContent = product.compare_at_price || "₹500";
   
   if (qvQtyInput) qvQtyInput.value = 1;
 

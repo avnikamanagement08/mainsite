@@ -247,3 +247,22 @@ CREATE POLICY "Allow public select access to circle_subscribers" ON public.circl
 CREATE POLICY "Allow admin update access to circle_subscribers" ON public.circle_subscribers FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Allow admin delete access to circle_subscribers" ON public.circle_subscribers FOR DELETE TO authenticated USING (true);
 
+
+-- 15. CREATE TRAFFIC LOGS TABLE FOR REAL TRAFFIC INSIGHTS
+CREATE TABLE IF NOT EXISTS public.traffic_logs (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    page_path TEXT NOT NULL,
+    referrer TEXT,
+    device_type TEXT NOT NULL, -- 'mobile', 'desktop', 'tablet'
+    session_id TEXT NOT NULL,
+    event_name TEXT DEFAULT 'page_view' NOT NULL, -- 'page_view', 'view_pdp', 'add_to_cart', 'checkout_start', 'purchase'
+    created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE public.traffic_logs ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow public insert access to traffic_logs" ON public.traffic_logs FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow public select access to traffic_logs" ON public.traffic_logs FOR SELECT USING (true);
+CREATE POLICY "Allow admin delete access to traffic_logs" ON public.traffic_logs FOR DELETE TO authenticated USING (true);
+
+
