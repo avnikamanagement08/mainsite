@@ -197,7 +197,7 @@ em {
 }
 
 .navbar.scrolled {
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(10, 22, 17, 0.96) !important;
   backdrop-filter: blur(20px);
   box-shadow: 0 1px 0 rgba(223, 183, 108, 0.15);
 }
@@ -1349,12 +1349,12 @@ em {
   transition: border-color var(--transition);
 }
 
-.form-input::placeholder { color: rgba(200, 191, 176, 0.4); }
+.form-input::placeholder { color: rgba(242, 239, 232, 0.55) !important; }
 .form-input:focus { border-color: var(--gold); }
 
 .form-privacy {
   font-size: 0.72rem;
-  color: rgba(200, 191, 176, 0.4);
+  color: rgba(242, 239, 232, 0.65) !important;
   text-align: center;
   letter-spacing: 0.05em;
 }
@@ -2982,6 +2982,10 @@ em {
   font-size: 0.88rem;
   border-radius: var(--btn-radius);
   transition: border-color 0.3s ease;
+}
+
+.form-group input::placeholder, .form-group textarea::placeholder {
+  color: rgba(242, 239, 232, 0.55) !important;
 }
 
 .form-group input:focus, .form-group textarea:focus {
