@@ -447,6 +447,7 @@ function mountDashboard() {
         <div class="dashboard-pane" id="tab-traffic" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
             <h3 style="font-family: var(--font-serif); font-size: 1.3rem; color: var(--cream); font-weight: 500;">Website Traffic & Conversion Analysis</h3>
+            <button id="btnClearTraffic" style="padding: 0.5rem 1.2rem; background: #c94c4c; border: none; color: #fff; font-size: 0.8rem; font-weight: bold; cursor: pointer;">Clear Logs</button>
           </div>
 
           <div class="analytics-flex" style="display: flex; gap: 2rem; flex-wrap: wrap;">
@@ -1253,27 +1254,53 @@ async function fetchTrafficLogs() {
         .order('created_at', { ascending: false });
       
       if (error) throw error;
-      if (data && data.length > 0) {
-        trafficLogs = data;
-      }
+      trafficLogs = data || [];
+      updateTrafficMetrics();
+      drawTrafficCharts();
+      return; // Stop here, do NOT fall back to seeded logs if Supabase is connected!
     } catch (e) {
       console.error('Error fetching live traffic logs:', e);
     }
   }
 
   // Load from localStorage if Supabase is offline or returned empty list
-  if (!trafficLogs || trafficLogs.length === 0) {
-    const cached = localStorage.getItem('avanika_simulated_traffic');
-    if (cached) {
-      trafficLogs = JSON.parse(cached);
-    } else {
-      trafficLogs = seedSimulatedTrafficLogs();
-      localStorage.setItem('avanika_simulated_traffic', JSON.stringify(trafficLogs));
-    }
+  const cached = localStorage.getItem('avanika_simulated_traffic');
+  if (cached) {
+    trafficLogs = JSON.parse(cached);
+  } else {
+    trafficLogs = seedSimulatedTrafficLogs();
+    localStorage.setItem('avanika_simulated_traffic', JSON.stringify(trafficLogs));
   }
 
   updateTrafficMetrics();
   drawTrafficCharts();
+}
+
+// Clear all traffic logs in Supabase (or localStorage fallback)
+async function clearTrafficLogs() {
+  if (confirm("Are you sure you want to delete all website traffic logs? This cannot be undone.")) {
+    if (window.isSupabaseConfigured && window.supabaseClient) {
+      try {
+        const { error } = await window.supabaseClient
+          .from('traffic_logs')
+          .delete()
+          .neq('session_id', 'none'); // Delete all rows where session_id is not 'none' (which is all rows)
+        if (error) throw error;
+      } catch (e) {
+        console.error('Error clearing Supabase traffic logs:', e);
+        alert('❌ Failed to clear database logs: ' + e.message);
+        return;
+      }
+    }
+    
+    // Always clear localStorage backup
+    localStorage.setItem('avanika_simulated_traffic', JSON.stringify([]));
+    trafficLogs = [];
+    
+    alert('⚡ Traffic logs cleared successfully!');
+    updateTrafficMetrics();
+    drawTrafficCharts();
+  }
 }
 
 // Draw Custom Dynamic SVG Charts based on real visitor logs
@@ -2072,6 +2099,12 @@ document.addEventListener('DOMContentLoaded', () => {
         btnEditUploadImage.disabled = false;
       }
     });
+  }
+
+  // 7b. Clear Traffic Logs button
+  const btnClearTraffic = document.getElementById('btnClearTraffic');
+  if (btnClearTraffic) {
+    btnClearTraffic.addEventListener('click', clearTrafficLogs);
   }
 
   // 7. Periodically check and update real active visitor count
