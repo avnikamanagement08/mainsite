@@ -486,10 +486,11 @@ function handleProductChange(productId) {
       const tryAtHome = document.getElementById('tryAtHomeCheckbox');
       if (tryAtHome) tryAtHome.checked = false;
 
-      loadReviewsFromDatabase();
+       loadReviewsFromDatabase();
       updatePDPPriceAndInventory();
       updatePDPTitle();
       renderProductGallery(product);
+      renderRelatedProducts(product);
       
       gsap.to('.active-product-detail', {
         opacity: 1,
@@ -703,6 +704,161 @@ async function uploadReviewImagesToStorage() {
   return urls;
 }
 
+// Catalog filters state
+let catalogSearchQuery = '';
+let catalogActiveCategory = 'all';
+let catalogSortOption = 'default';
+
+function renderSelectionCards() {
+  const container = document.getElementById('selectionCardsContainer');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  // Filter productsData
+  let filtered = Object.values(productsData);
+  
+  // 1. Search Query Filter
+  if (catalogSearchQuery.length > 0) {
+    filtered = filtered.filter(p => p.name.toLowerCase().includes(catalogSearchQuery) || p.description.toLowerCase().includes(catalogSearchQuery));
+  }
+  
+  // 2. Category Filter
+  if (catalogActiveCategory !== 'all') {
+    filtered = filtered.filter(p => p.category.toLowerCase() === catalogActiveCategory.toLowerCase());
+  }
+  
+  // 3. Sorting
+  if (catalogSortOption === 'price-asc') {
+    filtered.sort((a, b) => {
+      const priceA = a.gemstone_cost + a.base_price_making;
+      const priceB = b.gemstone_cost + b.base_price_making;
+      return priceA - priceB;
+    });
+  } else if (catalogSortOption === 'price-desc') {
+    filtered.sort((a, b) => {
+      const priceA = a.gemstone_cost + a.base_price_making;
+      const priceB = b.gemstone_cost + b.base_price_making;
+      return priceB - priceA;
+    });
+  }
+  
+  if (filtered.length === 0) {
+    container.innerHTML = `<p style="color: var(--cream-muted); text-align: center; padding: 2rem;">No items match your filters.</p>`;
+    return;
+  }
+  
+  filtered.forEach(p => {
+    const cardPrice = p.gemstone_cost + p.base_price_making;
+    const isActive = p.id === activeProduct;
+    
+    const cardDiv = document.createElement('div');
+    cardDiv.className = `selection-card ${isActive ? 'active' : ''}`;
+    cardDiv.setAttribute('data-product', p.id);
+    cardDiv.innerHTML = `
+      <div class="selection-img-wrap">
+        <img src="${p.image}" alt="${p.name}" class="selection-img" />
+      </div>
+      <div class="selection-details">
+        <h3 class="selection-name">${p.name}</h3>
+        <span class="selection-price">${formatPrice(cardPrice)}</span>
+      </div>
+    `;
+    
+    cardDiv.addEventListener('click', function() {
+      if (this.classList.contains('active')) return;
+      container.querySelectorAll('.selection-card').forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+      handleProductChange(p.id);
+    });
+    
+    container.appendChild(cardDiv);
+  });
+}
+
+function renderRelatedProducts(product) {
+  const grid = document.getElementById('relatedProductsGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  
+  const related = Object.values(productsData).filter(p => p.id !== product.id && p.category === product.category).slice(0, 3);
+  
+  // If not enough related in same category, fill with others
+  if (related.length < 3) {
+    const others = Object.values(productsData).filter(p => p.id !== product.id && !related.includes(p)).slice(0, 3 - related.length);
+    related.push(...others);
+  }
+  
+  related.forEach(item => {
+    const itemPrice = item.gemstone_cost + item.base_price_making;
+    const card = document.createElement('div');
+    card.style.cssText = `
+      background: var(--black-1);
+      border: 1px solid var(--black-4);
+      border-radius: var(--other-radius);
+      padding: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: border-color 0.2s;
+    `;
+    card.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 4px; margin-bottom: 0.6rem;" />
+      <h4 style="font-size: 0.78rem; font-weight: 500; color: var(--cream); height: 26px; overflow: hidden; margin-bottom: 0.3rem; line-height: 1.2;">${item.name}</h4>
+      <span style="font-size: 0.8rem; color: var(--gold); font-weight: 600;">${formatPrice(itemPrice)}</span>
+    `;
+    
+    card.addEventListener('mouseenter', () => card.style.borderColor = 'var(--gold)');
+    card.addEventListener('mouseleave', () => card.style.borderColor = 'var(--black-4)');
+    
+    card.addEventListener('click', () => {
+      // Select the product
+      const selectionContainer = document.getElementById('selectionCardsContainer');
+      if (selectionContainer) {
+        selectionContainer.querySelectorAll('.selection-card').forEach(c => {
+          if (c.getAttribute('data-product') === item.id) {
+            c.classList.add('active');
+          } else {
+            c.classList.remove('active');
+          }
+        });
+      }
+      handleProductChange(item.id);
+    });
+    grid.appendChild(card);
+  });
+}
+
+function initPincodeChecker() {
+  const pincodeInput = document.getElementById('pincodeInput');
+  const pincodeCheckBtn = document.getElementById('pincodeCheckBtn');
+  const pincodeFeedback = document.getElementById('pincodeFeedback');
+  
+  if (!pincodeInput || !pincodeCheckBtn || !pincodeFeedback) return;
+  
+  pincodeCheckBtn.addEventListener('click', () => {
+    const pin = pincodeInput.value.trim();
+    if (pin.length !== 6 || isNaN(pin)) {
+      pincodeFeedback.textContent = '❌ Please enter a valid 6-digit Pincode.';
+      pincodeFeedback.style.color = '#c94c4c';
+      pincodeFeedback.style.display = 'block';
+      return;
+    }
+    
+    // Serviceable pincodes: simulating pan-India delivery
+    const deliveryDays = 3 + Math.floor(Math.random() * 4); // 3 to 6 days
+    const estDate = new Date();
+    estDate.setDate(estDate.getDate() + deliveryDays);
+    const dateStr = estDate.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short' });
+    
+    pincodeFeedback.innerHTML = `✅ Serviceable! Estimated delivery by <strong>${dateStr}</strong> (COD & Prepaid available)`;
+    pincodeFeedback.style.color = '#2a9d8f';
+    pincodeFeedback.style.display = 'block';
+  });
+}
+
 // Document Ready Initialization
 document.addEventListener('DOMContentLoaded', async () => {
   initVariantInventory();
@@ -715,14 +871,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const prodParam = params.get('product');
   if (prodParam && productsData[prodParam]) {
     activeProduct = prodParam;
-    // Update active selection cards in UI
-    document.querySelectorAll('.selection-card').forEach(c => {
-      if (c.getAttribute('data-product') === activeProduct) {
-        c.classList.add('active');
-      } else {
-        c.classList.remove('active');
-      }
-    });
+    
     // Size group is only visible for rings
     const sizeGroup = document.getElementById('sizeGroup');
     if (sizeGroup) {
@@ -839,16 +988,50 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // 8. Product list selection cards trigger
-  document.querySelectorAll('.selection-card').forEach(card => {
-    card.addEventListener('click', function() {
-      if (this.classList.contains('active')) return;
-      document.querySelectorAll('.selection-card').forEach(c => c.classList.remove('active'));
+  // 8. Dynamic Product selection list filters & rendering
+  const catalogSearch = document.getElementById('catalogSearch');
+  const catalogSort = document.getElementById('catalogSort');
+  const catFilterBtns = document.querySelectorAll('.cat-filter-btn');
+
+  if (catalogSearch) {
+    catalogSearch.addEventListener('input', (e) => {
+      catalogSearchQuery = e.target.value.trim().toLowerCase();
+      renderSelectionCards();
+    });
+  }
+
+  if (catalogSort) {
+    catalogSort.addEventListener('change', (e) => {
+      catalogSortOption = e.target.value;
+      renderSelectionCards();
+    });
+  }
+
+  catFilterBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      catFilterBtns.forEach(b => {
+        b.classList.remove('active');
+        b.style.borderColor = 'var(--black-4)';
+        b.style.color = 'var(--cream-muted)';
+        b.style.background = 'var(--black-1)';
+      });
       this.classList.add('active');
-      const prodId = this.getAttribute('data-product');
-      handleProductChange(prodId);
+      this.style.borderColor = 'var(--gold)';
+      this.style.color = 'var(--gold)';
+      
+      catalogActiveCategory = this.getAttribute('data-category');
+      renderSelectionCards();
     });
   });
+
+  // Render selection cards initially
+  renderSelectionCards();
+
+  // Render related products initially
+  renderRelatedProducts(productsData[activeProduct]);
+
+  // Initialize Pincode Checker
+  initPincodeChecker();
 
   // 9. Add to cart CTA click
   const addToCartBtn = document.getElementById('detailAddToCartBtn');

@@ -6,6 +6,10 @@
   <title>AVANIKA.CO — Our Collection | Premium Artificial Jewelry</title>
   <meta name="description" content="Browse Avanika.co's premium collection of artificial rings, necklaces, bracelets, and earrings. Plated in yellow gold and platinum finishes, perfect for special occasions." />
   <link rel="canonical" href="http://localhost:3000/collection.html" />
+  <meta property="og:title" content="AVANIKA.CO — Our Collection | Premium Artificial Jewelry" />
+  <meta property="og:description" content="Browse Avanika.co's premium collection of anti-tarnish rings, necklaces, bracelets, and earrings. Plated in yellow gold and platinum finishes." />
+  <meta property="og:image" content="http://localhost:3000/images/logo.png" />
+  <meta property="og:url" content="http://localhost:3000/collection.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -615,64 +619,26 @@
       <div class="product-selection-list">
         <h1 class="section-tag" style="margin-bottom: 1.5rem; text-align: left; justify-content: flex-start; padding-left: 0; font-size: inherit; font-weight: inherit; color: inherit; text-transform: inherit;">Our Premium Collection</h1>
         
-        <div class="selection-card active" data-product="p1">
-          <div class="selection-img-wrap">
-            <img src="images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.35 PM.jpeg" alt="Meera Anti-Tarnish Kundan Chandbalis" class="selection-img" />
+        <!-- Filter controls -->
+        <div class="catalog-filter-bar" style="margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; background: var(--black-2); padding: 1.2rem; border: 1px solid var(--black-4); border-radius: var(--other-radius);">
+          <div style="display: flex; gap: 0.8rem; width: 100%;">
+            <input type="text" id="catalogSearch" placeholder="Search products..." style="flex: 1; padding: 0.6rem 1rem; background: var(--black-1); border: 1px solid var(--black-4); color: var(--cream); font-family: inherit; font-size: 0.85rem; border-radius: var(--btn-radius);" />
+            <select id="catalogSort" style="padding: 0.6rem 1rem; background: var(--black-1); border: 1px solid var(--black-4); color: var(--cream); font-family: inherit; font-size: 0.85rem; border-radius: var(--btn-radius); cursor: pointer;">
+              <option value="default">Sort by: Featured</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+            </select>
           </div>
-          <div class="selection-details">
-            <h3 class="selection-name">Meera Kundan Chandbalis</h3>
-            <span class="selection-price">₹1,899.00</span>
-          </div>
-        </div>
-
-        <div class="selection-card" data-product="p2">
-          <div class="selection-img-wrap">
-            <img src="images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.03 AM.jpeg" alt="Aura Celestial Gold Plated Hoops" class="selection-img" />
-          </div>
-          <div class="selection-details">
-            <h3 class="selection-name">Aura Celestial Hoops</h3>
-            <span class="selection-price">₹1,299.00</span>
+          <div class="catalog-categories" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="cat-filter-btn active" data-category="all" style="padding: 0.4rem 0.8rem; background: var(--black-1); border: 1px solid var(--gold); color: var(--gold); border-radius: var(--btn-radius); font-size: 0.78rem; cursor: pointer; transition: all 0.2s;">All</button>
+            <button class="cat-filter-btn" data-category="Earrings" style="padding: 0.4rem 0.8rem; background: var(--black-1); border: 1px solid var(--black-4); color: var(--cream-muted); border-radius: var(--btn-radius); font-size: 0.78rem; cursor: pointer; transition: all 0.2s;">Earrings</button>
+            <button class="cat-filter-btn" data-category="Bracelets" style="padding: 0.4rem 0.8rem; background: var(--black-1); border: 1px solid var(--black-4); color: var(--cream-muted); border-radius: var(--btn-radius); font-size: 0.78rem; cursor: pointer; transition: all 0.2s;">Bracelets</button>
+            <button class="cat-filter-btn" data-category="Rings" style="padding: 0.4rem 0.8rem; background: var(--black-1); border: 1px solid var(--black-4); color: var(--cream-muted); border-radius: var(--btn-radius); font-size: 0.78rem; cursor: pointer; transition: all 0.2s;">Rings</button>
           </div>
         </div>
-
-        <div class="selection-card" data-product="p3">
-          <div class="selection-img-wrap">
-            <img src="images/earrings/3/WhatsApp Image 2026-06-12 at 10.52.55 AM.jpeg" alt="Ziya Simulated Emerald Drop Jhumkas" class="selection-img" />
-          </div>
-          <div class="selection-details">
-            <h3 class="selection-name">Ziya Emerald Jhumkas</h3>
-            <span class="selection-price">₹1,699.00</span>
-          </div>
-        </div>
-
-        <div class="selection-card" data-product="p4">
-          <div class="selection-img-wrap">
-            <img src="images/earrings/4/WhatsApp Image 2026-06-12 at 2.19.55 PM.jpeg" alt="Avni Royal Kundan Pearl Drops" class="selection-img" />
-          </div>
-          <div class="selection-details">
-            <h3 class="selection-name">Avni Royal Kundan Drops</h3>
-            <span class="selection-price">₹1,499.00</span>
-          </div>
-        </div>
-
-        <div class="selection-card" data-product="p5">
-          <div class="selection-img-wrap">
-            <img src="images/earrings/5/WhatsApp Image 2026-06-12 at 2.25.32 PM.jpeg" alt="Lumina Premium CZ Solitaire Studs" class="selection-img" />
-          </div>
-          <div class="selection-details">
-            <h3 class="selection-name">Lumina Solitaire Studs</h3>
-            <span class="selection-price">₹999.00</span>
-          </div>
-        </div>
-
-        <div class="selection-card" data-product="p6">
-          <div class="selection-img-wrap">
-            <img src="images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg" alt="Tara Rose Gold Starburst Dangles" class="selection-img" />
-          </div>
-          <div class="selection-details">
-            <h3 class="selection-name">Tara Starburst Dangles</h3>
-            <span class="selection-price">₹1,599.00</span>
-          </div>
+        
+        <div id="selectionCardsContainer" style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <!-- Dynamic selection cards injected here by collection.js -->
         </div>
       </div>
 
@@ -769,6 +735,16 @@
 
         </div>
         
+        <!-- Pincode Delivery Checker -->
+        <div class="pincode-checker" style="margin-bottom: 1.5rem; background: var(--black-1); padding: 1.2rem; border: 1px solid var(--black-4); border-radius: var(--other-radius);">
+          <label style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cream-muted); font-weight: 600; display: block; margin-bottom: 0.5rem;">Check Delivery Serviceability</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" id="pincodeInput" placeholder="Enter 6-digit Pincode" maxlength="6" style="flex: 1; padding: 0.6rem 1rem; background: var(--black-2); border: 1px solid var(--black-4); color: var(--cream); font-family: inherit; font-size: 0.85rem; border-radius: var(--btn-radius); outline: none;" />
+            <button type="button" id="pincodeCheckBtn" style="padding: 0.6rem 1.2rem; background: var(--gold); color: #000; border: none; font-weight: 600; font-size: 0.82rem; border-radius: var(--btn-radius); cursor: pointer;">Check</button>
+          </div>
+          <p id="pincodeFeedback" style="font-size: 0.78rem; margin-top: 0.5rem; display: none;"></p>
+        </div>
+        
         <button class="btn-primary full-width" id="detailAddToCartBtn">
           <span>Add to Cart</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -831,6 +807,15 @@
             </form>
           </div>
         </div>
+        
+        <!-- Related Products Section -->
+        <div class="related-products" style="margin-top: 3.5rem; border-top: 1px solid var(--black-4); padding-top: 3rem;">
+          <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--cream); margin-bottom: 1.5rem;">Related Products</h3>
+          <div id="relatedProductsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1.2rem;">
+            <!-- Dynamically loaded related products -->
+          </div>
+        </div>
+
       </div>
     </div>
 

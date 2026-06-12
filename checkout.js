@@ -822,35 +822,80 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalTax = checkoutCart.reduce((sum, item) => sum + calculateGST(item), 0);
         const payableINR = Math.max(0, subtotal + deliveryCharge + totalTax - prepaidDiscount - couponDiscountAmount);
 
-        // Generate dynamic UPI pay URI
-        const upiUrl = `upi://pay?pa=9315125305@ybl&pn=Avanika.co&am=${payableINR.toFixed(2)}&cu=INR&tn=${encodeURIComponent('Order ' + orderId)}`;
-
-        // Set mobile VPA deep link href
-        const gatewayUPILink = document.getElementById('gatewayUPILink');
-        if (gatewayUPILink) {
-          gatewayUPILink.href = upiUrl;
-        }
-
-        // Fetch dynamic QR code image from secure API
-        const gatewayQRCode = document.getElementById('gatewayQRCode');
-        if (gatewayQRCode) {
-          gatewayQRCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=${encodeURIComponent(upiUrl)}`;
-        }
-
-        // Update gateway overlay values
-        document.getElementById('gatewayRef').textContent = `TXN-${Math.floor(100000 + Math.random() * 900000)}`;
-        document.getElementById('gatewayAmount').textContent = formatPrice(payableINR);
+        // Fetch customer details
+        const customerName = document.getElementById('shipName')?.value || 'Guest Customer';
+        const customerPhone = document.getElementById('shipPhone')?.value || '9876543210';
         
-        gatewayOverlay.style.display = 'flex';
-        gsap.fromTo(gatewayOverlay.querySelector('.checkout-success-card'),
-          { scale: 0.8, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.5)' }
-        );
+        // Define Razorpay options
+        const options = {
+          key: 'rzp_test_AVNIKA2026', // Public test key for Avanika
+          amount: Math.round(payableINR * 100), // amount in paise
+          currency: 'INR',
+          name: 'AVANIKA.CO',
+          description: 'Secure Checkout Payment',
+          image: 'images/logo.png',
+          handler: function(response) {
+            console.log('Razorpay checkout success:', response);
+            submitOrderRecord(orderId);
+          },
+          prefill: {
+            name: customerName,
+            contact: customerPhone
+          },
+          theme: {
+            color: '#DFB76C' // Avanika gold color
+          },
+          modal: {
+            ondismiss: function() {
+              console.log('Razorpay modal dismissed. Initiating local UPI QR code gateway fallback.');
+              showUPIQRCodeFallback(orderId, payableINR);
+            }
+          }
+        };
+
+        try {
+          const rzp = new Razorpay(options);
+          rzp.open();
+        } catch (err) {
+          console.warn('Razorpay SDK failed to open. Falling back to local UPI QR code overlay:', err);
+          showUPIQRCodeFallback(orderId, payableINR);
+        }
       } else {
         // Cash on delivery: submit order directly
         submitOrderRecord(orderId);
       }
     });
+  }
+
+  // Local UPI QR Code fallback display function
+  function showUPIQRCodeFallback(orderId, payableINR) {
+    const gatewayOverlay = document.getElementById('paymentGatewayOverlay');
+    if (!gatewayOverlay) return;
+    
+    // Generate dynamic UPI pay URI
+    const upiUrl = `upi://pay?pa=9315125305@ybl&pn=Avanika.co&am=${payableINR.toFixed(2)}&cu=INR&tn=${encodeURIComponent('Order ' + orderId)}`;
+
+    // Set mobile VPA deep link href
+    const gatewayUPILink = document.getElementById('gatewayUPILink');
+    if (gatewayUPILink) {
+      gatewayUPILink.href = upiUrl;
+    }
+
+    // Fetch dynamic QR code image from secure API
+    const gatewayQRCode = document.getElementById('gatewayQRCode');
+    if (gatewayQRCode) {
+      gatewayQRCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&data=${encodeURIComponent(upiUrl)}`;
+    }
+
+    // Update gateway overlay values
+    document.getElementById('gatewayRef').textContent = `TXN-${Math.floor(100000 + Math.random() * 900000)}`;
+    document.getElementById('gatewayAmount').textContent = formatPrice(payableINR);
+    
+    gatewayOverlay.style.display = 'flex';
+    gsap.fromTo(gatewayOverlay.querySelector('.checkout-success-card'),
+      { scale: 0.8, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.5)' }
+    );
   }
 
   // Gateway buttons

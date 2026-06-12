@@ -925,11 +925,27 @@ document.querySelectorAll('.product-card').forEach(card => {
   }
 });
 
-// Bind search and wishlist button alerts in navbar
+// Bind search and wishlist button in navbar
 const searchBtn = document.getElementById('searchBtn');
-if (searchBtn) {
-  searchBtn.addEventListener('click', () => {
-    alert('Search functionality coming soon!');
+const searchOverlay = document.getElementById('searchOverlay');
+const searchOverlayCloseBtn = document.getElementById('searchOverlayCloseBtn');
+const searchInput = document.getElementById('searchInput');
+
+if (searchBtn && searchOverlay) {
+  searchBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    searchOverlay.style.display = 'flex';
+    setTimeout(() => searchOverlay.classList.add('active'), 50);
+    if (searchInput) searchInput.focus();
+    document.body.style.overflow = 'hidden';
+  });
+}
+
+if (searchOverlayCloseBtn && searchOverlay) {
+  searchOverlayCloseBtn.addEventListener('click', () => {
+    searchOverlay.classList.remove('active');
+    setTimeout(() => searchOverlay.style.display = 'none', 300);
+    document.body.style.overflow = '';
   });
 }
 
@@ -1159,4 +1175,362 @@ function initCategoriesDrag() {
     slider.scrollLeft = scrollLeft - walk;
   });
 }
+
+// =========================================================================
+// ===== ADDITIONAL PRD WIDGETS LOGIC (WISHLIST, SEARCH, TOASTS, STICKY CART) =====
+// =========================================================================
+
+// 1. UNIFIED PRODUCTS DATABASE FOR INTERACTION
+const allProductsDatabase = {
+  "ox-1": { id: "ox-1", name: "Our Ananya Jhumka", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1778940158923.jpg", category: "Oxidised Earrings" },
+  "ox-2": { id: "ox-2", name: "Our Kunali Jhumka", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1776255880782.webp", category: "Oxidised Earrings" },
+  "ox-3": { id: "ox-3", name: "Our Ruchika Jhumka", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1778940294675.jpg", category: "Oxidised Earrings" },
+  "ox-4": { id: "ox-4", name: "Our Ishika Jhumka", price: "₹1,350", image: "https://d28arj6mdig261.cloudfront.net/1780760676941.jpg", category: "Oxidised Earrings" },
+  "ke-1": { id: "ke-1", name: "Our Amrita Kashmiri Earring", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1771151964558.jpg", category: "Kashmiri Earrings" },
+  "ke-2": { id: "ke-2", name: "Our Suhani Kashmiri Earring", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1775718594147.jpg", category: "Kashmiri Earrings" },
+  "ke-3": { id: "ke-3", name: "Our Parvati Kashmiri Earring", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1771152261787.jpg", category: "Kashmiri Earrings" },
+  "ke-4": { id: "ke-4", name: "Our Ravina Kashmiri Earring", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1765877669633.jpeg", category: "Kashmiri Earrings" },
+  "tb-1": { id: "tb-1", name: "Our Rouya Tulip Bracelet", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1778324652013.jpg", category: "Tulip Bracelet" },
+  "tb-2": { id: "tb-2", name: "Our Deniz Tulip Bracelet", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1777533294853.jpg", category: "Tulip Bracelet" },
+  "tb-3": { id: "tb-3", name: "Our Eris Tulip Bracelet", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1776675446491.jpg", category: "Tulip Bracelet" },
+  "tb-4": { id: "tb-4", name: "Our Arfia Tulip Bracelet", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1776675758519.jpg", category: "Tulip Bracelet" },
+  "atc-1": { id: "atc-1", name: "Love Multi-layer Star Anklet", price: "₹199", image: "https://d28arj6mdig261.cloudfront.net/1778328000857.jpg", category: "Anti-Tarnish Chains" },
+  "atc-2": { id: "atc-2", name: "Double Layer Heart Choker", price: "₹249", image: "https://d28arj6mdig261.cloudfront.net/1770298539595.jpg", category: "Anti-Tarnish Chains" },
+  "atc-3": { id: "atc-3", name: "Classic Link Chain Necklace", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1770298569027.jpg", category: "Anti-Tarnish Chains" },
+  "atc-4": { id: "atc-4", name: "Delicate Diamond Ring Chain", price: "₹299", image: "https://d28arj6mdig261.cloudfront.net/1770298514550.jpg", category: "Anti-Tarnish Chains" },
+  "p1": { id: "p1", name: "Meera Anti-Tarnish Kundan Chandbalis", price: "₹1,899", image: "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.35 PM.jpeg", category: "Earrings" },
+  "p2": { id: "p2", name: "Aura Celestial Gold Plated Hoops", price: "₹1,299", image: "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.03 AM.jpeg", category: "Earrings" },
+  "p3": { id: "p3", name: "Ziya Simulated Emerald Drop Jhumkas", price: "₹1,699", image: "images/earrings/3/WhatsApp Image 2026-06-12 at 10.52.55 AM.jpeg", category: "Earrings" },
+  "p4": { id: "p4", name: "Avni Royal Kundan Pearl Drops", price: "₹1,499", image: "images/earrings/4/WhatsApp Image 2026-06-12 at 2.19.55 PM.jpeg", category: "Earrings" },
+  "p5": { id: "p5", name: "Lumina Premium CZ Solitaire Studs", price: "₹999", image: "images/earrings/5/WhatsApp Image 2026-06-12 at 2.25.32 PM.jpeg", category: "Earrings" },
+  "p6": { id: "p6", name: "Tara Rose Gold Starburst Dangles", price: "₹1,599", image: "images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg", category: "Earrings" }
+};
+
+// 2. SEARCH LOGIC
+const searchInputEl = document.getElementById('searchInput');
+const searchClearBtn = document.getElementById('searchClearBtn');
+const searchResultsEl = document.getElementById('searchResults');
+const suggestionTags = document.querySelectorAll('.suggestion-tags .tag-pill');
+
+if (searchInputEl) {
+  searchInputEl.addEventListener('input', (e) => {
+    const val = e.target.value.trim().toLowerCase();
+    if (val.length > 0) {
+      if (searchClearBtn) searchClearBtn.style.display = 'block';
+      performSearch(val);
+    } else {
+      if (searchClearBtn) searchClearBtn.style.display = 'none';
+      if (searchResultsEl) searchResultsEl.innerHTML = '';
+    }
+  });
+}
+
+if (searchClearBtn) {
+  searchClearBtn.addEventListener('click', () => {
+    if (searchInputEl) {
+      searchInputEl.value = '';
+      searchInputEl.focus();
+    }
+    searchClearBtn.style.display = 'none';
+    if (searchResultsEl) searchResultsEl.innerHTML = '';
+  });
+}
+
+suggestionTags.forEach(tag => {
+  tag.addEventListener('click', () => {
+    const term = tag.textContent.trim();
+    if (searchInputEl) {
+      searchInputEl.value = term;
+      if (searchClearBtn) searchClearBtn.style.display = 'block';
+      performSearch(term.toLowerCase());
+    }
+  });
+});
+
+function performSearch(query) {
+  if (!searchResultsEl) return;
+  searchResultsEl.innerHTML = '';
+  
+  const matches = [];
+  for (const id in allProductsDatabase) {
+    const prod = allProductsDatabase[id];
+    if (prod.name.toLowerCase().includes(query) || prod.category.toLowerCase().includes(query)) {
+      matches.push(prod);
+    }
+  }
+  
+  if (matches.length === 0) {
+    searchResultsEl.innerHTML = `<p style="color: var(--cream-muted); text-align: center; padding: 2rem;">No items found matching "${query}"</p>`;
+    return;
+  }
+  
+  matches.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'search-item';
+    div.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" class="search-item-img" />
+      <div class="search-item-info">
+        <h4>${item.name}</h4>
+        <span>${item.price}</span>
+      </div>
+    `;
+    div.addEventListener('click', () => {
+      window.open(`collection.html?product=${item.id}`, '_blank');
+    });
+    searchResultsEl.appendChild(div);
+  });
+}
+
+// 3. WISHLIST SYSTEM
+let wishlist = JSON.parse(localStorage.getItem('avanika_wishlist') || '[]');
+
+const wishlistToggleBtn = document.getElementById('wishlistToggleBtn');
+const wishlistDrawer = document.getElementById('wishlistDrawer');
+const wishlistDrawerOverlay = document.getElementById('wishlistDrawerOverlay');
+const wishlistCloseBtn = document.getElementById('wishlistCloseBtn');
+const wishlistCountEl = document.getElementById('wishlistCount');
+const wishlistBadgeEl = document.getElementById('wishlistBadge');
+const wishlistItemsEl = document.getElementById('wishlistItems');
+const wishlistEmptyMsg = document.getElementById('wishlistEmptyMessage');
+const wishlistStartShoppingBtn = document.getElementById('wishlistStartShoppingBtn');
+
+function saveWishlist() {
+  localStorage.setItem('avanika_wishlist', JSON.stringify(wishlist));
+  updateWishlistUI();
+}
+
+function toggleWishlistItem(productId) {
+  const idx = wishlist.indexOf(productId);
+  if (idx > -1) {
+    wishlist.splice(idx, 1);
+  } else {
+    wishlist.push(productId);
+  }
+  saveWishlist();
+  syncWishlistButtons();
+}
+
+function syncWishlistButtons() {
+  document.querySelectorAll('.product-btn.wishlist').forEach(btn => {
+    const card = btn.closest('.product-card');
+    const productId = btn.dataset.id || (card ? card.id : null);
+    if (!productId) return;
+    
+    const svg = btn.querySelector('svg');
+    if (wishlist.includes(productId)) {
+      btn.classList.add('liked');
+      if (svg) {
+        svg.style.fill = '#DFB76C';
+        svg.style.stroke = '#DFB76C';
+      }
+    } else {
+      btn.classList.remove('liked');
+      if (svg) {
+        svg.style.fill = 'none';
+        svg.style.stroke = 'currentColor';
+      }
+    }
+  });
+}
+
+function updateWishlistUI() {
+  const count = wishlist.length;
+  if (wishlistCountEl) wishlistCountEl.textContent = count;
+  if (wishlistBadgeEl) wishlistBadgeEl.textContent = count;
+  
+  if (!wishlistItemsEl) return;
+  
+  // Clear list but keep empty message
+  const items = wishlistItemsEl.querySelectorAll('.wishlist-item');
+  items.forEach(i => i.remove());
+  
+  if (count === 0) {
+    if (wishlistEmptyMsg) wishlistEmptyMsg.style.display = 'block';
+    return;
+  }
+  
+  if (wishlistEmptyMsg) wishlistEmptyMsg.style.display = 'none';
+  
+  wishlist.forEach(productId => {
+    const item = allProductsDatabase[productId];
+    if (!item) return;
+    
+    const div = document.createElement('div');
+    div.className = 'wishlist-item';
+    div.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" class="wishlist-item-img" />
+      <div class="wishlist-item-details">
+        <h4 class="wishlist-item-name">${item.name}</h4>
+        <span class="wishlist-item-price">${item.price}</span>
+        <div class="wishlist-item-actions">
+          <button class="wishlist-btn-cart" data-id="${item.id}">Add to Cart</button>
+          <button class="wishlist-btn-remove" data-id="${item.id}">Remove</button>
+        </div>
+      </div>
+    `;
+    
+    // Bind Add to Cart from wishlist
+    div.querySelector('.wishlist-btn-cart').addEventListener('click', function(e) {
+      e.stopPropagation();
+      addToCart(item.id, item.name, item.price, item.image, item.category);
+      toggleWishlistItem(item.id); // Remove from wishlist once added to cart
+    });
+    
+    // Bind Remove from wishlist
+    div.querySelector('.wishlist-btn-remove').addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleWishlistItem(item.id);
+    });
+    
+    wishlistItemsEl.appendChild(div);
+  });
+}
+
+// Open / Close Wishlist
+if (wishlistToggleBtn && wishlistDrawer) {
+  wishlistToggleBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    wishlistDrawer.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+}
+
+if (wishlistCloseBtn && wishlistDrawer) {
+  wishlistCloseBtn.addEventListener('click', () => {
+    wishlistDrawer.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+}
+
+if (wishlistDrawerOverlay && wishlistDrawer) {
+  wishlistDrawerOverlay.addEventListener('click', () => {
+    wishlistDrawer.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+}
+
+if (wishlistStartShoppingBtn && wishlistDrawer) {
+  wishlistStartShoppingBtn.addEventListener('click', () => {
+    wishlistDrawer.classList.remove('active');
+    document.body.style.overflow = '';
+    window.location.hash = '#featured';
+  });
+}
+
+// Bind custom click to all product card wishlist buttons
+document.querySelectorAll('.product-btn.wishlist').forEach(btn => {
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    const card = this.closest('.product-card');
+    const productId = this.dataset.id || (card ? card.id : null);
+    if (productId) {
+      toggleWishlistItem(productId);
+    }
+  });
+});
+
+// Initialize Wishlist
+updateWishlistUI();
+syncWishlistButtons();
+
+// 4. SOCIAL PROOF (RECENT ORDERS TOAST)
+const socialProofPopup = document.getElementById('socialProofPopup');
+const spCustomerName = document.getElementById('spCustomerName');
+const spCustomerCity = document.getElementById('spCustomerCity');
+const spProductName = document.getElementById('spProductName');
+const spProductImg = document.getElementById('spProductImg');
+const spTimeAgo = document.getElementById('spTimeAgo');
+const spCloseBtn = document.getElementById('spCloseBtn');
+
+const mockPurchases = [
+  { name: "Simran", city: "Delhi", productId: "p1", time: "3 mins ago" },
+  { name: "Anjali", city: "Mumbai", productId: "p2", time: "12 mins ago" },
+  { name: "Priya", city: "Bangalore", productId: "p3", time: "8 mins ago" },
+  { name: "Meera", city: "Jaipur", productId: "ox-1", time: "18 mins ago" },
+  { name: "Kirti", city: "Pune", productId: "ox-3", time: "4 mins ago" },
+  { name: "Shreya", city: "Ahmedabad", productId: "tb-2", time: "22 mins ago" }
+];
+
+let purchaseIndex = 0;
+
+function showSocialProof() {
+  if (!socialProofPopup) return;
+  
+  const purchase = mockPurchases[purchaseIndex % mockPurchases.length];
+  const product = allProductsDatabase[purchase.productId];
+  
+  if (!product) return;
+  
+  if (spCustomerName) spCustomerName.textContent = purchase.name;
+  if (spCustomerCity) spCustomerCity.textContent = purchase.city;
+  if (spProductName) spProductName.textContent = product.name;
+  if (spProductImg) spProductImg.src = product.image;
+  if (spTimeAgo) spTimeAgo.textContent = purchase.time;
+  
+  socialProofPopup.classList.add('active');
+  
+  // Auto-hide after 5 seconds
+  setTimeout(() => {
+    socialProofPopup.classList.remove('active');
+  }, 5000);
+  
+  purchaseIndex++;
+}
+
+if (spCloseBtn) {
+  spCloseBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (socialProofPopup) socialProofPopup.classList.remove('active');
+  });
+}
+
+// Start social proof rotation
+setTimeout(showSocialProof, 8000); // 8s after load
+setInterval(showSocialProof, 22000); // Every 22s
+
+// 5. STICKY MOBILE CART BAR
+const stickyMobileCartBar = document.getElementById('stickyMobileCartBar');
+const stickyCartCount = document.getElementById('stickyCartCount');
+const stickyCartTotal = document.getElementById('stickyCartTotal');
+const stickyCheckoutBtn = document.getElementById('stickyCheckoutBtn');
+
+function updateStickyCartUI() {
+  if (!stickyMobileCartBar) return;
+  
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  
+  if (stickyCartCount) stickyCartCount.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''}`;
+  if (stickyCartTotal) stickyCartTotal.textContent = `₹${subtotal.toLocaleString()}`;
+  
+  // Only activate bar if cart is not empty, screen is mobile, and scrolled past hero
+  const isMobile = window.innerWidth <= 768;
+  const isScrolledPastHero = window.scrollY > 400;
+  
+  if (totalItems > 0 && isMobile && isScrolledPastHero) {
+    stickyMobileCartBar.classList.add('active');
+  } else {
+    stickyMobileCartBar.classList.remove('active');
+  }
+}
+
+if (stickyCheckoutBtn) {
+  stickyCheckoutBtn.addEventListener('click', () => {
+    window.location.href = 'checkout.html';
+  });
+}
+
+// Listen to scrolls and cart modifications
+window.addEventListener('scroll', updateStickyCartUI);
+window.addEventListener('resize', updateStickyCartUI);
+
+// Hook into existing cart update
+const originalUpdateCartUI = window.updateCartUI || updateCartUI;
+window.updateCartUI = function() {
+  if (typeof originalUpdateCartUI === 'function') {
+    originalUpdateCartUI();
+  }
+  updateStickyCartUI();
+};
+
 
