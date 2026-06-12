@@ -267,8 +267,12 @@ function mountDashboard() {
                   </select>
                 </div>
                 <div style="display:flex; flex-direction:column; gap:0.3rem;">
-                  <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Image Path / URL</label>
-                  <input type="text" id="prodImage" placeholder="e.g. images/earrings/1/pic.jpeg" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+                  <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Product Image</label>
+                  <div style="display:flex; gap:0.4rem; align-items:center;">
+                    <input type="text" id="prodImage" placeholder="Path, URL or Upload..." required style="flex:1; padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+                    <input type="file" id="prodImageFile" accept="image/*" style="display:none;" />
+                    <button type="button" id="btnUploadImage" style="padding: 0.5rem 0.8rem; background: var(--gold); border:none; color:#000; font-size:0.75rem; font-weight:bold; cursor:pointer; height:34px;">Upload</button>
+                  </div>
                 </div>
                 <div style="display:flex; flex-direction:column; gap:0.3rem;">
                   <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Making Charges (INR)</label>
@@ -510,8 +514,12 @@ function mountDashboard() {
             </select>
           </div>
           <div style="display:flex; flex-direction:column; gap:0.3rem;">
-            <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Image Path / URL</label>
-            <input type="text" id="editProdImage" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+            <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Product Image</label>
+            <div style="display:flex; gap:0.4rem; align-items:center;">
+              <input type="text" id="editProdImage" placeholder="Path, URL or Upload..." required style="flex:1; padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+              <input type="file" id="editProdImageFile" accept="image/*" style="display:none;" />
+              <button type="button" id="btnEditUploadImage" style="padding: 0.5rem 0.8rem; background: var(--gold); border:none; color:#000; font-size:0.75rem; font-weight:bold; cursor:pointer; height:34px;">Upload</button>
+            </div>
           </div>
           <div style="grid-column: span 2; display:flex; flex-direction:column; gap:0.3rem;">
             <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Description</label>
@@ -631,6 +639,37 @@ function seedSimulatedTrafficLogs() {
     }
   }
   return logs;
+}
+
+// Helper to upload image files to Supabase Storage (or fallback to base64 data URLs offline)
+async function uploadImageToBucket(file) {
+  if (window.isSupabaseConfigured && window.supabaseClient) {
+    const fileExt = file.name.split('.').pop() || 'png';
+    const fileName = `product_${Date.now()}_${Math.floor(Math.random() * 1000)}.${fileExt}`;
+    
+    const { data, error } = await window.supabaseClient.storage
+      .from('review-images')
+      .upload(fileName, file, { contentType: file.type });
+      
+    if (error) throw error;
+    
+    if (data) {
+      const { data: publicUrlData } = window.supabaseClient.storage
+        .from('review-images')
+        .getPublicUrl(fileName);
+      if (publicUrlData && publicUrlData.publicUrl) {
+        return publicUrlData.publicUrl;
+      }
+    }
+    throw new Error("Failed to retrieve public URL from Supabase storage.");
+  } else {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (err) => reject(err);
+      reader.readAsDataURL(file);
+    });
+  }
 }
 
 // Initialize simulated database data
@@ -1976,6 +2015,62 @@ document.addEventListener('DOMContentLoaded', () => {
     logoutBtn.addEventListener('click', () => {
       sessionStorage.removeItem('avanika_admin_token');
       window.location.href = 'index.html';
+    });
+  }
+
+  // 9. Image Upload handlers for Add Product
+  const btnUploadImage = document.getElementById('btnUploadImage');
+  const prodImageFile = document.getElementById('prodImageFile');
+  const prodImageInput = document.getElementById('prodImage');
+  
+  if (btnUploadImage && prodImageFile) {
+    btnUploadImage.addEventListener('click', () => prodImageFile.click());
+    prodImageFile.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      btnUploadImage.textContent = "Uploading...";
+      btnUploadImage.disabled = true;
+      
+      try {
+        const url = await uploadImageToBucket(file);
+        if (prodImageInput) prodImageInput.value = url;
+        btnUploadImage.textContent = "Uploaded!";
+      } catch (err) {
+        console.error('Image upload failed:', err);
+        alert('❌ Image upload failed: ' + err.message);
+        btnUploadImage.textContent = "Upload";
+      } finally {
+        btnUploadImage.disabled = false;
+      }
+    });
+  }
+
+  // 10. Image Upload handlers for Edit Product
+  const btnEditUploadImage = document.getElementById('btnEditUploadImage');
+  const editProdImageFile = document.getElementById('editProdImageFile');
+  const editProdImageInput = document.getElementById('editProdImage');
+  
+  if (btnEditUploadImage && editProdImageFile) {
+    btnEditUploadImage.addEventListener('click', () => editProdImageFile.click());
+    editProdImageFile.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      btnEditUploadImage.textContent = "Uploading...";
+      btnEditUploadImage.disabled = true;
+      
+      try {
+        const url = await uploadImageToBucket(file);
+        if (editProdImageInput) editProdImageInput.value = url;
+        btnEditUploadImage.textContent = "Uploaded!";
+      } catch (err) {
+        console.error('Image upload failed:', err);
+        alert('❌ Image upload failed: ' + err.message);
+        btnEditUploadImage.textContent = "Upload";
+      } finally {
+        btnEditUploadImage.disabled = false;
+      }
     });
   }
 
