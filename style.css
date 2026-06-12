@@ -30,24 +30,24 @@
 
 :root {
   --gold: #DFB76C; /* Brand Metallic Gold */
-  --gold-light: #EAD09E; /* Light Gold */
-  --gold-dark: #AC8B49; /* Rich Bronze/Dark Gold */
+  --gold-light: #F2E4C8; /* Soft Light Gold */
+  --gold-dark: #AC8B49; /* Dark Gold */
   --rose-gold: #DFB76C; 
   --rose-pink: #E8AFA8; /* Brand Accent Rose Pink */
   --white: #FFFFFF; /* High contrast white fallback */
-  --btn-radius: 9999px; /* Rounded pill buttons like Manvish */
-  --other-radius: 16px; /* Smooth rounded card corners like Manvish */
+  --btn-radius: 9999px; /* Rounded pill buttons */
+  --other-radius: 16px; /* Smooth rounded card corners */
 
-  /* Default Brand Theme Variables (Forest Green & Gold matching the logo) */
-  --section-bg: #0A1611; /* Deep Luxurious Forest Green */
-  --section-bg-alt: #050C08; /* Darker green-black */
-  --section-card-bg: #12241C; /* Dark green card background */
-  --section-border: #1D362B; /* Sage green border lines */
-  --section-text: #F2EFE8; /* Soft Ivory headings */
-  --section-text-muted: #B3C0B8; /* Muted sage-gray body text */
-  --section-btn-bg: var(--gold);
-  --section-btn-text: #0A1611;
-  --section-btn-bg-hover: #FFFFFF;
+  /* Luxurious Ivory & Gold Theme Variables (White Background, Forest Green Accents) */
+  --section-bg: #FCFBFA; /* Clean warm luxury white/ivory background */
+  --section-bg-alt: #F4F3F0; /* Soft ivory/gray alternate background */
+  --section-card-bg: #FFFFFF; /* Pure white card background */
+  --section-border: #E8E5DF; /* Soft gold-gray border */
+  --section-text: #0A1611; /* Deep luxurious forest green text from the brand logo */
+  --section-text-muted: #5E6D64; /* Muted sage-charcoal text */
+  --section-btn-bg: #0A1611; /* Deep forest green button */
+  --section-btn-text: #FFFFFF; /* White button text */
+  --section-btn-bg-hover: var(--gold); /* Gold on hover */
   --section-btn-text-hover: #0A1611;
 
   /* Map legacy variables to section theme tokens for automatic toggle */
@@ -220,9 +220,9 @@ em {
 }
 
 .navbar.scrolled {
-  background: rgba(10, 22, 17, 0.95) !important; /* Premium semi-transparent forest green */
+  background: rgba(252, 251, 250, 0.95) !important; /* Premium semi-transparent warm white */
   backdrop-filter: blur(20px);
-  box-shadow: 0 1px 10px rgba(10, 22, 17, 0.12);
+  box-shadow: 0 1px 10px rgba(10, 22, 17, 0.08);
 }
 
 .nav-container {
@@ -370,7 +370,7 @@ em {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 1rem 0;
-  border-bottom: 1px solid rgba(200, 191, 176, 0.3);
+  border-bottom: 1px solid var(--black-4);
   transition: color var(--transition), border-color var(--transition);
 }
 
@@ -1522,8 +1522,8 @@ em {
 
 .form-input {
   width: 100%;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(223, 183, 108, 0.15);
+  background: var(--black-1);
+  border: 1px solid var(--black-4);
   border-radius: 2px;
   padding: 1rem 1.2rem;
   font-family: var(--font-sans);
@@ -1533,20 +1533,20 @@ em {
   transition: border-color var(--transition);
 }
 
-.form-input::placeholder { color: rgba(242, 239, 232, 0.55) !important; }
+.form-input::placeholder { color: var(--cream-muted) !important; opacity: 0.6; }
 .form-input:focus { border-color: var(--gold); }
 
 .form-privacy {
   font-size: 0.72rem;
-  color: rgba(242, 239, 232, 0.65) !important;
+  color: var(--cream-muted) !important;
   text-align: center;
   letter-spacing: 0.05em;
 }
 
 /* ===== FOOTER ===== */
 .footer {
-  background: var(--black);
-  border-top: 1px solid rgba(223, 183, 108, 0.1);
+  background: var(--black-1); /* soft alternate background */
+  border-top: 1px solid var(--black-4);
 }
 
 .footer-container {
@@ -1580,7 +1580,7 @@ em {
 
 .footer-about {
   font-size: 0.88rem;
-  color: rgba(200, 191, 176, 0.5);
+  color: var(--cream-muted);
   line-height: 1.8;
   margin-bottom: 2rem;
   max-width: 280px;
@@ -1623,7 +1623,7 @@ em {
 
 .footer-links-group a {
   font-size: 0.88rem;
-  color: rgba(200, 191, 176, 0.5);
+  color: var(--cream-muted);
   transition: color var(--transition);
   letter-spacing: 0.03em;
 }
@@ -1634,7 +1634,7 @@ em {
   max-width: 1300px;
   margin: 0 auto;
   padding: 1.5rem 5%;
-  border-top: 1px solid rgba(255,255,255,0.05);
+  border-top: 1px solid var(--black-4);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1644,7 +1644,7 @@ em {
 
 .footer-bottom p {
   font-size: 0.8rem;
-  color: rgba(200, 191, 176, 0.35);
+  color: var(--cream-muted);
   letter-spacing: 0.05em;
 }
 
@@ -1655,7 +1655,7 @@ em {
 
 .footer-bottom-links a {
   font-size: 0.78rem;
-  color: rgba(200, 191, 176, 0.35);
+  color: var(--cream-muted);
   transition: color var(--transition);
 }
 
@@ -3194,7 +3194,8 @@ em {
 }
 
 .form-group input::placeholder, .form-group textarea::placeholder {
-  color: rgba(242, 239, 232, 0.55) !important;
+  color: var(--cream-muted) !important;
+  opacity: 0.6;
 }
 
 .form-group input:focus, .form-group textarea:focus {
