@@ -573,7 +573,8 @@ function seedSimulatedTrafficLogs() {
         device_type: device,
         session_id: sessionId,
         event_name: 'page_view',
-        created_at: logDate.toISOString()
+        created_at: logDate.toISOString(),
+        is_mock: true
       });
       
       if (Math.random() < 0.55) {
@@ -584,7 +585,8 @@ function seedSimulatedTrafficLogs() {
           device_type: device,
           session_id: sessionId,
           event_name: 'view_pdp',
-          created_at: new Date(logDate.getTime() + 60000).toISOString()
+          created_at: new Date(logDate.getTime() + 60000).toISOString(),
+          is_mock: true
         });
         
         if (Math.random() < 0.25) {
@@ -595,7 +597,8 @@ function seedSimulatedTrafficLogs() {
             device_type: device,
             session_id: sessionId,
             event_name: 'add_to_cart',
-            created_at: new Date(logDate.getTime() + 120000).toISOString()
+            created_at: new Date(logDate.getTime() + 120000).toISOString(),
+            is_mock: true
           });
           
           if (Math.random() < 0.40) {
@@ -606,7 +609,8 @@ function seedSimulatedTrafficLogs() {
               device_type: device,
               session_id: sessionId,
               event_name: 'checkout_start',
-              created_at: new Date(logDate.getTime() + 180000).toISOString()
+              created_at: new Date(logDate.getTime() + 180000).toISOString(),
+              is_mock: true
             });
             
             if (Math.random() < 0.30) {
@@ -617,7 +621,8 @@ function seedSimulatedTrafficLogs() {
                 device_type: device,
                 session_id: sessionId,
                 event_name: 'purchase',
-                created_at: new Date(logDate.getTime() + 240000).toISOString()
+                created_at: new Date(logDate.getTime() + 240000).toISOString(),
+                is_mock: true
               });
             }
           }
@@ -1187,6 +1192,7 @@ function updateTrafficMetrics() {
     const activeSessions = new Set();
     
     trafficLogs.forEach(log => {
+      if (log.is_mock) return; // Ignore seeded/mock logs for real active visitor count
       const logTime = new Date(log.created_at).getTime();
       // Within last 15 minutes
       if (now - logTime < 900000) {
@@ -1194,8 +1200,7 @@ function updateTrafficMetrics() {
       }
     });
     
-    const activeCount = Math.max(1, activeSessions.size);
-    trafficMetricVal.textContent = activeCount;
+    trafficMetricVal.textContent = activeSessions.size;
   }
 }
 
@@ -1974,21 +1979,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 7. Simulated traffic pulse jittering around real active counts
+  // 7. Periodically check and update real active visitor count
   setInterval(() => {
     const trafficMetricVal = document.getElementById('metricTraffic');
-    if (trafficMetricVal && trafficLogs.length > 0) {
+    if (trafficMetricVal) {
       const now = Date.now();
       const activeSessions = new Set();
       trafficLogs.forEach(log => {
+        if (log.is_mock) return; // Ignore seeded/mock logs for real active visitor count
         const logTime = new Date(log.created_at).getTime();
         if (now - logTime < 900000) {
           activeSessions.add(log.session_id);
         }
       });
-      const baseVal = Math.max(1, activeSessions.size);
-      const jitter = Math.floor(Math.random() * 3) - 1; 
-      const newVal = Math.max(1, baseVal + jitter);
+      const newVal = activeSessions.size;
       
       if (typeof gsap !== 'undefined') {
         gsap.fromTo(trafficMetricVal,
