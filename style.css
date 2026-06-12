@@ -2257,7 +2257,7 @@ em {
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 992px) {
   .nav-links { display: none; }
   .nav-cta { display: none; }
   .hamburger { display: flex; position: relative; z-index: 1010; }
@@ -2291,7 +2291,27 @@ em {
     font-size: 1.5rem;
     color: #F2EFE8;
   }
+}
 
+@media (max-width: 768px) {
+  /* Hide the brand name text to prevent overlapping header icons on mobile */
+  .nav-logo-text {
+    display: none !important;
+  }
+
+  /* Hide less critical social and wishlist buttons in the header on mobile to free up horizontal space */
+  .nav-actions .nav-icon-btn[aria-label="Instagram"],
+  .nav-actions .nav-icon-btn[aria-label="Wishlist"] {
+    display: none !important;
+  }
+
+  /* Tighten spacing between actions on mobile */
+  .nav-actions {
+    gap: 0.8rem !important;
+  }
+}
+
+@media (max-width: 700px) {
   .collections-grid { grid-template-columns: 1fr; }
   .collection-card.large { grid-column: auto; }
 
@@ -3023,10 +3043,6 @@ em {
 }
 
 @media (max-width: 480px) {
-  .nav-logo-text {
-    font-size: 1.15rem !important;
-    letter-spacing: 0.1em !important;
-  }
   .nav-logo-img {
     max-height: 48px !important;
   }
