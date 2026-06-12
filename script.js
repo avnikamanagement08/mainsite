@@ -596,28 +596,31 @@ function closeCart() {
 }
 
 // Add item to cart state
-function addToCart(id, name, price, image, category) {
+function addToCart(id, name, price, image, category, qty = 1, openCartDrawer = true) {
   // Clean price value from symbols and commas
-  const numericPrice = parseFloat(price.replace(/[^0-9.]/g, ''));
+  const numericPrice = typeof price === 'number' ? price : parseFloat(price.replace(/[^0-9.]/g, ''));
+  const rawString = typeof price === 'number' ? `₹${price}` : price;
   
   const existingItem = cart.find(item => item.id === id);
   if (existingItem) {
-    existingItem.quantity += 1;
+    existingItem.quantity += qty;
   } else {
     cart.push({
       id: id,
       name: name,
       price: numericPrice,
-      rawPriceString: price, // For clean presentation
+      rawPriceString: rawString, // For clean presentation
       image: image,
       category: category,
-      quantity: 1
+      quantity: qty
     });
   }
   
   saveCartToStorage();
   updateCartUI();
-  openCart();
+  if (openCartDrawer) {
+    openCart();
+  }
 }
 
 // Remove item from cart
@@ -788,38 +791,19 @@ if (startShoppingBtn) {
   });
 }
 
-// Bind product listing "Add to Cart" actions
+// Bind product card clicks to trigger Quick View popup
 document.querySelectorAll('.product-card').forEach(card => {
-  const addBtn = card.querySelector('.add-to-cart');
-  if (addBtn) {
-    addBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      
-      const id = card.id;
-      const name = card.querySelector('.product-name').textContent.trim();
-      const price = card.querySelector('.product-price').textContent.trim();
-      const image = card.querySelector('.product-img').src;
-      const category = card.querySelector('.product-category').textContent.trim();
-      
-      // Perform bounce on Add to Cart button
-      gsap.fromTo(this, 
-        { scale: 0.9 }, 
-        { scale: 1, duration: 0.4, ease: 'back.out(2)' }
-      );
-      
-      // Add the item to cart
-      addToCart(id, name, price, image, category);
-    });
-  }
+  card.addEventListener('click', function (e) {
+    const id = this.id;
+    // Perform subtle GSAP click effect
+    gsap.fromTo(this, 
+      { scale: 0.98 }, 
+      { scale: 1, duration: 0.3, ease: 'power2.out' }
+    );
+    openQuickViewModal(id);
+  });
   
-  // Clicking quick view or wishlist button shouldn't trigger product card click navigation
-  const qvBtn = card.querySelector('.quick-view');
-  if (qvBtn) {
-    qvBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      alert('Quick View feature is coming soon!');
-    });
-  }
+  card.style.cursor = 'pointer';
 });
 
 // Bind search and wishlist button in navbar
@@ -1164,12 +1148,80 @@ const allProductsDatabase = {
   "atc-2": { id: "atc-2", name: "Double Layer Heart Choker", price: "₹249", image: "https://d28arj6mdig261.cloudfront.net/1770298539595.jpg", category: "Anti-Tarnish Chains" },
   "atc-3": { id: "atc-3", name: "Classic Link Chain Necklace", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1770298569027.jpg", category: "Anti-Tarnish Chains" },
   "atc-4": { id: "atc-4", name: "Delicate Diamond Ring Chain", price: "₹299", image: "https://d28arj6mdig261.cloudfront.net/1770298514550.jpg", category: "Anti-Tarnish Chains" },
-  "p1": { id: "p1", name: "Meera Anti-Tarnish Kundan Chandbalis", price: "₹1,899", image: "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.35 PM.jpeg", category: "Earrings" },
-  "p2": { id: "p2", name: "Aura Celestial Gold Plated Hoops", price: "₹1,299", image: "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.03 AM.jpeg", category: "Earrings" },
-  "p3": { id: "p3", name: "Ziya Simulated Emerald Drop Jhumkas", price: "₹1,699", image: "images/earrings/3/WhatsApp Image 2026-06-12 at 10.52.55 AM.jpeg", category: "Earrings" },
-  "p4": { id: "p4", name: "Avni Royal Kundan Pearl Drops", price: "₹1,499", image: "images/earrings/4/WhatsApp Image 2026-06-12 at 2.19.55 PM.jpeg", category: "Earrings" },
-  "p5": { id: "p5", name: "Lumina Premium CZ Solitaire Studs", price: "₹999", image: "images/earrings/5/WhatsApp Image 2026-06-12 at 2.25.32 PM.jpeg", category: "Earrings" },
-  "p6": { id: "p6", name: "Tara Rose Gold Starburst Dangles", price: "₹1,599", image: "images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg", category: "Earrings" }
+  "p1": { 
+    id: "p1", 
+    name: "Meera Anti-Tarnish Kundan Chandbalis", 
+    price: "₹300", 
+    image: "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.35 PM.jpeg", 
+    category: "Earrings",
+    gallery: [
+      "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.35 PM.jpeg",
+      "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.57 PM.jpeg",
+      "images/earrings/1/WhatsApp Image 2026-06-11 at 9.18.00 PM.jpeg"
+    ],
+    description: "Handcrafted traditional Indian Kundan Chandbalis, heavily plated in 18K yellow gold finish over a premium base alloy. Adorned with cluster CZ stones and premium faux pearls. Features our advanced anti-tarnish guard with a 1-year guarantee of no color going. Hypoallergenic, lightweight, and perfect for ethnic celebrations."
+  },
+  "p2": { 
+    id: "p2", 
+    name: "Aura Celestial Gold Plated Hoops", 
+    price: "₹300", 
+    image: "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.03 AM.jpeg", 
+    category: "Earrings",
+    gallery: [
+      "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.03 AM.jpeg",
+      "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.44 AM.jpeg",
+      "images/earrings/2/WhatsApp Image 2026-06-12 at 10.43.01 AM.jpeg"
+    ],
+    description: "Minimalist, daily-wear geometric hoop earrings plated in high-shine 18K gold. Fitted with a secure click-lock latch. Fully anti-tarnish treated with a 1-year guarantee of no color fading. Waterproof, sweat-proof, and designed to match both Western and casual outfits."
+  },
+  "p3": { 
+    id: "p3", 
+    name: "Ziya Simulated Emerald Drop Jhumkas", 
+    price: "₹300", 
+    image: "images/earrings/3/WhatsApp Image 2026-06-12 at 10.52.55 AM.jpeg", 
+    category: "Earrings",
+    gallery: [
+      "images/earrings/3/WhatsApp Image 2026-06-12 at 10.52.55 AM.jpeg",
+      "images/earrings/3/WhatsApp Image 2026-06-12 at 10.53.22 AM.jpeg"
+    ],
+    description: "Fusion dangle jhumkas with vibrant simulated emerald drops suspended from a micro-pave cubic zirconia floral stud. Plated in 18K yellow gold base alloy. Features a 1-year guarantee of no color fading with anti-tarnish protection. Extremely lightweight and comfortable."
+  },
+  "p4": { 
+    id: "p4", 
+    name: "Avni Royal Kundan Pearl Drops", 
+    price: "₹300", 
+    image: "images/earrings/4/WhatsApp Image 2026-06-12 at 2.19.55 PM.jpeg", 
+    category: "Earrings",
+    gallery: [
+      "images/earrings/4/WhatsApp Image 2026-06-12 at 2.19.55 PM.jpeg",
+      "images/earrings/4/WhatsApp Image 2026-06-12 at 2.20.37 PM.jpeg"
+    ],
+    description: "Regal drop earrings featuring hand-set Kundan stones and suspended organic shell pearls. Plated in an antique 18K yellow gold finish. Protected with an anti-tarnish barrier and backed by a 1-year guarantee of no color going. The perfect accessory for wedding and bridal wear."
+  },
+  "p5": { 
+    id: "p5", 
+    name: "Lumina Premium CZ Solitaire Studs", 
+    price: "₹300", 
+    image: "images/earrings/5/WhatsApp Image 2026-06-12 at 2.25.32 PM.jpeg", 
+    category: "Earrings",
+    gallery: [
+      "images/earrings/5/WhatsApp Image 2026-06-12 at 2.25.32 PM.jpeg",
+      "images/earrings/5/WhatsApp Image 2026-06-12 at 2.26.26 PM.jpeg"
+    ],
+    description: "Classic four-prong stud earrings holding flawless AAAAA-grade simulated cubic zirconia solitaires. Plated in premium platinum-finish base alloy. Anti-tarnish coated with a 1-year color guarantee. Versatile and timeless, ideal for office wear and special occasions."
+  },
+  "p6": { 
+    id: "p6", 
+    name: "Tara Rose Gold Starburst Dangles", 
+    price: "₹300", 
+    image: "images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg", 
+    category: "Earrings",
+    gallery: [
+      "images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg",
+      "images/earrings/6/WhatsApp Image 2026-06-12 at 3.21.40 PM.jpeg"
+    ],
+    description: "Elegant starburst danglers featuring pave-set CZ stone arrays that capture and reflect light. Plated in highly polished 18K rose gold. Includes a 1-year color guarantee and premium anti-tarnish coating. Hypoallergenic posts make them comfortable for sensitive ears."
+  }
 };
 
 // 2. SEARCH LOGIC
@@ -1498,5 +1550,173 @@ window.updateCartUI = function() {
   }
   updateStickyCartUI();
 };
+
+
+// ===== QUICK VIEW DETAILS MODAL CONTROLLER =====
+let activeQuickViewProduct = null;
+
+function openQuickViewModal(productId) {
+  const product = allProductsDatabase[productId];
+  if (!product) return;
+
+  activeQuickViewProduct = product;
+
+  const qvModal = document.getElementById('quickViewModal');
+  const qvMainImage = document.getElementById('qvMainImage');
+  const qvThumbnails = document.getElementById('qvThumbnails');
+  const qvCategory = document.getElementById('qvCategory');
+  const qvName = document.getElementById('qvName');
+  const qvDescription = document.getElementById('qvDescription');
+  const qvQtyInput = document.getElementById('qvQtyInput');
+  const qvPriceDiscounted = document.getElementById('qvPriceDiscounted');
+  const qvPriceOriginal = document.getElementById('qvPriceOriginal');
+
+  if (qvCategory) qvCategory.textContent = product.category;
+  if (qvName) qvName.textContent = product.name;
+  if (qvDescription) qvDescription.textContent = product.description || "Premium handcrafted anti-tarnish jewelry piece.";
+  if (qvMainImage) {
+    qvMainImage.src = product.image;
+    qvMainImage.alt = product.name;
+  }
+  
+  if (qvPriceDiscounted) qvPriceDiscounted.textContent = product.price || "₹300";
+  if (qvPriceOriginal) qvPriceOriginal.textContent = "₹500";
+  
+  if (qvQtyInput) qvQtyInput.value = 1;
+
+  // Render thumbnails
+  if (qvThumbnails) {
+    qvThumbnails.innerHTML = '';
+    const gallery = product.gallery || [product.image];
+    gallery.forEach(imgUrl => {
+      const thumbWrap = document.createElement('div');
+      thumbWrap.className = 'qv-thumb-wrap' + (imgUrl === product.image ? ' active' : '');
+      thumbWrap.innerHTML = `<img src="${imgUrl}" alt="${product.name} thumbnail" />`;
+      thumbWrap.addEventListener('click', () => {
+        if (qvMainImage) {
+          qvMainImage.src = imgUrl;
+        }
+        qvThumbnails.querySelectorAll('.qv-thumb-wrap').forEach(t => t.classList.remove('active'));
+        thumbWrap.classList.add('active');
+      });
+      qvThumbnails.appendChild(thumbWrap);
+    });
+  }
+
+  if (qvModal) {
+    qvModal.style.display = 'flex';
+    setTimeout(() => {
+      qvModal.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Lock page scroll
+    }, 10);
+  }
+}
+
+function closeQuickViewModal() {
+  const qvModal = document.getElementById('quickViewModal');
+  if (qvModal) {
+    qvModal.classList.remove('active');
+    setTimeout(() => {
+      qvModal.style.display = 'none';
+      document.body.style.overflow = ''; // Restore scroll
+      activeQuickViewProduct = null;
+    }, 300);
+  }
+}
+
+// Bind close button and overlay clicks
+const qvCloseBtn = document.getElementById('qvCloseBtn');
+const qvModalOverlay = document.getElementById('qvModalOverlay');
+
+if (qvCloseBtn) {
+  qvCloseBtn.addEventListener('click', closeQuickViewModal);
+}
+if (qvModalOverlay) {
+  qvModalOverlay.addEventListener('click', closeQuickViewModal);
+}
+
+// Close on escape key
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeQuickViewModal();
+  }
+});
+
+// Quantity selection buttons in Quick View
+const qvQtyMinus = document.getElementById('qvQtyMinus');
+const qvQtyPlus = document.getElementById('qvQtyPlus');
+const qvQtyInput = document.getElementById('qvQtyInput');
+
+if (qvQtyMinus && qvQtyInput) {
+  qvQtyMinus.addEventListener('click', () => {
+    let currentVal = parseInt(qvQtyInput.value) || 1;
+    if (currentVal > 1) {
+      qvQtyInput.value = currentVal - 1;
+    }
+  });
+}
+
+if (qvQtyPlus && qvQtyInput) {
+  qvQtyPlus.addEventListener('click', () => {
+    let currentVal = parseInt(qvQtyInput.value) || 1;
+    qvQtyInput.value = currentVal + 1;
+  });
+}
+
+// Action button: Add to Cart from Quick View
+const qvAddToCartBtn = document.getElementById('qvAddToCartBtn');
+if (qvAddToCartBtn) {
+  qvAddToCartBtn.addEventListener('click', () => {
+    if (!activeQuickViewProduct) return;
+    const qty = parseInt(qvQtyInput.value) || 1;
+    addToCart(
+      activeQuickViewProduct.id, 
+      activeQuickViewProduct.name, 
+      activeQuickViewProduct.price || "₹300", 
+      activeQuickViewProduct.image, 
+      activeQuickViewProduct.category,
+      qty,
+      true // open cart drawer
+    );
+    
+    // Add success animation
+    gsap.fromTo(qvAddToCartBtn, 
+      { scale: 0.95 }, 
+      { scale: 1, duration: 0.3, ease: 'back.out(2)' }
+    );
+    
+    // Auto-close modal after adding to cart
+    setTimeout(closeQuickViewModal, 400);
+  });
+}
+
+// Action button: Buy Now / Express Checkout from Quick View
+const qvBuyNowBtn = document.getElementById('qvBuyNowBtn');
+if (qvBuyNowBtn) {
+  qvBuyNowBtn.addEventListener('click', () => {
+    if (!activeQuickViewProduct) return;
+    const qty = parseInt(qvQtyInput.value) || 1;
+    addToCart(
+      activeQuickViewProduct.id, 
+      activeQuickViewProduct.name, 
+      activeQuickViewProduct.price || "₹300", 
+      activeQuickViewProduct.image, 
+      activeQuickViewProduct.category,
+      qty,
+      false // do NOT open cart drawer (we're navigating straight to checkout)
+    );
+    
+    // Add success animation and redirect
+    gsap.fromTo(qvBuyNowBtn, 
+      { scale: 0.95 }, 
+      { scale: 1, duration: 0.3, ease: 'back.out(2)' }
+    );
+    
+    setTimeout(() => {
+      closeQuickViewModal();
+      window.location.href = 'checkout.html';
+    }, 300);
+  });
+}
 
 
