@@ -1159,7 +1159,7 @@ const allProductsDatabase = {
       "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.57 PM.jpeg",
       "images/earrings/1/WhatsApp Image 2026-06-11 at 9.18.00 PM.jpeg"
     ],
-    description: "Handcrafted traditional Indian Kundan Chandbalis, heavily plated in 18K yellow gold finish over a premium base alloy. Adorned with cluster CZ stones and premium faux pearls. Features our advanced anti-tarnish guard with a 1-year guarantee of no color going. Hypoallergenic, lightweight, and perfect for ethnic celebrations."
+    description: "Handcrafted traditional Indian Kundan Chandbalis, heavily plated in 18K yellow gold finish over a premium base alloy. Adorned with cluster CZ stones and premium faux pearls. Features our advanced anti-tarnish guard for lasting color protection. Hypoallergenic, lightweight, and perfect for ethnic celebrations."
   },
   "p2": { 
     id: "p2", 
@@ -1172,7 +1172,7 @@ const allProductsDatabase = {
       "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.44 AM.jpeg",
       "images/earrings/2/WhatsApp Image 2026-06-12 at 10.43.01 AM.jpeg"
     ],
-    description: "Minimalist, daily-wear geometric hoop earrings plated in high-shine 18K gold. Fitted with a secure click-lock latch. Fully anti-tarnish treated with a 1-year guarantee of no color fading. Waterproof, sweat-proof, and designed to match both Western and casual outfits."
+    description: "Minimalist, daily-wear geometric hoop earrings plated in high-shine 18K gold. Fitted with a secure click-lock latch. Fully anti-tarnish treated for lasting color protection. Waterproof, sweat-proof, and designed to match both Western and casual outfits."
   },
   "p3": { 
     id: "p3", 
@@ -1184,7 +1184,7 @@ const allProductsDatabase = {
       "images/earrings/3/WhatsApp Image 2026-06-12 at 10.52.55 AM.jpeg",
       "images/earrings/3/WhatsApp Image 2026-06-12 at 10.53.22 AM.jpeg"
     ],
-    description: "Fusion dangle jhumkas with vibrant simulated emerald drops suspended from a micro-pave cubic zirconia floral stud. Plated in 18K yellow gold base alloy. Features a 1-year guarantee of no color fading with anti-tarnish protection. Extremely lightweight and comfortable."
+    description: "Fusion dangle jhumkas with vibrant simulated emerald drops suspended from a micro-pave cubic zirconia floral stud. Plated in 18K yellow gold base alloy. Features advanced anti-tarnish protection for lasting color. Extremely lightweight and comfortable."
   },
   "p4": { 
     id: "p4", 
@@ -1196,7 +1196,7 @@ const allProductsDatabase = {
       "images/earrings/4/WhatsApp Image 2026-06-12 at 2.19.55 PM.jpeg",
       "images/earrings/4/WhatsApp Image 2026-06-12 at 2.20.37 PM.jpeg"
     ],
-    description: "Regal drop earrings featuring hand-set Kundan stones and suspended organic shell pearls. Plated in an antique 18K yellow gold finish. Protected with an anti-tarnish barrier and backed by a 1-year guarantee of no color going. The perfect accessory for wedding and bridal wear."
+    description: "Regal drop earrings featuring hand-set Kundan stones and suspended organic shell pearls. Plated in an antique 18K yellow gold finish. Protected with an anti-tarnish barrier and designed for long-lasting wear. The perfect accessory for wedding and bridal wear."
   },
   "p5": { 
     id: "p5", 
@@ -1208,7 +1208,7 @@ const allProductsDatabase = {
       "images/earrings/5/WhatsApp Image 2026-06-12 at 2.25.32 PM.jpeg",
       "images/earrings/5/WhatsApp Image 2026-06-12 at 2.26.26 PM.jpeg"
     ],
-    description: "Classic four-prong stud earrings holding flawless AAAAA-grade simulated cubic zirconia solitaires. Plated in premium platinum-finish base alloy. Anti-tarnish coated with a 1-year color guarantee. Versatile and timeless, ideal for office wear and special occasions."
+    description: "Classic four-prong stud earrings holding flawless AAAAA-grade simulated cubic zirconia solitaires. Plated in premium platinum-finish base alloy. Anti-tarnish coated for lasting color protection. Versatile and timeless, ideal for office wear and special occasions."
   },
   "p6": { 
     id: "p6", 
@@ -1220,7 +1220,7 @@ const allProductsDatabase = {
       "images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg",
       "images/earrings/6/WhatsApp Image 2026-06-12 at 3.21.40 PM.jpeg"
     ],
-    description: "Elegant starburst danglers featuring pave-set CZ stone arrays that capture and reflect light. Plated in highly polished 18K rose gold. Includes a 1-year color guarantee and premium anti-tarnish coating. Hypoallergenic posts make them comfortable for sensitive ears."
+    description: "Elegant starburst danglers featuring pave-set CZ stone arrays that capture and reflect light. Plated in highly polished 18K rose gold. Includes premium anti-tarnish coating for lasting color protection. Hypoallergenic posts make them comfortable for sensitive ears."
   }
 };
 
