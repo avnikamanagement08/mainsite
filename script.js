@@ -55,24 +55,7 @@ function initAnimations() {
   // 1. Text splitting for headers
   splitTextElements();
 
-  // 2. Hero Timeline
-  const tl = gsap.timeline();
-
-  tl.to('.hero-badge', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' })
-    .to('.gsap-split-text .char', {
-      y: '0%',
-      duration: 0.8,
-      stagger: 0.02,
-      ease: 'power4.out'
-    }, '-=0.4')
-    .to('.hero-desc', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-    .to('.hero-actions', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-    .to('.hero-stats', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-    .to('.hero-image-frame', { opacity: 1, x: 0, duration: 1.2, ease: 'power3.out' }, '-=1.2')
-    .to('.hero-floating-card', { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.2, ease: 'back.out(1.7)' }, '-=0.8')
-    .to('.hero-scroll-indicator', { opacity: 1, y: 0, duration: 0.6 }, '-=0.4');
-
-  // 3. ScrollTrigger Reveals (Section Headers)
+  // 2. ScrollTrigger Reveals (Section Headers)
   document.querySelectorAll('.section-header').forEach(header => {
     gsap.fromTo(header.querySelectorAll('.section-tag, .section-title, .section-subtitle'), 
       { opacity: 0, y: 40 },
@@ -90,23 +73,7 @@ function initAnimations() {
     );
   });
 
-  // 4. Collections Cards Reveal
-  gsap.fromTo('.collection-card', 
-    { opacity: 0, y: 60 },
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '.collections-grid',
-        start: 'top 75%'
-      }
-    }
-  );
-
-  // 5. Featured Product Cards Reveal
+  // 3. Featured Product Cards Reveal
   gsap.fromTo('.product-card', 
     { opacity: 0, y: 50 },
     {
@@ -121,85 +88,15 @@ function initAnimations() {
       }
     }
   );
-
-  // 6. Atelier Canvas Bento Grid Stagger Reveal
-  gsap.fromTo('.bento-card', 
-    { opacity: 0, y: 60 },
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.9,
-      stagger: 0.15,
-      ease: 'power4.out',
-      scrollTrigger: {
-        trigger: '.bento-grid',
-        start: 'top 75%'
-      }
-    }
-  );
-
-  // 7. Sketch SVG Path Drawing on Scroll
-  const sketchWrapper = document.querySelector('.sketch-wrapper');
-  const paths = document.querySelectorAll('.sketch-path');
   
-  if (sketchWrapper && paths.length > 0) {
-    paths.forEach(path => {
-      // Prevent crash if element is a polygon/other non-path SVG tag
-      if (typeof path.getTotalLength === 'function') {
-        const length = path.getTotalLength();
-        path.style.strokeDasharray = length;
-        path.style.strokeDashoffset = length;
-      }
-    });
-
-    ScrollTrigger.create({
-      trigger: '.sketch-panel',
-      start: 'top 65%',
-      end: 'bottom 40%',
-      scrub: 0.5,
-      onUpdate: self => {
-        const progress = self.progress;
-        
-        // Update progress bar fill
-        const progressFill = document.querySelector('.sketch-progress-fill');
-        if (progressFill) progressFill.style.width = `${progress * 100}%`;
-
-        // Update path drawing offsets
-        paths.forEach(path => {
-          const length = parseFloat(path.style.strokeDasharray);
-          path.style.strokeDashoffset = length * (1 - progress);
-        });
-
-        // If path is completely drawn, swap sketch to real ring
-        if (progress >= 0.98) {
-          sketchWrapper.classList.add('completed');
-        } else {
-          sketchWrapper.classList.remove('completed');
-        }
-      }
-    });
-  }
-
-  // 8. Clarity Cut Selector Stats Gauge Trigger
-  const gaugeFill = document.querySelector('.gauge-fill');
-  if (gaugeFill) {
-    ScrollTrigger.create({
-      trigger: '.clarity-panel',
-      start: 'top 70%',
-      onEnter: () => {
-        updateClarityGauge(98); // Initial Brilliant Cut Score
-      }
-    });
-  }
-  
-  // 9. Curved Marquee Animation
+  // 4. Curved Marquee Animation
   initCurvedMarquee();
 
-  // 10. Hero Slider Carousel
-  initHeroSlider();
-
-  // 11. Categories Scroll Drag
+  // 5. Categories Scroll Drag
   initCategoriesDrag();
+
+  // 6. Categories Click Selector
+  initCategorySelector();
 }
 
 // ===== TEXT SPLITTING UTILITY =====
@@ -1174,6 +1071,75 @@ function initCategoriesDrag() {
     const walk = (x - startX) * 2; // scroll-fast multiplier
     slider.scrollLeft = scrollLeft - walk;
   });
+}
+
+// ===== INTERACTIVE CATEGORY SELECTOR =====
+function initCategorySelector() {
+  const categoryItems = document.querySelectorAll('.categories-bar .category-item');
+  const earringsGrid = document.getElementById('earringsGrid');
+  const comingSoonContainer = document.getElementById('comingSoonContainer');
+  const comingSoonTitle = document.getElementById('comingSoonTitle');
+  const csNotifyForm = document.getElementById('csNotifyForm');
+  const csNotifySuccess = document.getElementById('csNotifySuccess');
+  
+  if (categoryItems.length === 0) return;
+  
+  categoryItems.forEach(item => {
+    item.addEventListener('click', () => {
+      // Toggle active class
+      categoryItems.forEach(cat => cat.classList.remove('active'));
+      item.classList.add('active');
+      
+      const category = item.dataset.category;
+      
+      if (category === 'earrings') {
+        if (earringsGrid) earringsGrid.style.display = 'grid';
+        if (comingSoonContainer) comingSoonContainer.style.display = 'none';
+        
+        // Stagger reveal of earring cards
+        gsap.fromTo('#earringsGrid .product-card', 
+          { opacity: 0, y: 35 },
+          { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' }
+        );
+      } else {
+        if (earringsGrid) earringsGrid.style.display = 'none';
+        if (comingSoonContainer) {
+          comingSoonContainer.style.display = 'block';
+          // Capitalize category name
+          const catName = category.charAt(0).toUpperCase() + category.slice(1);
+          if (comingSoonTitle) comingSoonTitle.textContent = `${catName} Collection Coming Soon`;
+          
+          // Reset notify form
+          if (csNotifyForm) csNotifyForm.style.display = 'flex';
+          if (csNotifySuccess) csNotifySuccess.style.display = 'none';
+          
+          // Animate coming soon card entry
+          gsap.fromTo(comingSoonContainer,
+            { opacity: 0, scale: 0.96 },
+            { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.5)' }
+          );
+        }
+      }
+    });
+  });
+
+  // Handle coming soon notify form submit
+  if (csNotifyForm) {
+    csNotifyForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('csEmailInput').value.trim();
+      if (!email) return;
+      
+      // Simulate API call success
+      if (csNotifyForm) csNotifyForm.style.display = 'none';
+      if (csNotifySuccess) csNotifySuccess.style.display = 'block';
+      
+      gsap.fromTo(csNotifySuccess,
+        { scale: 0.8, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2)' }
+      );
+    });
+  }
 }
 
 // =========================================================================

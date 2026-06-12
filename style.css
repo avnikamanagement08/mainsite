@@ -38,17 +38,17 @@
   --btn-radius: 9999px; /* Rounded pill buttons like Manvish */
   --other-radius: 16px; /* Smooth rounded card corners like Manvish */
 
-  /* Default Light Theme Variables */
-  --section-bg: #FFFFFF;
-  --section-bg-alt: #F8F8F8;
-  --section-card-bg: #FFFFFF;
-  --section-border: #DCDCDC;
-  --section-text: #000000;
-  --section-text-muted: #333333;
-  --section-btn-bg: #000000;
-  --section-btn-text: #FFFFFF;
-  --section-btn-bg-hover: #DFB76C;
-  --section-btn-text-hover: #000000;
+  /* Default Brand Theme Variables (Forest Green & Gold matching the logo) */
+  --section-bg: #0A1611; /* Deep Luxurious Forest Green */
+  --section-bg-alt: #050C08; /* Darker green-black */
+  --section-card-bg: #12241C; /* Dark green card background */
+  --section-border: #1D362B; /* Sage green border lines */
+  --section-text: #F2EFE8; /* Soft Ivory headings */
+  --section-text-muted: #B3C0B8; /* Muted sage-gray body text */
+  --section-btn-bg: var(--gold);
+  --section-btn-text: #0A1611;
+  --section-btn-bg-hover: #FFFFFF;
+  --section-btn-text-hover: #0A1611;
 
   /* Map legacy variables to section theme tokens for automatic toggle */
   --black: var(--section-bg);
@@ -188,18 +188,19 @@ em {
 
 /* ===== ANNOUNCEMENT BAR ===== */
 .announcement-bar {
-  background: linear-gradient(90deg, #df1b5c, #ff6090, #df1b5c);
-  color: #ffffff;
+  background: linear-gradient(90deg, #AC8B49, #DFB76C, #AC8B49);
+  color: #0A1611;
   text-align: center;
   padding: 8px 16px;
   font-size: 0.72rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.05em;
   width: 100%;
   z-index: 1001;
   text-transform: uppercase;
 }
 .announcement-bar a {
+  color: #0A1611;
   font-weight: 700;
   text-decoration: underline;
   transition: opacity 0.2s ease;
@@ -219,7 +220,7 @@ em {
 }
 
 .navbar.scrolled {
-  background: rgba(255, 255, 255, 0.94) !important;
+  background: rgba(10, 22, 17, 0.95) !important; /* Premium semi-transparent forest green */
   backdrop-filter: blur(20px);
   box-shadow: 0 1px 10px rgba(10, 22, 17, 0.12);
 }
@@ -487,7 +488,13 @@ em {
   width: 100%;
   padding: 1rem 0;
   border-bottom: 1px solid var(--black-4);
-  background: var(--white);
+  background: var(--section-bg);
+}
+
+.categories-bar.top-level-categories {
+  margin-top: 116px; /* Offset for fixed navbar + announcement bar */
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
 .categories-container {
@@ -544,8 +551,15 @@ em {
   transition: border-color var(--transition);
 }
 
-.category-item:hover .category-circle-wrap {
+.category-item:hover .category-circle-wrap,
+.category-item.active .category-circle-wrap {
   border-color: var(--gold);
+  box-shadow: 0 0 15px rgba(223, 183, 108, 0.3);
+}
+
+.category-item.active .category-name {
+  color: var(--gold);
+  font-weight: 600;
 }
 
 .category-circle {
@@ -4249,4 +4263,32 @@ em {
     bottom: 70px; /* Slide above the sticky mobile cart */
   }
 }
+
+/* ===== REDESIGN ADDITIONS: COMING SOON & CONTACT US ===== */
+.cs-icon {
+  display: inline-block;
+  animation: cs-pulse 2s infinite ease-in-out;
+}
+
+@keyframes cs-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 12px rgba(223, 183, 108, 0.6)); }
+}
+
+.contact-card-btn {
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition) !important;
+}
+
+.contact-card-btn:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold) !important;
+  box-shadow: 0 10px 25px rgba(10, 22, 17, 0.25), 0 0 20px rgba(223, 183, 108, 0.15) !important;
+}
+
+.contact-card-btn:hover .contact-icon-wrap {
+  background: var(--gold) !important;
+  color: #0A1611 !important;
+  transition: background var(--transition), color var(--transition);
+}
+
 
