@@ -128,6 +128,8 @@ let inventory = [];
 let abandons = [];
 let emails = [];
 let goldRate = 7200.00;
+let products = [];
+let circle = [];
 
 // Mount the dashboard HTML structures dynamically
 function mountDashboard() {
@@ -189,10 +191,10 @@ function mountDashboard() {
 
         <!-- Tabs Navigation -->
         <nav class="dashboard-tabs" style="display: flex; gap: 0.5rem; overflow-x: auto; border-bottom: 1px solid var(--black-4); padding-bottom: 0.8rem; margin-bottom: 2rem;">
-          <button class="tab-btn active" data-tab="tab-orders" style="padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--black-4); color: var(--cream-muted); font-family: inherit; font-size: 0.82rem; cursor: pointer; white-space: nowrap;">Live Orders</button>
-          <button class="tab-btn" data-tab="tab-inventory" style="padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--black-4); color: var(--cream-muted); font-family: inherit; font-size: 0.82rem; cursor: pointer; white-space: nowrap;">Inventory Manager</button>
+          <button class="tab-btn active" data-tab="tab-orders" style="padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--black-4); color: var(--cream-muted); font-family: inherit; font-size: 0.82rem; cursor: pointer; white-space: nowrap;">Order Logs</button>
+          <button class="tab-btn" data-tab="tab-inventory" style="padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--black-4); color: var(--cream-muted); font-family: inherit; font-size: 0.82rem; cursor: pointer; white-space: nowrap;">Manage Listings</button>
+          <button class="tab-btn" data-tab="tab-circle" style="padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--black-4); color: var(--cream-muted); font-family: inherit; font-size: 0.82rem; cursor: pointer; white-space: nowrap;">Circle Sheet</button>
           <button class="tab-btn" data-tab="tab-returns" style="padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--black-4); color: var(--cream-muted); font-family: inherit; font-size: 0.82rem; cursor: pointer; white-space: nowrap;">Parcels Returned</button>
-          <button class="tab-btn" data-tab="tab-accounts" style="padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--black-4); color: var(--cream-muted); font-family: inherit; font-size: 0.82rem; cursor: pointer; white-space: nowrap;">Accounts & Loyalty</button>
           <button class="tab-btn" data-tab="tab-abandons" style="padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--black-4); color: var(--cream-muted); font-family: inherit; font-size: 0.82rem; cursor: pointer; white-space: nowrap;">Abandoned Carts</button>
           <button class="tab-btn" data-tab="tab-emails" style="padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--black-4); color: var(--cream-muted); font-family: inherit; font-size: 0.82rem; cursor: pointer; white-space: nowrap;">Mail Logs</button>
           <button class="tab-btn" data-tab="tab-traffic" style="padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--black-4); color: var(--cream-muted); font-family: inherit; font-size: 0.82rem; cursor: pointer; white-space: nowrap;">Traffic Insights</button>
@@ -201,7 +203,7 @@ function mountDashboard() {
         <!-- TAB 1: LIVE ORDERS PANE -->
         <div class="dashboard-pane active" id="tab-orders">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-            <h3 style="font-family: var(--font-serif); font-size:1.3rem; color:var(--cream); font-weight:500;">Live Checkout Orders</h3>
+            <h3 style="font-family: var(--font-serif); font-size:1.3rem; color:var(--cream); font-weight:500;">Order Logs & Tracker</h3>
           </div>
           <div class="admin-table-wrapper" style="overflow-x: auto; background: var(--black-2); border: 1px solid var(--black-4);">
             <table class="admin-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
@@ -226,7 +228,7 @@ function mountDashboard() {
           </div>
         </div>
 
-        <!-- TAB 2: INVENTORY MANAGER PANE -->
+        <!-- TAB 2: MANAGE LISTINGS PANE -->
         <div class="dashboard-pane" id="tab-inventory" style="display: none;">
           <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
             <!-- Spot Gold Rate Config -->
@@ -244,36 +246,77 @@ function mountDashboard() {
             
             <!-- Create Product Form -->
             <div style="flex: 2; min-width: 320px; background: var(--black-2); border: 1px solid var(--black-4); padding: 1.5rem;">
-              <h4 style="font-family: var(--font-serif); font-size: 1rem; color: var(--gold); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Create Catalogue Product</h4>
+              <h4 style="font-family: var(--font-serif); font-size: 1rem; color: var(--gold); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Add Catalogue Product</h4>
               <form id="createProductForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div style="display:flex; flex-direction:column; gap:0.3rem;">
                   <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Product ID</label>
-                  <input type="text" id="prodId" placeholder="e.g. p5" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+                  <input type="text" id="prodId" placeholder="e.g. p7" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
                 </div>
                 <div style="display:flex; flex-direction:column; gap:0.3rem;">
                   <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Product Name</label>
-                  <input type="text" id="prodName" placeholder="e.g. Bridal Diamond Set" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+                  <input type="text" id="prodName" placeholder="e.g. Bridal Diamond Hoop" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
                 </div>
                 <div style="display:flex; flex-direction:column; gap:0.3rem;">
                   <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Category</label>
-                  <input type="text" id="prodCategory" placeholder="e.g. Rings, Necklaces" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+                  <select id="prodCategory" style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;">
+                    <option value="Earrings">Earrings</option>
+                    <option value="Bracelets">Bracelets</option>
+                    <option value="Necklace">Necklace</option>
+                    <option value="Rings">Rings</option>
+                  </select>
                 </div>
                 <div style="display:flex; flex-direction:column; gap:0.3rem;">
-                  <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Gold Weight (grams)</label>
-                  <input type="number" step="0.01" id="prodGoldWeight" placeholder="e.g. 5.5" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+                  <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Image Path / URL</label>
+                  <input type="text" id="prodImage" placeholder="e.g. images/earrings/1/pic.jpeg" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
                 </div>
                 <div style="display:flex; flex-direction:column; gap:0.3rem;">
                   <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Making Charges (INR)</label>
-                  <input type="number" id="prodMaking" placeholder="e.g. 1200" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+                  <input type="number" id="prodMaking" value="300" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+                </div>
+                <div style="display:flex; flex-direction:column; gap:0.3rem;">
+                  <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Gold Weight (grams)</label>
+                  <input type="number" step="0.01" id="prodGoldWeight" value="0" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
                 </div>
                 <div style="display:flex; flex-direction:column; gap:0.3rem;">
                   <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Gemstone Cost (INR)</label>
-                  <input type="number" id="prodGemstone" placeholder="e.g. 1800" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+                  <input type="number" id="prodGemstone" value="0" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+                </div>
+                <div style="display:flex; flex-direction:column; gap:0.3rem;">
+                  <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Initial Stock</label>
+                  <input type="number" id="prodStock" value="10" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+                </div>
+                <div style="grid-column: span 2; display:flex; flex-direction:column; gap:0.3rem;">
+                  <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Description</label>
+                  <textarea id="prodDesc" rows="3" placeholder="Premium handcrafted anti-tarnish jewelry description..." required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem; font-family:inherit; resize:vertical; line-height:1.4;"></textarea>
                 </div>
                 <div style="grid-column: span 2; display:flex; justify-content: flex-end;">
-                  <button type="submit" class="btn-primary" style="width: auto; padding: 0.6rem 1.5rem;">Create Product</button>
+                  <button type="submit" class="btn-primary" style="width: auto; padding: 0.6rem 1.5rem;">Add Listing</button>
                 </div>
               </form>
+            </div>
+          </div>
+
+          <!-- Listings Directory Table -->
+          <div style="background: var(--black-2); border: 1px solid var(--black-4); padding: 1.5rem; margin-bottom: 2rem;">
+            <h4 style="font-family: var(--font-serif); font-size: 1.1rem; color: var(--cream); margin-bottom: 1rem; font-weight: 500;">Listings Directory & Sales Analysis</h4>
+            <div class="admin-table-wrapper" style="overflow-x: auto;">
+              <table class="admin-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+                <thead>
+                  <tr style="background: var(--black-3); border-bottom: 1px solid var(--black-4);">
+                    <th style="padding: 0.8rem;">Product ID</th>
+                    <th style="padding: 0.8rem;">Image</th>
+                    <th style="padding: 0.8rem;">Product Details</th>
+                    <th style="padding: 0.8rem;">Category</th>
+                    <th style="padding: 0.8rem;">Making Charge</th>
+                    <th style="padding: 0.8rem; text-align:center;">Orders Sold</th>
+                    <th style="padding: 0.8rem;">Revenue Generated</th>
+                    <th style="padding: 0.8rem; text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminProductsList">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -325,31 +368,30 @@ function mountDashboard() {
           </div>
         </div>
 
-        <!-- TAB 4: ACCOUNTS & LOYALTY PANE -->
-        <div class="dashboard-pane" id="tab-accounts" style="display: none;">
+        <!-- TAB 4: CIRCLE SHEET PANE -->
+        <div class="dashboard-pane" id="tab-circle" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-            <h3 style="font-family: var(--font-serif); font-size: 1.3rem; color: var(--cream); font-weight: 500;">Customer Registration & Loyalty Points</h3>
+            <h3 style="font-family: var(--font-serif); font-size: 1.3rem; color: var(--cream); font-weight: 500;">AVANIKA.CO Circle Members</h3>
+            <button id="exportCircleCSV" class="btn-primary" style="width: auto; padding: 0.5rem 1rem; font-size: 0.75rem;">Export CSV</button>
           </div>
           <div class="admin-table-wrapper" style="overflow-x: auto; background: var(--black-2); border: 1px solid var(--black-4);">
             <table class="admin-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
               <thead>
                 <tr style="background: var(--black-3); border-bottom: 1px solid var(--black-4);">
-                  <th style="padding: 1rem;">User ID</th>
+                  <th style="padding: 1rem;">Subscriber ID</th>
                   <th style="padding: 1rem;">Customer Name</th>
-                  <th style="padding: 1rem;">Email Address</th>
-                  <th style="padding: 1rem;">Joined Date</th>
-                  <th style="padding: 1rem; text-align:center;">Lifetime Orders</th>
-                  <th style="padding: 1rem;">Total Spent</th>
-                  <th style="padding: 1rem; text-align:center;">Loyalty Points</th>
-                  <th style="padding: 1rem;">Status</th>
+                  <th style="padding: 1rem;">Mobile Number</th>
+                  <th style="padding: 1rem;">Join Date</th>
+                  <th style="padding: 1rem; text-align: right;">Actions</th>
                 </tr>
               </thead>
-              <tbody id="adminAccountsList">
+              <tbody id="adminCircleList">
                 <!-- Rendered via JS -->
               </tbody>
             </table>
           </div>
         </div>
+
 
         <!-- TAB 5: ABANDONED CARTS PANE -->
         <div class="dashboard-pane" id="tab-abandons" style="display: none;">
@@ -445,6 +487,58 @@ function mountDashboard() {
 
       </div>
     </main>
+
+    <!-- ===== EDIT PRODUCT MODAL ===== -->
+    <div id="editProductModal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(10, 22, 17, 0.96); z-index: 10000; align-items: center; justify-content: center; padding: 1.5rem; font-family: 'Inter', sans-serif;">
+      <div style="background: #12241C; border: 1px solid #DFB76C; max-width: 600px; width: 100%; padding: 2.5rem 2rem; box-shadow: 0 15px 40px rgba(0,0,0,0.5); position: relative; max-height: 90vh; overflow-y: auto;">
+        <button id="closeEditModalBtn" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--cream-muted); font-size: 1.5rem; cursor: pointer;">&times;</button>
+        <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--gold); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Edit Product Details</h3>
+        <form id="editProductForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <input type="hidden" id="editProdId" />
+          <div style="grid-column: span 2; display:flex; flex-direction:column; gap:0.3rem;">
+            <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Product Name</label>
+            <input type="text" id="editProdName" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0.3rem;">
+            <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Category</label>
+            <select id="editProdCategory" style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;">
+              <option value="Earrings">Earrings</option>
+              <option value="Bracelets">Bracelets</option>
+              <option value="Necklace">Necklace</option>
+              <option value="Rings">Rings</option>
+            </select>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0.3rem;">
+            <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Image Path / URL</label>
+            <input type="text" id="editProdImage" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+          </div>
+          <div style="grid-column: span 2; display:flex; flex-direction:column; gap:0.3rem;">
+            <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Description</label>
+            <textarea id="editProdDesc" rows="4" style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem; font-family:inherit; line-height:1.4; resize:vertical;"></textarea>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0.3rem;">
+            <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Making Charges (INR)</label>
+            <input type="number" id="editProdMaking" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0.3rem;">
+            <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Gold Weight (g)</label>
+            <input type="number" step="0.01" id="editProdGoldWeight" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0.3rem;">
+            <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Gemstone Cost (INR)</label>
+            <input type="number" id="editProdGemstone" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0.3rem;">
+            <label style="font-size:0.7rem; color:var(--cream-muted); text-transform:uppercase; font-weight:600;">Stock</label>
+            <input type="number" id="editProdStock" required style="padding: 0.5rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-size:0.8rem;" />
+          </div>
+          <div style="grid-column: span 2; display:flex; justify-content: flex-end; gap:1rem; margin-top:1rem;">
+            <button type="button" id="cancelEditBtn" class="btn-primary" style="background:transparent; border:1px solid var(--black-4); color:var(--cream-muted); width:auto; padding:0.6rem 1.2rem;">Cancel</button>
+            <button type="submit" class="btn-primary" style="width: auto; padding: 0.6rem 1.5rem;">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
   `;
   document.getElementById('dashboard-mount').innerHTML = dashboardHTML;
 }
@@ -1108,40 +1202,169 @@ function drawTrafficCharts() {
   });
 }
 
-// Create new catalog products
-async function createNewProduct(e) {
-  e.preventDefault();
+// ===== MANAGE LISTINGS: DATABASE ACTIONS & RENDERING =====
+async function fetchProductsData() {
+  if (window.isSupabaseConfigured && window.supabaseClient) {
+    try {
+      const { data, error } = await window.supabaseClient
+        .from('products')
+        .select('*')
+        .order('id', { ascending: true });
+        
+      if (error) throw error;
+      if (data) products = data;
+    } catch (e) {
+      console.error('Error fetching live products:', e);
+    }
+  }
+  
+  if (products.length === 0) {
+    const cached = localStorage.getItem('avanika_simulated_products');
+    if (cached) {
+      products = JSON.parse(cached);
+    } else {
+      // Seed default products
+      products = [
+        { id: "p1", name: "Meera Anti-Tarnish Kundan Chandbalis", category: "Earrings", image: "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.35 PM.jpeg", description: "Handcrafted traditional Indian Kundan Chandbalis, heavily plated in 18K yellow gold finish over a premium base alloy. Adorned with cluster CZ stones and premium faux pearls. Features our advanced anti-tarnish guard for lasting color protection. Hypoallergenic, lightweight, and perfect for ethnic celebrations.", base_price_making: 300, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p2", name: "Aura Celestial Gold Plated Hoops", category: "Earrings", image: "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.03 AM.jpeg", description: "Minimalist, daily-wear geometric hoop earrings plated in high-shine 18K gold. Fitted with a secure click-lock latch. Fully anti-tarnish treated for lasting color protection. Waterproof, sweat-proof, and designed to match both Western and casual outfits.", base_price_making: 300, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p3", name: "Ziya Simulated Emerald Drop Jhumkas", category: "Earrings", image: "images/earrings/3/WhatsApp Image 2026-06-12 at 10.52.55 AM.jpeg", description: "Fusion dangle jhumkas with vibrant simulated emerald drops suspended from a micro-pave cubic zirconia floral stud. Plated in 18K yellow gold base alloy. Features advanced anti-tarnish protection for lasting color. Extremely lightweight and comfortable.", base_price_making: 300, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p4", name: "Avni Royal Kundan Pearl Drops", category: "Earrings", image: "images/earrings/4/WhatsApp Image 2026-06-12 at 2.19.55 PM.jpeg", description: "Regal drop earrings featuring hand-set Kundan stones and suspended organic shell pearls. Plated in an antique 18K yellow gold finish. Protected with an anti-tarnish barrier and designed for long-lasting wear. The perfect accessory for wedding and bridal wear.", base_price_making: 300, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p5", name: "Lumina Premium CZ Solitaire Studs", category: "Earrings", image: "images/earrings/5/WhatsApp Image 2026-06-12 at 2.25.32 PM.jpeg", description: "Classic four-prong stud earrings holding flawless AAAAA-grade simulated cubic zirconia solitaires. Plated in premium platinum-finish base alloy. Anti-tarnish coated for lasting color protection. Versatile and timeless, ideal for office wear and special occasions.", base_price_making: 300, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p6", name: "Tara Rose Gold Starburst Dangles", category: "Earrings", image: "images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg", description: "Elegant starburst danglers featuring pave-set CZ stone arrays that capture and reflect light. Plated in highly polished 18K rose gold. Includes premium anti-tarnish coating for lasting color protection. Hypoallergenic posts make them comfortable for sensitive ears.", base_price_making: 300, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 }
+      ];
+      localStorage.setItem('avanika_simulated_products', JSON.stringify(products));
+    }
+  }
+  
+  renderProductsTable();
+}
 
+function renderProductsTable() {
+  const container = document.getElementById('adminProductsList');
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  if (products.length === 0) {
+    container.innerHTML = `
+      <tr>
+        <td colspan="8" style="text-align: center; padding: 3rem 0; color: var(--cream-muted);">No catalog products found.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  // Generate a map of product sales from orders log
+  const salesMap = {};
+  const revenueMap = {};
+
+  orders.forEach(order => {
+    if (order.items && Array.isArray(order.items)) {
+      order.items.forEach(item => {
+        const prodId = item.id.split('-')[0];
+        const qty = item.quantity || 1;
+        const price = parseFloat(item.price || 300);
+
+        salesMap[prodId] = (salesMap[prodId] || 0) + qty;
+        revenueMap[prodId] = (revenueMap[prodId] || 0) + (qty * price);
+      });
+    }
+  });
+
+  products.forEach(p => {
+    const sold = salesMap[p.id] || 0;
+    const rev = revenueMap[p.id] || 0;
+
+    const row = document.createElement('tr');
+    row.style.borderBottom = '1px solid var(--black-4)';
+    row.innerHTML = `
+      <td style="padding: 0.8rem; font-family: monospace; font-weight:600; color:var(--gold);">${p.id}</td>
+      <td style="padding: 0.8rem;">
+        <img src="${p.image}" alt="${p.name}" width="36" height="36" style="object-fit:cover; border: 1px solid var(--black-4);" />
+      </td>
+      <td style="padding: 0.8rem; max-width: 250px;">
+        <strong style="color:var(--cream);">${p.name}</strong><br>
+        <span style="font-size:0.75rem; color:var(--cream-muted); display:inline-block; max-height:2.8em; overflow:hidden; text-overflow:ellipsis;">${p.description}</span>
+      </td>
+      <td style="padding: 0.8rem; font-weight: 500;">${p.category}</td>
+      <td style="padding: 0.8rem; font-family: var(--font-serif);">₹${parseFloat(p.base_price_making || 300).toLocaleString()}</td>
+      <td style="padding: 0.8rem; text-align: center; font-weight: bold; color: ${sold > 0 ? '#2a9d8f' : 'var(--cream-muted)'};">${sold}</td>
+      <td style="padding: 0.8rem; font-family: var(--font-serif); font-weight: bold; color: var(--cream);">₹${rev.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+      <td style="padding: 0.8rem; text-align: right;">
+        <div style="display:flex; justify-content:flex-end; gap:0.5rem;">
+          <button class="btn-edit-prod" data-id="${p.id}" style="padding: 0.25rem 0.6rem; background: var(--gold); border:none; color:#000; font-size:0.75rem; font-weight:bold; cursor:pointer;">Edit</button>
+          <button class="btn-delete-prod" data-id="${p.id}" style="padding: 0.25rem 0.6rem; background: #c94c4c; border:none; color:#fff; font-size:0.75rem; font-weight:bold; cursor:pointer;">Delete</button>
+        </div>
+      </td>
+    `;
+    container.appendChild(row);
+  });
+
+  // Bind actions
+  container.querySelectorAll('.btn-edit-prod').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const id = this.getAttribute('data-id');
+      openEditProductModal(id);
+    });
+  });
+
+  container.querySelectorAll('.btn-delete-prod').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const id = this.getAttribute('data-id');
+      deleteProductListing(id);
+    });
+  });
+}
+
+async function addNewProductListing(e) {
+  e.preventDefault();
+  
   const id = document.getElementById('prodId').value.trim();
   const name = document.getElementById('prodName').value.trim();
-  const cat = document.getElementById('prodCategory').value.trim();
+  const category = document.getElementById('prodCategory').value;
+  const image = document.getElementById('prodImage').value.trim();
+  const desc = document.getElementById('prodDesc').value.trim();
+  const making = parseFloat(document.getElementById('prodMaking').value) || 300;
   const goldW = parseFloat(document.getElementById('prodGoldWeight').value) || 0;
-  const making = parseFloat(document.getElementById('prodMaking').value) || 0;
   const gem = parseFloat(document.getElementById('prodGemstone').value) || 0;
+  const stock = parseInt(document.getElementById('prodStock').value) || 10;
+
+  if (products.some(p => p.id === id)) {
+    alert(`❌ Product ID "${id}" already exists. Please choose a unique ID.`);
+    return;
+  }
+
+  const newProd = {
+    id: id,
+    name: name,
+    category: category,
+    image: image,
+    description: desc,
+    base_price_making: making,
+    gold_weight_grams: goldW,
+    gemstone_cost: gem,
+    stock: stock
+  };
 
   if (window.isSupabaseConfigured && window.supabaseClient) {
     try {
       const { error } = await window.supabaseClient
         .from('products')
-        .insert([{
-          id: id,
-          name: name,
-          category: cat,
-          image: "images/product_ring.png", // Default image placeholder
-          description: `Handcrafted premium customized jewelry, certified by Avanika. Made of gold-plated alloy framework and premium settings.`,
-          gold_weight_grams: goldW,
-          base_price_making: making,
-          compare_at_price: (making + gem + (goldW * goldRate * 0.05)) * 1.3 // 30% higher comparison RRP
-        }]);
+        .insert([newProd]);
 
       if (error) throw error;
-    } catch(err) {
-      console.error(err);
-      alert('Supabase catalog creation failed.');
+    } catch (err) {
+      console.error('Supabase product creation failed:', err);
     }
   }
 
-  // Auto-generate variants in localstorage simulation to keep in sync
+  // Save locally
+  const list = JSON.parse(localStorage.getItem('avanika_simulated_products') || '[]');
+  list.push(newProd);
+  localStorage.setItem('avanika_simulated_products', JSON.stringify(list));
+  products = list;
+
+  // Auto-generate variants in localstorage inventory backup
   const simInv = JSON.parse(localStorage.getItem('avanika_simulated_inventory') || '{}');
   const sizes = ['6', '7', '8'];
   const metals = ['yellowgold', 'rosegold', 'platinum'];
@@ -1151,15 +1374,250 @@ async function createNewProduct(e) {
     metals.forEach(mt => {
       stones.forEach(st => {
         const key = `${id}-${sz}-${mt}-${st}`;
-        simInv[key] = 5; // Start with 5 units stock
+        simInv[key] = stock;
       });
     });
   });
   localStorage.setItem('avanika_simulated_inventory', JSON.stringify(simInv));
 
-  alert(`⚡ Product ${name} added successfully! Dynamic inventory generated.`);
+  alert(`⚡ Product "${name}" added successfully!`);
   document.getElementById('createProductForm').reset();
+  
+  fetchProductsData();
   fetchInventoryData();
+}
+
+function openEditProductModal(id) {
+  const prod = products.find(p => p.id === id);
+  if (!prod) return;
+
+  document.getElementById('editProdId').value = prod.id;
+  document.getElementById('editProdName').value = prod.name;
+  document.getElementById('editProdCategory').value = prod.category;
+  document.getElementById('editProdImage').value = prod.image;
+  document.getElementById('editProdDesc').value = prod.description || '';
+  document.getElementById('editProdMaking').value = prod.base_price_making || 300;
+  document.getElementById('editProdGoldWeight').value = prod.gold_weight_grams || 0;
+  document.getElementById('editProdGemstone').value = prod.gemstone_cost || 0;
+  document.getElementById('editProdStock').value = prod.stock || 10;
+
+  const modal = document.getElementById('editProductModal');
+  if (modal) {
+    modal.style.display = 'flex';
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(modal.querySelector('div'),
+        { scale: 0.8, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.5)' }
+      );
+    }
+  }
+}
+
+async function saveProductEdits(e) {
+  e.preventDefault();
+
+  const id = document.getElementById('editProdId').value;
+  const name = document.getElementById('editProdName').value.trim();
+  const category = document.getElementById('editProdCategory').value;
+  const image = document.getElementById('editProdImage').value.trim();
+  const desc = document.getElementById('editProdDesc').value.trim();
+  const making = parseFloat(document.getElementById('editProdMaking').value) || 300;
+  const goldW = parseFloat(document.getElementById('editProdGoldWeight').value) || 0;
+  const gem = parseFloat(document.getElementById('editProdGemstone').value) || 0;
+  const stock = parseInt(document.getElementById('editProdStock').value) || 10;
+
+  const updatedProd = {
+    id: id,
+    name: name,
+    category: category,
+    image: image,
+    description: desc,
+    base_price_making: making,
+    gold_weight_grams: goldW,
+    gemstone_cost: gem,
+    stock: stock
+  };
+
+  if (window.isSupabaseConfigured && window.supabaseClient) {
+    try {
+      const { error } = await window.supabaseClient
+        .from('products')
+        .update(updatedProd)
+        .eq('id', id);
+
+      if (error) throw error;
+    } catch (err) {
+      console.error('Supabase update failed:', err);
+    }
+  }
+
+  // Update locally
+  const list = JSON.parse(localStorage.getItem('avanika_simulated_products') || '[]');
+  const idx = list.findIndex(p => p.id === id);
+  if (idx !== -1) {
+    list[idx] = updatedProd;
+    localStorage.setItem('avanika_simulated_products', JSON.stringify(list));
+  }
+  products = list;
+
+  alert(`⚡ Product "${name}" updated successfully.`);
+  closeEditProductModal();
+  fetchProductsData();
+}
+
+function closeEditProductModal() {
+  const modal = document.getElementById('editProductModal');
+  if (modal) {
+    if (typeof gsap !== 'undefined') {
+      gsap.to(modal.querySelector('div'), {
+        scale: 0.8,
+        opacity: 0,
+        duration: 0.3,
+        ease: 'power2.in',
+        onComplete: () => {
+          modal.style.display = 'none';
+        }
+      });
+    } else {
+      modal.style.display = 'none';
+    }
+  }
+}
+
+async function deleteProductListing(id) {
+  if (!confirm(`⚠️ Are you sure you want to delete product "${id}"? This will remove it from the catalog.`)) return;
+
+  if (window.isSupabaseConfigured && window.supabaseClient) {
+    try {
+      const { error } = await window.supabaseClient
+        .from('products')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+    } catch (err) {
+      console.error('Supabase delete failed:', err);
+    }
+  }
+
+  // Delete locally
+  const list = JSON.parse(localStorage.getItem('avanika_simulated_products') || '[]');
+  const filteredList = list.filter(p => p.id !== id);
+  localStorage.setItem('avanika_simulated_products', JSON.stringify(filteredList));
+  products = filteredList;
+
+  alert(`⚡ Product "${id}" deleted successfully.`);
+  fetchProductsData();
+}
+
+
+// ===== CIRCLE SHEET: DATABASE ACTIONS & RENDERING =====
+async function fetchCircleData() {
+  if (window.isSupabaseConfigured && window.supabaseClient) {
+    try {
+      const { data, error } = await window.supabaseClient
+        .from('circle_subscribers')
+        .select('*')
+        .order('created_at', { ascending: false });
+        
+      if (error) throw error;
+      if (data) circle = data;
+    } catch (e) {
+      console.error('Error fetching circle subscribers:', e);
+    }
+  }
+  
+  if (circle.length === 0) {
+    circle = JSON.parse(localStorage.getItem('avanika_simulated_circle') || '[]');
+  }
+  
+  renderCircleTable();
+}
+
+function renderCircleTable() {
+  const container = document.getElementById('adminCircleList');
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  if (circle.length === 0) {
+    container.innerHTML = `
+      <tr>
+        <td colspan="5" style="text-align: center; padding: 3rem 0; color: var(--cream-muted);">No members have joined the Circle yet.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  circle.forEach(sub => {
+    const row = document.createElement('tr');
+    row.style.borderBottom = '1px solid var(--black-4)';
+    row.innerHTML = `
+      <td style="padding: 1rem; font-family: monospace; font-weight:600; color:var(--cream-muted);">${sub.id || 'CIR-' + Math.floor(100000 + Math.random() * 900000)}</td>
+      <td style="padding: 1rem; font-weight: 600; color: var(--cream);">${sub.name}</td>
+      <td style="padding: 1rem; font-family: monospace; font-size: 0.95rem; color: var(--gold);">${sub.mobile}</td>
+      <td style="padding: 1rem; color: var(--cream-muted);">${new Date(sub.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+      <td style="padding: 1rem; text-align: right;">
+        <button class="btn-delete-sub" data-id="${sub.id || sub.mobile}" style="padding: 0.25rem 0.6rem; background: #c94c4c; border:none; color:#fff; font-size:0.75rem; font-weight:bold; cursor:pointer;">Remove</button>
+      </td>
+    `;
+    container.appendChild(row);
+  });
+
+  container.querySelectorAll('.btn-delete-sub').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const id = this.getAttribute('data-id');
+      deleteCircleSubscriber(id);
+    });
+  });
+}
+
+async function deleteCircleSubscriber(id) {
+  if (!confirm(`⚠️ Are you sure you want to remove this subscriber from the Circle?`)) return;
+
+  if (window.isSupabaseConfigured && window.supabaseClient) {
+    try {
+      const { error } = await window.supabaseClient
+        .from('circle_subscribers')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+    } catch (err) {
+      console.error('Supabase subscriber deletion failed:', err);
+    }
+  }
+
+  const list = JSON.parse(localStorage.getItem('avanika_simulated_circle') || '[]');
+  const filteredList = list.filter(sub => (sub.id !== id && sub.mobile !== id));
+  localStorage.setItem('avanika_simulated_circle', JSON.stringify(filteredList));
+  circle = filteredList;
+
+  alert(`⚡ Subscriber removed successfully.`);
+  fetchCircleData();
+}
+
+function exportCircleToCSV() {
+  if (circle.length === 0) {
+    alert("No subscriber details to export.");
+    return;
+  }
+  
+  let csvContent = "data:text/csv;charset=utf-8,";
+  csvContent += "ID,Name,Mobile,Join Date\n";
+  
+  circle.forEach(sub => {
+    const row = `"${sub.id || ''}","${sub.name || ''}","${sub.mobile || ''}","${sub.created_at || ''}"`;
+    csvContent += row + "\n";
+  });
+  
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `avanika_circle_members_${new Date().toISOString().slice(0,10)}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1171,10 +1629,11 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // 3. Load variables
   fetchOrdersData();
+  fetchProductsData();
+  fetchCircleData();
   fetchInventoryData();
   fetchGoldRate();
   renderReturnsTable();
-  fetchAccountsData();
   fetchAbandonsData();
   fetchEmailsData();
   drawTrafficCharts();
@@ -1213,7 +1672,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // 6. Submit Product Catalogue form
   const prodForm = document.getElementById('createProductForm');
   if (prodForm) {
-    prodForm.addEventListener('submit', createNewProduct);
+    prodForm.addEventListener('submit', addNewProductListing);
+  }
+
+  // 6b. Submit Edit Product form
+  const editProdForm = document.getElementById('editProductForm');
+  if (editProdForm) {
+    editProdForm.addEventListener('submit', saveProductEdits);
+  }
+
+  // 6c. Modal close & cancel buttons
+  const closeEditModalBtn = document.getElementById('closeEditModalBtn');
+  if (closeEditModalBtn) {
+    closeEditModalBtn.addEventListener('click', closeEditProductModal);
+  }
+
+  const cancelEditBtn = document.getElementById('cancelEditBtn');
+  if (cancelEditBtn) {
+    cancelEditBtn.addEventListener('click', closeEditProductModal);
+  }
+
+  // 6d. Export Circle CSV button
+  const exportCircleBtn = document.getElementById('exportCircleCSV');
+  if (exportCircleBtn) {
+    exportCircleBtn.addEventListener('click', exportCircleToCSV);
   }
 
   // 8. Admin Logout

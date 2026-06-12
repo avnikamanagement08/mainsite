@@ -510,6 +510,27 @@ if (newsletterForm) {
 
     if (!name || !mobile) return;
 
+    // Save subscriber details dynamically
+    if (window.isSupabaseConfigured && window.supabaseClient) {
+      window.supabaseClient
+        .from('circle_subscribers')
+        .insert([{ name: name, mobile: mobile }])
+        .then(({ error }) => {
+          if (error) console.error('❌ Error saving subscriber to Supabase:', error);
+          else console.log('⚡ Subscriber saved to Supabase successfully.');
+        });
+    }
+
+    // Always save to localStorage as fallback / backup
+    const circle = JSON.parse(localStorage.getItem('avanika_simulated_circle') || '[]');
+    circle.unshift({
+      id: 'CIR-' + Math.floor(100000 + Math.random() * 900000),
+      name: name,
+      mobile: mobile,
+      created_at: new Date().toISOString()
+    });
+    localStorage.setItem('avanika_simulated_circle', JSON.stringify(circle));
+
     const btn = newsletterForm.querySelector('.btn-primary');
     const originalHTML = btn.innerHTML;
     
@@ -1057,16 +1078,183 @@ function initCategoriesDrag() {
   });
 }
 
-// ===== INTERACTIVE CATEGORY SELECTOR =====
-function initCategorySelector() {
-  const categoryItems = document.querySelectorAll('.categories-bar .category-item');
+// ===== DYNAMIC CATALOG DATA FETCH & SYNC =====
+async function loadDynamicProducts() {
+  let dbProducts = [];
+  if (window.isSupabaseConfigured && window.supabaseClient) {
+    try {
+      const { data, error } = await window.supabaseClient
+        .from('products')
+        .select('*');
+      if (error) throw error;
+      if (data && data.length > 0) {
+        dbProducts = data;
+      }
+    } catch (e) {
+      console.error('❌ Error fetching products from Supabase:', e);
+    }
+  }
+  
+  if (dbProducts.length === 0) {
+    const cached = localStorage.getItem('avanika_simulated_products');
+    if (cached) {
+      dbProducts = JSON.parse(cached);
+    } else {
+      // Seed cached list from allProductsDatabase
+      dbProducts = Object.values(allProductsDatabase);
+      localStorage.setItem('avanika_simulated_products', JSON.stringify(dbProducts));
+    }
+  }
+
+  // Clear existing items in allProductsDatabase reference safely
+  for (const key in allProductsDatabase) {
+    delete allProductsDatabase[key];
+  }
+
+  // Populate dynamic database records
+  dbProducts.forEach(prod => {
+    allProductsDatabase[prod.id] = {
+      id: prod.id,
+      name: prod.name,
+      price: "₹300",
+      image: prod.image,
+      category: prod.category,
+      gallery: prod.gallery || [prod.image],
+      description: prod.description
+    };
+  });
+}
+
+function renderHomepageCategory(categoryName) {
   const earringsGrid = document.getElementById('earringsGrid');
   const comingSoonContainer = document.getElementById('comingSoonContainer');
   const comingSoonTitle = document.getElementById('comingSoonTitle');
-  const csNotifyForm = document.getElementById('csNotifyForm');
-  const csNotifySuccess = document.getElementById('csNotifySuccess');
-  
+
+  if (!earringsGrid) return;
+
+  // Filter products by category (case-insensitive & plural-resilient)
+  const categoryProducts = Object.values(allProductsDatabase).filter(p => {
+    const pCat = p.category.toLowerCase().trim();
+    const targetCat = categoryName.toLowerCase().trim();
+    return pCat === targetCat || 
+           (targetCat === 'necklace' && pCat === 'necklaces') || 
+           (targetCat === 'necklaces' && pCat === 'necklace') ||
+           (targetCat === 'rings' && pCat === 'ring') ||
+           (targetCat === 'ring' && pCat === 'rings') ||
+           (targetCat === 'earrings' && pCat === 'earring') ||
+           (targetCat === 'earring' && pCat === 'earrings') ||
+           (targetCat === 'bracelets' && pCat === 'bracelet') ||
+           (targetCat === 'bracelet' && pCat === 'bracelets');
+  });
+
+  if (categoryProducts.length > 0) {
+    earringsGrid.innerHTML = '';
+    earringsGrid.style.display = 'grid';
+    if (comingSoonContainer) comingSoonContainer.style.display = 'none';
+
+    categoryProducts.forEach(prod => {
+      const card = document.createElement('div');
+      card.className = 'product-card reveal-up';
+      card.id = prod.id;
+      card.style.cursor = 'pointer';
+      
+      card.innerHTML = `
+        <div class="product-img-wrap">
+          <img src="${prod.image}" alt="${prod.name}" class="product-img" />
+          <div class="product-actions">
+            <button class="product-btn wishlist" data-id="${prod.id}" aria-label="Wishlist">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+          </div>
+          <div class="product-badge">-40%</div>
+        </div>
+        <div class="product-info">
+          <span class="product-category">${prod.category}</span>
+          <h3 class="product-name">${prod.name}</h3>
+          <div class="product-rating">
+            <span class="stars">★★★★★</span>
+            <span class="rating-count">(${Math.floor(40 + Math.random() * 60)})</span>
+          </div>
+          <div class="product-price-row">
+            <span class="product-price">${prod.price || "₹300"} <span style="font-size:0.8rem; color:var(--cream-muted); text-decoration:line-through; font-weight:normal; margin-left:5px;">₹500</span></span>
+            <button class="add-to-cart">View</button>
+          </div>
+        </div>
+      `;
+
+      // Card click opens quick view modal
+      card.addEventListener('click', function(e) {
+        if (e.target.closest('.wishlist') || e.target.closest('.add-to-cart')) return;
+        gsap.fromTo(this, 
+          { scale: 0.98 }, 
+          { scale: 1, duration: 0.3, ease: 'power2.out' }
+        );
+        openQuickViewModal(prod.id);
+      });
+
+      // View button click opens quick view modal
+      const viewBtn = card.querySelector('.add-to-cart');
+      if (viewBtn) {
+        viewBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          gsap.fromTo(card, 
+            { scale: 0.98 }, 
+            { scale: 1, duration: 0.3, ease: 'power2.out' }
+          );
+          openQuickViewModal(prod.id);
+        });
+      }
+
+      // Wishlist button click
+      const wishlistBtn = card.querySelector('.wishlist');
+      if (wishlistBtn) {
+        wishlistBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleWishlistItem(prod.id);
+        });
+      }
+
+      earringsGrid.appendChild(card);
+    });
+
+    // Animate cards
+    gsap.fromTo(earringsGrid.querySelectorAll('.product-card'), 
+      { opacity: 0, y: 35 },
+      { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' }
+    );
+
+    // Sync wishlist buttons
+    syncWishlistButtons();
+
+  } else {
+    earringsGrid.style.display = 'none';
+    if (comingSoonContainer) {
+      comingSoonContainer.style.display = 'block';
+      const catName = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
+      if (comingSoonTitle) comingSoonTitle.textContent = `${catName} Collection Coming Soon`;
+      
+      const csNotifyForm = document.getElementById('csNotifyForm');
+      const csNotifySuccess = document.getElementById('csNotifySuccess');
+      if (csNotifyForm) csNotifyForm.style.display = 'flex';
+      if (csNotifySuccess) csNotifySuccess.style.display = 'none';
+
+      gsap.fromTo(comingSoonContainer,
+        { opacity: 0, scale: 0.96 },
+        { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.5)' }
+      );
+    }
+  }
+}
+
+// ===== INTERACTIVE CATEGORY SELECTOR =====
+function initCategorySelector() {
+  const categoryItems = document.querySelectorAll('.categories-bar .category-item');
   if (categoryItems.length === 0) return;
+
+  // Initial dynamically populated fetch and load
+  loadDynamicProducts().then(() => {
+    renderHomepageCategory('earrings');
+  });
   
   categoryItems.forEach(item => {
     item.addEventListener('click', () => {
@@ -1087,36 +1275,10 @@ function initCategorySelector() {
         dynamicCategoryName.textContent = catDisplayName;
       }
       
-      if (category === 'earrings') {
-        if (earringsGrid) earringsGrid.style.display = 'grid';
-        if (comingSoonContainer) comingSoonContainer.style.display = 'none';
-        
-        // Stagger reveal of earring cards
-        gsap.fromTo('#earringsGrid .product-card', 
-          { opacity: 0, y: 35 },
-          { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' }
-        );
-      } else {
-        if (earringsGrid) earringsGrid.style.display = 'none';
-        if (comingSoonContainer) {
-          comingSoonContainer.style.display = 'block';
-          // Capitalize category name
-          const catName = category.charAt(0).toUpperCase() + category.slice(1);
-          if (comingSoonTitle) comingSoonTitle.textContent = `${catName} Collection Coming Soon`;
-          
-          // Reset notify form
-          if (csNotifyForm) csNotifyForm.style.display = 'flex';
-          if (csNotifySuccess) csNotifySuccess.style.display = 'none';
-          
-          // Animate coming soon card entry
-          gsap.fromTo(comingSoonContainer,
-            { opacity: 0, scale: 0.96 },
-            { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.5)' }
-          );
-        }
-      }
+      renderHomepageCategory(category);
     });
   });
+}
 
   // Handle coming soon notify form submit
   if (csNotifyForm) {

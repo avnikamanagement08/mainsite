@@ -859,8 +859,58 @@ function initPincodeChecker() {
   });
 }
 
+// ===== DYNAMIC PRODUCTS DATABASE SYNC =====
+async function loadDynamicProducts() {
+  let dbProducts = [];
+  if (window.isSupabaseConfigured && window.supabaseClient) {
+    try {
+      const { data, error } = await window.supabaseClient
+        .from('products')
+        .select('*');
+      if (error) throw error;
+      if (data && data.length > 0) {
+        dbProducts = data;
+      }
+    } catch (e) {
+      console.error('❌ Error fetching products from Supabase:', e);
+    }
+  }
+  
+  if (dbProducts.length === 0) {
+    const cached = localStorage.getItem('avanika_simulated_products');
+    if (cached) {
+      dbProducts = JSON.parse(cached);
+    } else {
+      // Seed cached list from productsData
+      dbProducts = Object.values(productsData);
+      localStorage.setItem('avanika_simulated_products', JSON.stringify(dbProducts));
+    }
+  }
+
+  // Populate dynamic database records into productsData
+  dbProducts.forEach(prod => {
+    productsData[prod.id] = {
+      id: prod.id,
+      name: prod.name,
+      image: prod.image,
+      gallery: prod.gallery || [prod.image],
+      category: prod.category,
+      description: prod.description,
+      gold_weight_grams: parseFloat(prod.gold_weight_grams || 0),
+      base_price_making: parseFloat(prod.base_price_making || 300.00),
+      gemstone_cost: parseFloat(prod.gemstone_cost || 0),
+      is_preorder: prod.is_preorder || false,
+      is_consignment: prod.is_consignment || false,
+      reviews: productsData[prod.id] ? (productsData[prod.id].reviews || []) : []
+    };
+  });
+}
+
 // Document Ready Initialization
 document.addEventListener('DOMContentLoaded', async () => {
+  // Load dynamic products before anything else
+  await loadDynamicProducts();
+
   initVariantInventory();
   
   // 1. Fetch live gold rates initially

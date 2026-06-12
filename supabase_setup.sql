@@ -230,3 +230,20 @@ ON CONFLICT (id) DO UPDATE SET
   description = EXCLUDED.description,
   base_price_making = EXCLUDED.base_price_making,
   gold_weight_grams = EXCLUDED.gold_weight_grams;
+
+
+-- 14. CREATE CIRCLE SUBSCRIBERS TABLE
+CREATE TABLE IF NOT EXISTS public.circle_subscribers (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    name TEXT NOT NULL,
+    mobile TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE public.circle_subscribers ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow public insert access to circle_subscribers" ON public.circle_subscribers FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow public select access to circle_subscribers" ON public.circle_subscribers FOR SELECT USING (true);
+CREATE POLICY "Allow admin update access to circle_subscribers" ON public.circle_subscribers FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "Allow admin delete access to circle_subscribers" ON public.circle_subscribers FOR DELETE TO authenticated USING (true);
+
