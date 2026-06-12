@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  
+  <script>
+    // Security check executed before anything else
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get('token');
+      
+      if (token) {
+        sessionStorage.setItem('avanika_admin_token', token);
+        // Clean URL to prevent token leakage
+        const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+        window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+      }
+      
+      const sessionToken = sessionStorage.getItem('avanika_admin_token');
+      window.isAdminAuthorized = (sessionToken === 'avanika_admin_2026');
+    })();
+  </script>
+</head>
+<body class="checkout-page-body">
+
+  <!-- Access Gate Screen (Active by default if not authorized) -->
+  <div class="access-denied-wrapper" id="access-denied-screen">
+    <!-- Beautiful luxury login card (initially hidden) -->
+    <div class="login-card" id="login-card" style="display: none; background: #12241C; border: 1px solid #DFB76C; padding: 3rem 2.5rem; width: 100%; max-width: 420px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); text-align: left;">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <div class="ad-icon" style="font-size: 3rem; margin-bottom: 0.5rem; color: #DFB76C; line-height: 1;">✦</div>
+        <h1 class="ad-title" style="font-size: 1.6rem; color: #F2EFE8; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.2rem;">Avanika.co</h1>
+        <p style="font-size: 0.82rem; color: #B3C0B8;">Owner Console Security</p>
+      </div>
+
+      <form id="admin-login-form" style="display: flex; flex-direction: column; gap: 1.2rem;">
+        <div id="login-db-indicator" style="font-size: 0.72rem; color: #DFB76C; background: rgba(223, 183, 108, 0.08); padding: 0.5rem 0.8rem; border: 1px dashed rgba(223, 183, 108, 0.3); margin-bottom: 0.5rem; text-align: center;">
+          🔌 Offline Simulation Mode
+        </div>
+
+        <div id="email-field-container" style="display: none; flex-direction: column; gap: 0.4rem;">
+          <label style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #B3C0B8; font-weight: 600;">Admin Email</label>
+          <input type="email" id="login-email" placeholder="admin@avanika.co" style="padding: 0.8rem; background: #0A1611; border: 1px solid #1D362B; color: #F2EFE8; font-size: 0.85rem;" />
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+          <label style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #B3C0B8; font-weight: 600;">Password</label>
+          <input type="password" id="login-password" required placeholder="••••••••" style="padding: 0.8rem; background: #0A1611; border: 1px solid #1D362B; color: #F2EFE8; font-size: 0.85rem;" />
+        </div>
+
+        <div id="login-error-msg" style="color: #c94c4c; font-size: 0.8rem; display: none; text-align: center; border: 1px solid rgba(201, 76, 76, 0.2); background: rgba(201, 76, 76, 0.05); padding: 0.5rem;"></div>
+
+        <button type="submit" class="btn-primary" style="width: 100%; padding: 0.9rem; margin-top: 0.5rem; justify-content: center; background: #DFB76C; color: #0A1611; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;">Verify Credentials</button>
+      </form>
+      
+      <div style="margin-top: 1.5rem; text-align: center;">
+        <a href="index.html" style="font-size: 0.75rem; color: #B3C0B8; text-decoration: none; border-bottom: 1px solid rgba(179,192,184,0.3); padding-bottom: 2px;">Return to Shop</a>
+      </div>
+    </div>
+
+    <!-- Decoy 404 screen (initially shown to maintain obscurity) -->
+    <div class="access-denied-content" id="decoy-404">
+      <div class="ad-icon">✦</div>
+      <h1 class="ad-title">404 Page Not Found</h1>
+      <p class="ad-text">The page you are looking for does not exist or has been moved. Please return to the shop home page.</p>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+        <a href="index.html" class="btn-primary" style="display: inline-flex; width: auto; text-decoration: none;">Go to Shop</a>
+        <button id="show-login-portal-btn" style="font-size: 0.72rem; color: #B3C0B8; opacity: 0.25; background: none; border: none; cursor: pointer; transition: opacity 0.3s; padding: 0.5rem;">Admin Access Portal</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // If already authorized, we don't need to show anything
+      if (window.isAdminAuthorized) {
+        document.getElementById('access-denied-screen').style.display = 'none';
+        return;
+      }
+
+      const decoy = document.getElementById('decoy-404');
+      const card = document.getElementById('login-card');
+      const showPortalBtn = document.getElementById('show-login-portal-btn');
+      const form = document.getElementById('admin-login-form');
+      const emailFieldContainer = document.getElementById('email-field-container');
+      const dbIndicator = document.getElementById('login-db-indicator');
+      const errorMsg = document.getElementById('login-error-msg');
+      const submitBtn = form.querySelector('button[type="submit"]');
+
+      // Check if Supabase is configured
+      const isLiveDb = window.isSupabaseConfigured && window.supabaseClient;
+      if (isLiveDb) {
+        dbIndicator.textContent = "⚡ Live Database Mode";
+        dbIndicator.style.color = "#2a9d8f";
+        dbIndicator.style.background = "rgba(42, 157, 143, 0.08)";
+        dbIndicator.style.borderColor = "rgba(42, 157, 143, 0.3)";
+        emailFieldContainer.style.display = "flex";
+        document.getElementById('login-email').required = true;
+      } else {
+        dbIndicator.textContent = "🔌 Offline Simulation Mode";
+        dbIndicator.style.color = "#DFB76C";
+      }
+
+      // Show login card
+      showPortalBtn.addEventListener('click', () => {
+        decoy.style.display = 'none';
+        card.style.display = 'block';
+        if (typeof gsap !== 'undefined') {
+          gsap.fromTo(card, { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'power2.out' });
+        }
+      });
+
+      // Rate limit check
+      function checkLockout() {
+        const lockoutTime = localStorage.getItem('avanika_lockout_time');
+        if (lockoutTime) {
+          const remaining = parseInt(lockoutTime) - Date.now();
+          if (remaining > 0) {
+            submitBtn.disabled = true;
+            errorMsg.style.display = 'block';
+            const mins = Math.floor(remaining / 60000);
+            const secs = Math.floor((remaining % 60000) / 1000);
+            errorMsg.textContent = `Too many failed attempts. Locked out. Try again in ${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            setTimeout(checkLockout, 1000);
+            return true;
+          } else {
+            localStorage.removeItem('avanika_lockout_time');
+            localStorage.setItem('avanika_failed_attempts', '0');
+            submitBtn.disabled = false;
+            errorMsg.style.display = 'none';
+          }
+        }
+        return false;
+      }
+
+      checkLockout();
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        if (checkLockout()) return;
+
+        const email = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-password').value;
+
+        // Perform validation
+        if (isLiveDb) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Verifying...";
+          errorMsg.style.display = 'none';
+
+          try {
+            const { data, error } = await window.supabaseClient.auth.signInWithPassword({
+              email: email,
+              password: password
+            });
+
+            if (error) throw error;
+
+            // Success
+            localStorage.setItem('avanika_failed_attempts', '0');
+            sessionStorage.setItem('avanika_admin_token', 'avanika_admin_2026'); // Set local session token
+            window.location.reload();
+          } catch (err) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Verify Credentials";
+            
+            // Record failed attempt
+            let attempts = parseInt(localStorage.getItem('avanika_failed_attempts') || '0') + 1;
+            localStorage.setItem('avanika_failed_attempts', attempts);
+            
+            if (attempts >= 5) {
+              const lockoutUntil = Date.now() + 15 * 60000; // 15 mins
+              localStorage.setItem('avanika_lockout_time', lockoutUntil.toString());
+              checkLockout();
+            } else {
+              errorMsg.style.display = 'block';
+              errorMsg.textContent = `Invalid credentials. ${5 - attempts} attempts remaining.`;
+            }
+          }
+        } else {
+          // Offline mode
+          if (password === 'avanika_admin_2026') {
+            localStorage.setItem('avanika_failed_attempts', '0');
+            sessionStorage.setItem('avanika_admin_token', 'avanika_admin_2026');
+            window.location.reload();
+          } else {
+            let attempts = parseInt(localStorage.getItem('avanika_failed_attempts') || '0') + 1;
+            localStorage.setItem('avanika_failed_attempts', attempts);
+            
+            if (attempts >= 5) {
+              const lockoutUntil = Date.now() + 15 * 60000;
+              localStorage.setItem('avanika_lockout_time', lockoutUntil.toString());
+              checkLockout();
+            } else {
+              errorMsg.style.display = 'block';
+              errorMsg.textContent = `Invalid password. ${5 - attempts} attempts remaining.`;
+            }
+          }
+        }
+      });
+    });
+  </script>
+
+  <!-- Injected dynamically only if authorized -->
+  <div id="dashboard-mount"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <!-- Supabase Backend Integration -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="supabase-console.js"></script>
+  <script src="owner.js"></script>
+</body>
+</html>

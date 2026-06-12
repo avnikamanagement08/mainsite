@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AVANIKA.CO — Checkout | Premium Artificial Jewelry</title>
+  <meta name="description" content="Secure checkout page for Avanika.co premium artificial jewelry. Pay safely via online UPI, Card, Netbanking, or choose Cash on Delivery." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="canonical" href="http://localhost:3000/checkout.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="checkout-page-body">
+
+  <!-- ===== NAVBAR (SIMPLIFIED FOR CHECKOUT) ===== -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo" style="display: flex; align-items: center; gap: 0.8rem; text-decoration: none;">
+        <img src="images/logo.png" alt="AVNIKA" class="nav-logo-img" />
+        <span class="nav-logo-text" style="font-family: var(--font-serif); font-size: 1.6rem; font-weight: 500; letter-spacing: 0.15em; color: var(--cream); text-transform: uppercase;">Avanika.co</span>
+      </a>
+      <div class="nav-actions">
+        <select id="currencySelector" class="currency-select-nav" style="background: var(--black-2); border: 1px solid var(--black-4); color: var(--cream); font-family: inherit; font-size: 0.75rem; padding: 0.4rem; cursor: pointer; margin-right: 0.5rem; text-transform: uppercase;">
+          <option value="INR">INR (₹)</option>
+          <option value="USD">USD ($)</option>
+          <option value="EUR">EUR (€)</option>
+        </select>
+        <a href="index.html" class="btn-ghost" style="padding: 0.5rem 1rem; border: 1px solid var(--black-4);">Back to Shop</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== CHECKOUT CONTAINER ===== -->
+  <main class="checkout-container">
+    <h1 style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">Avanika Secure Checkout</h1>
+    <div class="checkout-layout">
+      <!-- Left Column: Checkout Stepper -->
+      <div class="checkout-steps">
+        
+        <!-- STEP 1: ORDER REVIEW -->
+        <div class="checkout-step active" id="step-1">
+          <div class="step-header">
+            <div class="step-header-left">
+              <span class="step-number">1</span>
+              <h3 class="step-title">Order Review</h3>
+            </div>
+            <button class="step-edit-btn" id="edit-step-1">Edit</button>
+          </div>
+          <div class="step-content">
+            <!-- Dynamic Cart Items list -->
+            <div class="checkout-cart-items" id="checkoutCartItems">
+              <!-- Rendered via JS -->
+            </div>
+            
+            <div class="step-actions" style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+              <button class="btn-primary" id="btn-continue-to-shipping" style="width: auto;">
+                <span>Continue to Shipping</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: SHIPPING ADDRESS -->
+        <div class="checkout-step" id="step-2">
+          <div class="step-header">
+            <div class="step-header-left">
+              <span class="step-number">2</span>
+              <h3 class="step-title">Shipping Address</h3>
+            </div>
+            <button class="step-edit-btn" id="edit-step-2">Edit</button>
+          </div>
+          <div class="step-content">
+            <form class="checkout-form" id="shippingForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="shipName">Full Name *</label>
+                  <input type="text" id="shipName" placeholder="e.g. Sarah Mitchell" required />
+                </div>
+                <div class="form-group">
+                  <label for="shipPhone">Phone Number *</label>
+                  <input type="tel" id="shipPhone" placeholder="10-digit number" pattern="[0-9]{10}" required />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="shipPincode">PIN Code *</label>
+                  <input type="text" id="shipPincode" placeholder="6-digit PIN" pattern="[0-9]{6}" required />
+                </div>
+                <div class="form-group">
+                  <label for="shipState">State *</label>
+                  <input type="text" id="shipState" placeholder="e.g. Maharashtra" required />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="shipCity">City / District *</label>
+                  <input type="text" id="shipCity" placeholder="e.g. Mumbai" required />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="shipAddress">Detailed Address *</label>
+                <textarea id="shipAddress" rows="3" placeholder="Flat / House No., Area, Colony, Street" required></textarea>
+              </div>
+
+              <div class="step-actions" style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn-primary" style="width: auto;">
+                  <span>Continue to Payment</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- STEP 3: PAYMENT METHOD -->
+        <div class="checkout-step" id="step-3">
+          <div class="step-header">
+            <div class="step-header-left">
+              <span class="step-number">3</span>
+              <h3 class="step-title">Payment Method</h3>
+            </div>
+          </div>
+          <div class="step-content">
+            <div class="payment-methods">
+              
+              <!-- Option 1: Prepaid -->
+              <div class="payment-method-card selected" data-method="prepaid">
+                <input type="radio" name="checkoutPayment" id="payPrepaid" value="prepaid" checked />
+                <div class="payment-method-info">
+                  <label for="payPrepaid" class="payment-method-title">Online Payment (UPI, Card, Netbanking)</label>
+                  <span class="payment-method-desc">Pay securely via digital gateways. 100% safe checkout.</span>
+                  <span class="payment-method-discount">✨ Instant ₹100 discount applied on prepaid orders!</span>
+                </div>
+              </div>
+              
+              <!-- Option 2: COD -->
+              <div class="payment-method-card" data-method="cod">
+                <input type="radio" name="checkoutPayment" id="payCOD" value="cod" />
+                <div class="payment-method-info">
+                  <label for="payCOD" class="payment-method-title">Cash on Delivery (COD)</label>
+                  <span class="payment-method-desc">Pay with cash at the time of delivery.</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Sticky Summary Card -->
+      <aside class="checkout-summary">
+        <div class="checkout-summary-card">
+          <h3 class="checkout-summary-title">Price Details</h3>
+          
+          <div class="checkout-summary-row">
+            <span>Price (<span id="summaryItemCount">0</span> items)</span>
+            <span id="summarySubtotal">₹0.00</span>
+          </div>
+          <div class="checkout-summary-row">
+            <span>Delivery Charge</span>
+            <span id="summaryShipping">₹50.00</span>
+          </div>
+          <div class="checkout-summary-row discount" id="summaryDiscountRow">
+            <span>Prepaid Discount</span>
+            <span id="summaryDiscount">-₹100.00</span>
+          </div>
+          
+          <div class="checkout-summary-row" id="summaryTaxRow" style="font-size: 0.8rem; color: var(--cream-muted);">
+            <span>GST / Taxes (3% Gold + 18% Making)</span>
+            <span id="summaryTax">₹0.00</span>
+          </div>
+          
+          <div class="checkout-summary-total">
+            <span>Total Payable</span>
+            <span id="summaryTotal">₹0.00</span>
+          </div>
+
+          <!-- Promo Code Input Group -->
+          <div class="promo-code-container" style="border-top: 1px solid var(--black-4); padding-top: 1.2rem; margin-top: 1rem; margin-bottom: 1rem;">
+            <label style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cream-muted); font-weight: 600; display: block; margin-bottom: 0.5rem;">Have a Promo Code?</label>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="text" id="promoInput" placeholder="e.g. GOLD2026" style="flex: 1; padding: 0.6rem 0.8rem; background: var(--black-2); border: 1px solid var(--black-4); color: var(--cream); font-size: 0.82rem; text-transform: uppercase; font-family: inherit;" />
+              <button type="button" id="btnApplyPromo" style="padding: 0.6rem 1rem; background: var(--gold); border: none; color: #000; font-size: 0.78rem; font-weight: 700; cursor: pointer; text-transform: uppercase; font-family: inherit;">Apply</button>
+            </div>
+            <div id="promoFeedback" style="font-size: 0.75rem; margin-top: 0.4rem; display: none;"></div>
+          </div>
+          
+          <button class="btn-primary full-width" id="btnPlaceOrder" disabled>
+            <span>Place Order</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          
+          <p style="font-size: 0.72rem; color: var(--cream-muted); text-align: center; margin-top: 1rem; line-height: 1.4;">
+            * Free delivery on orders above ₹899.<br>Prepaid order discount of ₹100 applied at checkout.
+          </p>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- ===== ORDER SUCCESS OVERLAY ===== -->
+  <div class="checkout-success-overlay" id="successOverlay">
+    <div class="checkout-success-card" id="successCard">
+      <div class="success-icon-wrap">✦</div>
+      <h2 class="success-title">Order Placed!</h2>
+      <p class="success-subtitle">Thank you for shopping with AVANIKA.CO. Your custom jewelry package is being prepared with master care at our atelier.</p>
+      
+      <div class="success-details">
+        <div class="success-detail-row">
+          <span>Order ID</span>
+          <span class="order-id-val" id="successOrderId">AVN-2026-583A</span>
+        </div>
+        <div class="success-detail-row">
+          <span>Recipient</span>
+          <span id="successRecipient">Sarah Mitchell</span>
+        </div>
+        <div class="success-detail-row">
+          <span>Delivery Estimate</span>
+          <span id="successDeliveryDate">Monday, June 8, 2026</span>
+        </div>
+        <div class="success-detail-row">
+          <span>Total Paid</span>
+          <span id="successTotalPaid" style="color: var(--gold); font-weight: bold;">₹2,449.00</span>
+        </div>
+      </div>
+      
+      <!-- Invoice download link -->
+      <div style="margin-top: 1.2rem; margin-bottom: 1.8rem; text-align: center;">
+        <button type="button" id="btnPrintInvoice" style="background: none; border: none; color: var(--gold); font-size: 0.8rem; cursor: pointer; border-bottom: 1px dashed var(--gold); padding: 0; font-family: inherit; font-weight: 600;">📄 Download Invoice Receipt (PDF)</button>
+      </div>
+
+      <button class="btn-primary" id="btnSuccessHome" style="width: auto;">
+        <span>Continue Shopping</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== SIMULATED PAYMENT GATEWAY OVERLAY ===== -->
+  <div id="paymentGatewayOverlay" class="checkout-success-overlay" style="display: none; z-index: 2500; font-family: 'Inter', sans-serif;">
+    <div class="checkout-success-card" style="background: #12241C; border: 1px solid var(--gold); max-width: 450px; padding: 2.5rem 2rem; border-radius: 0px;">
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <span style="font-size: 2rem; filter: sepia(100%) hue-rotate(5deg) saturate(300%);">💳</span>
+        <h3 style="font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--gold); text-transform: uppercase; margin-top: 0.5rem; letter-spacing: 0.05em;">Avanika Secure Pay</h3>
+        <p style="font-size: 0.78rem; color: var(--cream-muted); margin-top: 0.2rem;">Simulated UPI & Card Checkout Portal</p>
+      </div>
+      <div style="background: var(--black-2); border: 1px solid var(--black-4); padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0px;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.5rem;"><span style="color: var(--cream-muted);">Merchant</span><span style="font-weight: 600; color: var(--cream);">Avanika.co</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.5rem;"><span style="color: var(--cream-muted);">Transaction Reference</span><span id="gatewayRef" style="font-family: monospace; color: var(--cream);">REF-382910</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.95rem; border-top: 1px dashed var(--black-4); padding-top: 0.8rem; font-weight: bold;"><span style="color: var(--cream);">Amount Payable</span><span id="gatewayAmount" style="color: var(--gold);">₹0.00</span></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+        <button type="button" class="btn-primary" id="btnGatewaySuccess" style="background: #2a9d8f; border-color: #2a9d8f; color: #fff; border-radius: 0px; cursor: pointer;">
+          <span>Simulate Payment Success</span>
+        </button>
+        <button type="button" class="btn-primary" id="btnGatewayFailure" style="background: #c94c4c; border-color: #c94c4c; color: #fff; border-radius: 0px; cursor: pointer;">
+          <span>Simulate Payment Failure</span>
+        </button>
+      </div>
+      <p style="font-size: 0.7rem; color: var(--cream-muted); text-align: center; margin-top: 1.2rem;">
+        * This is a sandbox testing interface. No real funds will be deducted.
+      </p>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <!-- Supabase Backend Integration -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="supabase-console.js"></script>
+  <script src="checkout.js"></script>
+</body>
+</html>

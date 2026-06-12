@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AVANIKA.CO — Return Portal | Premium Artificial Jewelry</title>
+  <meta name="description" content="Avanika returns and claims portal. Easily search your order details by Order ID and phone number to request a return or exchange." />
+  <link rel="canonical" href="http://localhost:3000/returns.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="checkout-page-body">
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo" style="display: flex; align-items: center; gap: 0.8rem; text-decoration: none;">
+        <img src="images/logo.png" alt="AVNIKA" class="nav-logo-img" />
+        <span class="nav-logo-text" style="font-family: var(--font-serif); font-size: 1.6rem; font-weight: 500; letter-spacing: 0.15em; color: var(--cream); text-transform: uppercase;">Avanika.co</span>
+      </a>
+      <div class="nav-actions">
+        <a href="index.html" class="btn-ghost" style="padding: 0.5rem 1rem; border: 1px solid var(--black-4);">Back to Shop</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== RETURNS CONTENT ===== -->
+  <main class="checkout-container" style="max-width: 700px; margin: 0 auto; padding-top: calc(var(--nav-h) + 3rem);">
+    <div class="checkout-step active" style="padding: 2.5rem; background: var(--black-2); border: 1px solid var(--black-4);">
+      
+      <div style="text-align: center; margin-bottom: 2.5rem;">
+        <div style="font-size: 2rem; filter: sepia(100%) hue-rotate(5deg) saturate(300%); margin-bottom: 0.5rem;">🔄</div>
+        <h1 style="font-family: 'Cinzel', serif; font-size: 1.6rem; color: var(--cream); text-transform: uppercase; letter-spacing: 0.05em;">Returns & Claims Portal</h1>
+        <p style="font-size: 0.82rem; color: var(--cream-muted); margin-top: 0.2rem;">Initiate returned parcel claims and track refund schedules.</p>
+      </div>
+
+      <!-- LOOKUP ORDER FORM -->
+      <form id="returnsLookupForm" style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="returnOrderId">Order ID *</label>
+            <input type="text" id="returnOrderId" placeholder="e.g. AVN-2026-F981X2" required style="text-transform: uppercase;" />
+          </div>
+          <div class="form-group">
+            <label for="returnPhone">Phone Number *</label>
+            <input type="tel" id="returnPhone" placeholder="10-digit number" pattern="[0-9]{10}" required />
+          </div>
+        </div>
+        <button type="submit" class="btn-primary" style="margin-top: 0.5rem;">
+          <span>Find Order Records</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </form>
+
+      <!-- ORDER DETAILS & ITEMS SELECTION (HIDDEN BY DEFAULT) -->
+      <div id="returnsItemsPanel" style="display: none; margin-top: 2rem; border-top: 1px solid var(--black-4); padding-top: 2rem;">
+        <h3 style="font-family: 'Cinzel', serif; font-size: 1.15rem; color: var(--gold); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Select Items to Return</h3>
+        <p style="font-size: 0.8rem; color: var(--cream-muted); margin-bottom: 1.5rem;">Check the items you want to return from Order: <strong id="displayOrderId" style="color:var(--cream);"></strong></p>
+        
+        <form id="returnsClaimSubmitForm" style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <div id="returnOrderItemsList" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem;">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <div class="form-group">
+            <label for="returnReason">Reason for Return *</label>
+            <select id="returnReason" required style="padding: 0.8rem 1rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-family: inherit;">
+              <option value="Incorrect Size / Fit">Incorrect Size / Fit</option>
+              <option value="Product Damaged on Arrival">Product Damaged on Arrival</option>
+              <option value="Did Not Meet Expectations">Did Not Meet Expectations / Changed Mind</option>
+              <option value="Incorrect Item Delivered">Incorrect Item Delivered</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="returnComments">Additional Comments *</label>
+            <textarea id="returnComments" rows="3" placeholder="Provide details about why you want to return this jewelry..." required style="padding: 0.8rem 1rem; background: var(--black-3); border: 1px solid var(--black-4); color: var(--cream); font-family: inherit; font-size: 0.85rem;"></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary" style="background:#c94c4c; border-color:#c94c4c;">
+            <span>Submit Return Claim</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ===== RETURNS SUCCESS OVERLAY ===== -->
+  <div class="checkout-success-overlay" id="returnSuccessOverlay" style="display: none; z-index: 2100; font-family: 'Inter', sans-serif;">
+    <div class="checkout-success-card" style="background: #12241C; border: 1px solid var(--gold); max-width: 500px; padding: 2.5rem 2rem; text-align: center;">
+      <div style="font-size: 2rem; filter: sepia(100%) hue-rotate(5deg) saturate(300%); margin-bottom: 0.5rem;">✦</div>
+      <h2 class="success-title" style="color: var(--cream); font-family: 'Cinzel', serif; font-size: 1.6rem; text-transform: uppercase;">Return Scheduled!</h2>
+      <p style="font-size: 0.82rem; color: var(--cream-muted); line-height: 1.6; margin-bottom: 1.5rem;">Your return claim has been registered. A courier service pickup ticket was generated automatically.</p>
+      
+      <div style="background: var(--black-2); border: 1px solid var(--black-4); padding: 1.2rem; text-align: left; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.8rem; font-size: 0.82rem;">
+        <div style="display: flex; justify-content: space-between;"><span style="color: var(--cream-muted);">Return Reference</span><span id="displayReturnId" style="font-family: monospace; color: var(--gold); font-weight: bold;">RET-2026-X81</span></div>
+        <div style="display: flex; justify-content: space-between;"><span style="color: var(--cream-muted);">Simulated Return AWB</span><span id="displayReturnAwb" style="font-family: monospace; color: var(--cream);">AWB-RET-382910</span></div>
+        <div style="display: flex; justify-content: space-between;"><span style="color: var(--cream-muted);">Pickup Estimate</span><span style="color: var(--cream);">Within 48 Working Hours</span></div>
+      </div>
+      
+      <a href="index.html" class="btn-primary" style="display: inline-flex; width: auto; text-decoration: none;">
+        <span>Return to Shop</span>
+      </a>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <!-- Supabase Backend Integration -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="supabase-console.js"></script>
+  <script src="returns.js"></script>
+</body>
+</html>
