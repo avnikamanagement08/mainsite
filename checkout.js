@@ -27,6 +27,17 @@ function formatPrice(priceInINR) {
   return `${CURRENCY_SYMBOLS[currentCurrency]}${converted.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
+// Log conversion funnel analytics mock events
+function logAnalyticsEvent(eventName, params = {}) {
+  const events = JSON.parse(localStorage.getItem('avanika_analytics_events') || '[]');
+  events.push({
+    event: eventName,
+    params: params,
+    timestamp: new Date().toISOString()
+  });
+  localStorage.setItem('avanika_analytics_events', JSON.stringify(events));
+}
+
 // Load cart state from localStorage
 function loadCart() {
   try {
