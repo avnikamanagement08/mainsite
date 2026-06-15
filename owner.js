@@ -35,13 +35,13 @@ const MOCK_ORDERS = [
     pincode: "400054",
     payment_mode: "prepaid",
     items: [
-      { id: "p1-6-yellowgold-diamond", name: "Meera Anti-Tarnish Kundan Chandbalis", price: 1899.00, quantity: 1, category: "Earrings", image: "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.35 PM.jpeg" }
+      { id: "p1-6-yellowgold-diamond", name: "Meera Anti-Tarnish Kundan Chandbalis", price: 149.00, quantity: 1, category: "Earrings", image: "images/earrings/1/WhatsApp Image 2026-06-15 at 11.04.48 PM (1).jpeg" }
     ],
-    subtotal: 1899.00,
-    shipping: 0.00,
-    discount: 100.00,
-    tax: 114.00,
-    total: 1913.00,
+    subtotal: 149.00,
+    shipping: 50.00,
+    discount: 0.00,
+    tax: 4.47,
+    total: 203.47,
     delivery_status: "processing",
     created_at: new Date(Date.now() - 3600000 * 2).toISOString()
   },
@@ -55,13 +55,13 @@ const MOCK_ORDERS = [
     pincode: "201301",
     payment_mode: "cod",
     items: [
-      { id: "p2-7-yellowgold-emerald", name: "Aura Celestial Gold Plated Hoops", price: 1299.00, quantity: 1, category: "Earrings", image: "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.03 AM.jpeg" }
+      { id: "p2-7-yellowgold-emerald", name: "Aura Celestial Gold Plated Hoops", price: 149.00, quantity: 1, category: "Earrings", image: "images/earrings/2/WhatsApp Image 2026-06-15 at 11.04.48 PM.jpeg" }
     ],
-    subtotal: 1299.00,
+    subtotal: 149.00,
     shipping: 50.00,
     discount: 0.00,
-    tax: 78.00,
-    total: 1427.00,
+    tax: 4.47,
+    total: 203.47,
     delivery_status: "shipped",
     created_at: new Date(Date.now() - 3600000 * 18).toISOString()
   }
@@ -105,7 +105,7 @@ const MOCK_ABANDONS = [
     email: "priya.sharma@gmail.com",
     phone: "8887776665",
     cart_items: [
-      { id: "p6-7-platinum-pearl", name: "Tara Rose Gold Starburst Dangles", price: 1599.00, quantity: 1, category: "Earrings", image: "images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg" }
+      { id: "p6-7-platinum-pearl", name: "Tara Rose Gold Starburst Dangles", price: 149.00, quantity: 1, category: "Earrings", image: "images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg" }
     ],
     updated_at: new Date(Date.now() - 3600000 * 4).toISOString()
   }
@@ -116,7 +116,7 @@ const MOCK_EMAILS = [
     id: "EML-482910",
     to_email: "sarah.mitchell@gmail.com",
     subject: "Order Confirmed: AVN-2026-F981X2",
-    body: "Hi Sarah Mitchell,\n\nYour order AVN-2026-F981X2 has been placed successfully.\nTotal paid: ₹2,399.00.",
+    body: "Hi Sarah Mitchell,\n\nYour order AVN-2026-F981X2 has been placed successfully.\nTotal paid: ₹203.47.",
     sent_at: new Date(Date.now() - 3600000 * 2).toISOString()
   }
 ];
@@ -1562,12 +1562,14 @@ async function fetchProductsData() {
     } else {
       // Seed default products
       products = [
-        { id: "p1", name: "Meera Anti-Tarnish Kundan Chandbalis", category: "Earrings", image: "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.35 PM.jpeg", description: "Handcrafted traditional Indian Kundan Chandbalis, heavily plated in 18K yellow gold finish over a premium base alloy. Adorned with cluster CZ stones and premium faux pearls. Features our advanced anti-tarnish guard for lasting color protection. Hypoallergenic, lightweight, and perfect for ethnic celebrations.", base_price_making: 300, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
-        { id: "p2", name: "Aura Celestial Gold Plated Hoops", category: "Earrings", image: "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.03 AM.jpeg", description: "Minimalist, daily-wear geometric hoop earrings plated in high-shine 18K gold. Fitted with a secure click-lock latch. Fully anti-tarnish treated for lasting color protection. Waterproof, sweat-proof, and designed to match both Western and casual outfits.", base_price_making: 300, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
-        { id: "p3", name: "Ziya Simulated Emerald Drop Jhumkas", category: "Earrings", image: "images/earrings/3/WhatsApp Image 2026-06-12 at 10.52.55 AM.jpeg", description: "Fusion dangle jhumkas with vibrant simulated emerald drops suspended from a micro-pave cubic zirconia floral stud. Plated in 18K yellow gold base alloy. Features advanced anti-tarnish protection for lasting color. Extremely lightweight and comfortable.", base_price_making: 300, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
-        { id: "p4", name: "Avni Royal Kundan Pearl Drops", category: "Earrings", image: "images/earrings/4/WhatsApp Image 2026-06-12 at 2.19.55 PM.jpeg", description: "Regal drop earrings featuring hand-set Kundan stones and suspended organic shell pearls. Plated in an antique 18K yellow gold finish. Protected with an anti-tarnish barrier and designed for long-lasting wear. The perfect accessory for wedding and bridal wear.", base_price_making: 300, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
-        { id: "p5", name: "Lumina Premium CZ Solitaire Studs", category: "Earrings", image: "images/earrings/5/WhatsApp Image 2026-06-12 at 2.25.32 PM.jpeg", description: "Classic four-prong stud earrings holding flawless AAAAA-grade simulated cubic zirconia solitaires. Plated in premium platinum-finish base alloy. Anti-tarnish coated for lasting color protection. Versatile and timeless, ideal for office wear and special occasions.", base_price_making: 300, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
-        { id: "p6", name: "Tara Rose Gold Starburst Dangles", category: "Earrings", image: "images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg", description: "Elegant starburst danglers featuring pave-set CZ stone arrays that capture and reflect light. Plated in highly polished 18K rose gold. Includes premium anti-tarnish coating for lasting color protection. Hypoallergenic posts make them comfortable for sensitive ears.", base_price_making: 300, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 }
+        { id: "p1", name: "Meera Anti-Tarnish Kundan Chandbalis", category: "Earrings", image: "images/earrings/1/WhatsApp Image 2026-06-15 at 11.04.48 PM (1).jpeg", description: "Handcrafted traditional Indian Kundan Chandbalis, heavily plated in 18K yellow gold finish over a premium base alloy. Adorned with cluster CZ stones and premium faux pearls. Features our advanced anti-tarnish guard for lasting color protection. Hypoallergenic, lightweight, and perfect for ethnic celebrations.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p2", name: "Aura Celestial Gold Plated Hoops", category: "Earrings", image: "images/earrings/2/WhatsApp Image 2026-06-15 at 11.04.48 PM.jpeg", description: "Minimalist, daily-wear geometric hoop earrings plated in high-shine 18K gold. Fitted with a secure click-lock latch. Fully anti-tarnish treated for lasting color protection. Waterproof, sweat-proof, and designed to match both Western and casual outfits.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p3", name: "Ziya Simulated Emerald Drop Jhumkas", category: "Earrings", image: "images/earrings/3/WhatsApp Image 2026-06-15 at 11.04.51 PM (1).jpeg", description: "Fusion dangle jhumkas with vibrant simulated emerald drops suspended from a micro-pave cubic zirconia floral stud. Plated in 18K yellow gold base alloy. Features advanced anti-tarnish protection for lasting color. Extremely lightweight and comfortable.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p4", name: "Avni Royal Kundan Pearl Drops", category: "Earrings", image: "images/earrings/4/WhatsApp Image 2026-06-12 at 2.19.55 PM.jpeg", description: "Regal drop earrings featuring hand-set Kundan stones and suspended organic shell pearls. Plated in an antique 18K yellow gold finish. Protected with an anti-tarnish barrier and designed for long-lasting wear. The perfect accessory for wedding and bridal wear.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p5", name: "Lumina Premium CZ Solitaire Studs", category: "Earrings", image: "images/earrings/5/WhatsApp Image 2026-06-15 at 11.04.50 PM.jpeg", description: "Classic four-prong stud earrings holding flawless AAAAA-grade simulated cubic zirconia solitaires. Plated in premium platinum-finish base alloy. Anti-tarnish coated for lasting color protection. Versatile and timeless, ideal for office wear and special occasions.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p6", name: "Tara Rose Gold Starburst Dangles", category: "Earrings", image: "images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg", description: "Elegant starburst danglers featuring pave-set CZ stone arrays that capture and reflect light. Plated in highly polished 18K rose gold. Includes premium anti-tarnish coating for lasting color protection. Hypoallergenic posts make them comfortable for sensitive ears.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p7", name: "Nisha Geometric Gold Drops", category: "Earrings", image: "images/earrings/7/WhatsApp Image 2026-06-15 at 11.04.48 PM (2).jpeg", description: "Chic geometric hexagonal drop earrings with an elegant ribbed/shell design top stud. Fully anti-tarnish treated with a high-shine yellow gold finish over a premium base alloy. Modern, bold, and extremely lightweight.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p8", name: "Riya Twisted Gold Hoops", category: "Earrings", image: "images/earrings/8/WhatsApp Image 2026-06-15 at 11.04.51 PM.jpeg", description: "Stunning twisted rope hoop earrings plated in premium yellow gold finish. Comes with a secure click-lock post. Sweat-proof, waterproof, anti-tarnish treated, and perfect for adding texture to any look.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 }
       ];
       localStorage.setItem('avanika_simulated_products', JSON.stringify(products));
     }
@@ -1624,7 +1626,7 @@ function renderProductsTable() {
         <span style="font-size:0.75rem; color:var(--cream-muted); display:inline-block; max-height:2.8em; overflow:hidden; text-overflow:ellipsis;">${p.description}</span>
       </td>
       <td style="padding: 0.8rem; font-weight: 500;">${p.category}</td>
-      <td style="padding: 0.8rem; font-family: var(--font-serif);">₹${parseFloat(p.base_price_making || 300).toLocaleString()}</td>
+      <td style="padding: 0.8rem; font-family: var(--font-serif);">₹${parseFloat(p.base_price_making !== undefined ? p.base_price_making : 149).toLocaleString()}</td>
       <td style="padding: 0.8rem; text-align: center; font-weight: bold; color: ${sold > 0 ? '#2a9d8f' : 'var(--cream-muted)'};">${sold}</td>
       <td style="padding: 0.8rem; font-family: var(--font-serif); font-weight: bold; color: var(--cream);">₹${rev.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
       <td style="padding: 0.8rem; text-align: right;">
@@ -1733,7 +1735,7 @@ function openEditProductModal(id) {
   document.getElementById('editProdCategory').value = prod.category;
   document.getElementById('editProdImage').value = prod.image;
   document.getElementById('editProdDesc').value = prod.description || '';
-  document.getElementById('editProdMaking').value = prod.base_price_making || 300;
+  document.getElementById('editProdMaking').value = prod.base_price_making !== undefined ? prod.base_price_making : 149;
   document.getElementById('editProdGoldWeight').value = prod.gold_weight_grams || 0;
   document.getElementById('editProdGemstone').value = prod.gemstone_cost || 0;
   document.getElementById('editProdStock').value = prod.stock || 10;

@@ -1,0 +1,11 @@
+Welcome to Avanika.co—a premium online store dedicated to high-quality, anti-tarnish artificial jewelry. Built with a sleek, mobile-first design, the site loads instantly with a custom brand preloader and guides users into a premium shopping experience.
+
+Users can easily curate their favorites. With a single tap, items are added to a persistent wishlist drawer, allowing customers to save pieces they love without interrupting their browsing flow.
+
+To keep the experience fast and frictionless, we implemented a Quick View modal. Customers can inspect product descriptions, check materials, and configure quantities without leaving the main page.
+
+Adding a piece to the cart automatically opens the side-drawer bag. This gives the shopper an immediate look at their cart contents and provides a direct, one-click path to checkout.
+
+Our optimized checkout stepper simplifies the buying process. The buyer reviews their order, enters their shipping details, and chooses their preferred payment method—supporting both secure online payments and Cash on Delivery.
+
+Once confirmed, the order is placed instantly, directing the customer to a clean confirmation screen. A seamless, high-converting, and beautiful shopping experience from start to finish.

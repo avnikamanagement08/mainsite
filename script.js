@@ -1172,7 +1172,26 @@ async function loadDynamicProducts() {
   if (dbProducts.length === 0) {
     const cached = localStorage.getItem('avanika_simulated_products');
     if (cached) {
-      dbProducts = JSON.parse(cached);
+      try {
+        const parsed = JSON.parse(cached);
+        const hasNewProducts = parsed.some(p => p.id === 'p7') && parsed.some(p => p.id === 'p8');
+        const correctPricing = parsed.every(p => {
+          if (p.id && p.id.startsWith('p')) {
+            const priceVal = p.base_price_making !== undefined ? parseFloat(p.base_price_making) : (p.price ? parseFloat(p.price.replace(/[^0-9.]/g, '')) : 149);
+            return priceVal === 149;
+          }
+          return true;
+        });
+        if (!hasNewProducts || !correctPricing) {
+          dbProducts = Object.values(allProductsDatabase);
+          localStorage.setItem('avanika_simulated_products', JSON.stringify(dbProducts));
+        } else {
+          dbProducts = parsed;
+        }
+      } catch (err) {
+        dbProducts = Object.values(allProductsDatabase);
+        localStorage.setItem('avanika_simulated_products', JSON.stringify(dbProducts));
+      }
     } else {
       // Seed cached list from allProductsDatabase
       dbProducts = Object.values(allProductsDatabase);
@@ -1187,7 +1206,7 @@ async function loadDynamicProducts() {
 
   // Populate dynamic database records
   dbProducts.forEach(prod => {
-    const rawPrice = parseFloat(prod.gemstone_cost || 0) + parseFloat(prod.base_price_making || 300);
+    const rawPrice = parseFloat(prod.gemstone_cost || 0) + parseFloat(prod.base_price_making !== undefined ? prod.base_price_making : (prod.price ? prod.price.replace(/[^0-9.]/g, '') : 149));
     const rawCompare = prod.compare_at_price ? parseFloat(prod.compare_at_price) : Math.round(rawPrice * 1.6);
     allProductsDatabase[prod.id] = {
       id: prod.id,
@@ -1383,56 +1402,52 @@ function initCategorySelector() {
 
 // 1. UNIFIED PRODUCTS DATABASE FOR INTERACTION
 const allProductsDatabase = {
-  "ox-1": { id: "ox-1", name: "Our Ananya Jhumka", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1778940158923.jpg", category: "Oxidised Earrings" },
-  "ox-2": { id: "ox-2", name: "Our Kunali Jhumka", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1776255880782.webp", category: "Oxidised Earrings" },
-  "ox-3": { id: "ox-3", name: "Our Ruchika Jhumka", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1778940294675.jpg", category: "Oxidised Earrings" },
-  "ox-4": { id: "ox-4", name: "Our Ishika Jhumka", price: "₹1,350", image: "https://d28arj6mdig261.cloudfront.net/1780760676941.jpg", category: "Oxidised Earrings" },
-  "ke-1": { id: "ke-1", name: "Our Amrita Kashmiri Earring", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1771151964558.jpg", category: "Kashmiri Earrings" },
-  "ke-2": { id: "ke-2", name: "Our Suhani Kashmiri Earring", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1775718594147.jpg", category: "Kashmiri Earrings" },
-  "ke-3": { id: "ke-3", name: "Our Parvati Kashmiri Earring", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1771152261787.jpg", category: "Kashmiri Earrings" },
-  "ke-4": { id: "ke-4", name: "Our Ravina Kashmiri Earring", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1765877669633.jpeg", category: "Kashmiri Earrings" },
-  "tb-1": { id: "tb-1", name: "Our Rouya Tulip Bracelet", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1778324652013.jpg", category: "Tulip Bracelet" },
-  "tb-2": { id: "tb-2", name: "Our Deniz Tulip Bracelet", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1777533294853.jpg", category: "Tulip Bracelet" },
-  "tb-3": { id: "tb-3", name: "Our Eris Tulip Bracelet", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1776675446491.jpg", category: "Tulip Bracelet" },
-  "tb-4": { id: "tb-4", name: "Our Arfia Tulip Bracelet", price: "₹200", image: "https://d28arj6mdig261.cloudfront.net/1776675758519.jpg", category: "Tulip Bracelet" },
-  "atc-1": { id: "atc-1", name: "Love Multi-layer Star Anklet", price: "₹199", image: "https://d28arj6mdig261.cloudfront.net/1778328000857.jpg", category: "Anti-Tarnish Chains" },
-  "atc-2": { id: "atc-2", name: "Double Layer Heart Choker", price: "₹249", image: "https://d28arj6mdig261.cloudfront.net/1770298539595.jpg", category: "Anti-Tarnish Chains" },
+  "ox-1": { id: "ox-1", name: "Our Ananya Jhumka", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1778940158923.jpg", category: "Oxidised Earrings" },
+  "ox-2": { id: "ox-2", name: "Our Kunali Jhumka", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1776255880782.webp", category: "Oxidised Earrings" },
+  "ox-3": { id: "ox-3", name: "Our Ruchika Jhumka", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1778940294675.jpg", category: "Oxidised Earrings" },
+  "ox-4": { id: "ox-4", name: "Our Ishika Jhumka", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1780760676941.jpg", category: "Oxidised Earrings" },
+  "ke-1": { id: "ke-1", name: "Our Amrita Kashmiri Earring", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1771151964558.jpg", category: "Kashmiri Earrings" },
+  "ke-2": { id: "ke-2", name: "Our Suhani Kashmiri Earring", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1775718594147.jpg", category: "Kashmiri Earrings" },
+  "ke-3": { id: "ke-3", name: "Our Parvati Kashmiri Earring", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1771152261787.jpg", category: "Kashmiri Earrings" },
+  "ke-4": { id: "ke-4", name: "Our Ravina Kashmiri Earring", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1765877669633.jpeg", category: "Kashmiri Earrings" },
+  "tb-1": { id: "tb-1", name: "Our Rouya Tulip Bracelet", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1778324652013.jpg", category: "Tulip Bracelet" },
+  "tb-2": { id: "tb-2", name: "Our Deniz Tulip Bracelet", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1777533294853.jpg", category: "Tulip Bracelet" },
+  "tb-3": { id: "tb-3", name: "Our Eris Tulip Bracelet", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1776675446491.jpg", category: "Tulip Bracelet" },
+  "tb-4": { id: "tb-4", name: "Our Arfia Tulip Bracelet", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1776675758519.jpg", category: "Tulip Bracelet" },
+  "atc-1": { id: "atc-1", name: "Love Multi-layer Star Anklet", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1778328000857.jpg", category: "Anti-Tarnish Chains" },
+  "atc-2": { id: "atc-2", name: "Double Layer Heart Choker", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1770298539595.jpg", category: "Anti-Tarnish Chains" },
   "atc-3": { id: "atc-3", name: "Classic Link Chain Necklace", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1770298569027.jpg", category: "Anti-Tarnish Chains" },
-  "atc-4": { id: "atc-4", name: "Delicate Diamond Ring Chain", price: "₹299", image: "https://d28arj6mdig261.cloudfront.net/1770298514550.jpg", category: "Anti-Tarnish Chains" },
+  "atc-4": { id: "atc-4", name: "Delicate Diamond Ring Chain", price: "₹149", image: "https://d28arj6mdig261.cloudfront.net/1770298514550.jpg", category: "Anti-Tarnish Chains" },
   "p1": { 
     id: "p1", 
     name: "Meera Anti-Tarnish Kundan Chandbalis", 
-    price: "₹300", 
-    image: "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.35 PM.jpeg", 
+    price: "₹149", 
+    image: "images/earrings/1/WhatsApp Image 2026-06-15 at 11.04.48 PM (1).jpeg", 
     category: "Earrings",
     gallery: [
-      "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.35 PM.jpeg",
-      "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.57 PM.jpeg",
-      "images/earrings/1/WhatsApp Image 2026-06-11 at 9.18.00 PM.jpeg"
+      "images/earrings/1/WhatsApp Image 2026-06-15 at 11.04.48 PM (1).jpeg"
     ],
     description: "Handcrafted traditional Indian Kundan Chandbalis, heavily plated in 18K yellow gold finish over a premium base alloy. Adorned with cluster CZ stones and premium faux pearls. Features our advanced anti-tarnish guard for lasting color protection. Hypoallergenic, lightweight, and perfect for ethnic celebrations."
   },
   "p2": { 
     id: "p2", 
     name: "Aura Celestial Gold Plated Hoops", 
-    price: "₹300", 
-    image: "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.03 AM.jpeg", 
+    price: "₹149", 
+    image: "images/earrings/2/WhatsApp Image 2026-06-15 at 11.04.48 PM.jpeg", 
     category: "Earrings",
     gallery: [
-      "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.03 AM.jpeg",
-      "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.44 AM.jpeg",
-      "images/earrings/2/WhatsApp Image 2026-06-12 at 10.43.01 AM.jpeg"
+      "images/earrings/2/WhatsApp Image 2026-06-15 at 11.04.48 PM.jpeg"
     ],
     description: "Minimalist, daily-wear geometric hoop earrings plated in high-shine 18K gold. Fitted with a secure click-lock latch. Fully anti-tarnish treated for lasting color protection. Waterproof, sweat-proof, and designed to match both Western and casual outfits."
   },
   "p3": { 
     id: "p3", 
     name: "Ziya Simulated Emerald Drop Jhumkas", 
-    price: "₹300", 
-    image: "images/earrings/3/WhatsApp Image 2026-06-12 at 10.52.55 AM.jpeg", 
+    price: "₹149", 
+    image: "images/earrings/3/WhatsApp Image 2026-06-15 at 11.04.51 PM (1).jpeg", 
     category: "Earrings",
     gallery: [
-      "images/earrings/3/WhatsApp Image 2026-06-12 at 10.52.55 AM.jpeg",
+      "images/earrings/3/WhatsApp Image 2026-06-15 at 11.04.51 PM (1).jpeg",
       "images/earrings/3/WhatsApp Image 2026-06-12 at 10.53.22 AM.jpeg"
     ],
     description: "Fusion dangle jhumkas with vibrant simulated emerald drops suspended from a micro-pave cubic zirconia floral stud. Plated in 18K yellow gold base alloy. Features advanced anti-tarnish protection for lasting color. Extremely lightweight and comfortable."
@@ -1440,7 +1455,7 @@ const allProductsDatabase = {
   "p4": { 
     id: "p4", 
     name: "Avni Royal Kundan Pearl Drops", 
-    price: "₹300", 
+    price: "₹149", 
     image: "images/earrings/4/WhatsApp Image 2026-06-12 at 2.19.55 PM.jpeg", 
     category: "Earrings",
     gallery: [
@@ -1452,19 +1467,18 @@ const allProductsDatabase = {
   "p5": { 
     id: "p5", 
     name: "Lumina Premium CZ Solitaire Studs", 
-    price: "₹300", 
-    image: "images/earrings/5/WhatsApp Image 2026-06-12 at 2.25.32 PM.jpeg", 
+    price: "₹149", 
+    image: "images/earrings/5/WhatsApp Image 2026-06-15 at 11.04.50 PM.jpeg", 
     category: "Earrings",
     gallery: [
-      "images/earrings/5/WhatsApp Image 2026-06-12 at 2.25.32 PM.jpeg",
-      "images/earrings/5/WhatsApp Image 2026-06-12 at 2.26.26 PM.jpeg"
+      "images/earrings/5/WhatsApp Image 2026-06-15 at 11.04.50 PM.jpeg"
     ],
     description: "Classic four-prong stud earrings holding flawless AAAAA-grade simulated cubic zirconia solitaires. Plated in premium platinum-finish base alloy. Anti-tarnish coated for lasting color protection. Versatile and timeless, ideal for office wear and special occasions."
   },
   "p6": { 
     id: "p6", 
     name: "Tara Rose Gold Starburst Dangles", 
-    price: "₹300", 
+    price: "₹149", 
     image: "images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg", 
     category: "Earrings",
     gallery: [
@@ -1472,6 +1486,28 @@ const allProductsDatabase = {
       "images/earrings/6/WhatsApp Image 2026-06-12 at 3.21.40 PM.jpeg"
     ],
     description: "Elegant starburst danglers featuring pave-set CZ stone arrays that capture and reflect light. Plated in highly polished 18K rose gold. Includes premium anti-tarnish coating for lasting color protection. Hypoallergenic posts make them comfortable for sensitive ears."
+  },
+  "p7": {
+    id: "p7",
+    name: "Nisha Geometric Gold Drops",
+    price: "₹149",
+    image: "images/earrings/7/WhatsApp Image 2026-06-15 at 11.04.48 PM (2).jpeg",
+    category: "Earrings",
+    gallery: [
+      "images/earrings/7/WhatsApp Image 2026-06-15 at 11.04.48 PM (2).jpeg"
+    ],
+    description: "Chic geometric hexagonal drop earrings with an elegant ribbed/shell design top stud. Fully anti-tarnish treated with a high-shine yellow gold finish over a premium base alloy. Modern, bold, and extremely lightweight."
+  },
+  "p8": {
+    id: "p8",
+    name: "Riya Twisted Gold Hoops",
+    price: "₹149",
+    image: "images/earrings/8/WhatsApp Image 2026-06-15 at 11.04.51 PM.jpeg",
+    category: "Earrings",
+    gallery: [
+      "images/earrings/8/WhatsApp Image 2026-06-15 at 11.04.51 PM.jpeg"
+    ],
+    description: "Stunning twisted rope hoop earrings plated in premium yellow gold finish. Comes with a secure click-lock post. Sweat-proof, waterproof, anti-tarnish treated, and perfect for adding texture to any look."
   }
 };
 

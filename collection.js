@@ -10,17 +10,15 @@ const productsData = {
   p1: {
     id: "p1",
     name: "Meera Anti-Tarnish Kundan Chandbalis",
-    image: "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.35 PM.jpeg",
+    image: "images/earrings/1/WhatsApp Image 2026-06-15 at 11.04.48 PM (1).jpeg",
     gallery: [
-      "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.35 PM.jpeg",
-      "images/earrings/1/WhatsApp Image 2026-06-11 at 9.13.57 PM.jpeg",
-      "images/earrings/1/WhatsApp Image 2026-06-11 at 9.18.00 PM.jpeg"
+      "images/earrings/1/WhatsApp Image 2026-06-15 at 11.04.48 PM (1).jpeg"
     ],
     category: "Earrings",
     description: "Handcrafted traditional Indian Kundan Chandbalis, heavily plated in 18K yellow gold finish over a premium base alloy. Adorned with cluster CZ stones and premium faux pearls. Features our advanced anti-tarnish guard for lasting color protection. Hypoallergenic, lightweight, and perfect for ethnic celebrations.",
     gold_weight_grams: 0.0,
-    base_price_making: 150.00,
-    gemstone_cost: 150.00,
+    base_price_making: 149.00,
+    gemstone_cost: 0.00,
     is_preorder: false,
     is_consignment: false,
     reviews: []
@@ -28,17 +26,15 @@ const productsData = {
   p2: {
     id: "p2",
     name: "Aura Celestial Gold Plated Hoops",
-    image: "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.03 AM.jpeg",
+    image: "images/earrings/2/WhatsApp Image 2026-06-15 at 11.04.48 PM.jpeg",
     gallery: [
-      "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.03 AM.jpeg",
-      "images/earrings/2/WhatsApp Image 2026-06-12 at 10.42.44 AM.jpeg",
-      "images/earrings/2/WhatsApp Image 2026-06-12 at 10.43.01 AM.jpeg"
+      "images/earrings/2/WhatsApp Image 2026-06-15 at 11.04.48 PM.jpeg"
     ],
     category: "Earrings",
     description: "Minimalist, daily-wear geometric hoop earrings plated in high-shine 18K gold. Fitted with a secure click-lock latch. Fully anti-tarnish treated for lasting color protection. Waterproof, sweat-proof, and designed to match both Western and casual outfits.",
     gold_weight_grams: 0.0,
-    base_price_making: 150.00,
-    gemstone_cost: 150.00,
+    base_price_making: 149.00,
+    gemstone_cost: 0.00,
     is_preorder: false,
     is_consignment: false,
     reviews: []
@@ -46,16 +42,16 @@ const productsData = {
   p3: {
     id: "p3",
     name: "Ziya Simulated Emerald Drop Jhumkas",
-    image: "images/earrings/3/WhatsApp Image 2026-06-12 at 10.52.55 AM.jpeg",
+    image: "images/earrings/3/WhatsApp Image 2026-06-15 at 11.04.51 PM (1).jpeg",
     gallery: [
-      "images/earrings/3/WhatsApp Image 2026-06-12 at 10.52.55 AM.jpeg",
+      "images/earrings/3/WhatsApp Image 2026-06-15 at 11.04.51 PM (1).jpeg",
       "images/earrings/3/WhatsApp Image 2026-06-12 at 10.53.22 AM.jpeg"
     ],
     category: "Earrings",
     description: "Fusion dangle jhumkas with vibrant simulated emerald drops suspended from a micro-pave cubic zirconia floral stud. Plated in 18K yellow gold base alloy. Features advanced anti-tarnish protection for lasting color. Extremely lightweight and comfortable.",
     gold_weight_grams: 0.0,
-    base_price_making: 150.00,
-    gemstone_cost: 150.00,
+    base_price_making: 149.00,
+    gemstone_cost: 0.00,
     is_preorder: false,
     is_consignment: false,
     reviews: []
@@ -71,8 +67,8 @@ const productsData = {
     category: "Earrings",
     description: "Regal drop earrings featuring hand-set Kundan stones and suspended organic shell pearls. Plated in an antique 18K yellow gold finish. Protected with an anti-tarnish barrier and designed for long-lasting wear. The perfect accessory for wedding and bridal wear.",
     gold_weight_grams: 0.0,
-    base_price_making: 150.00,
-    gemstone_cost: 150.00,
+    base_price_making: 149.00,
+    gemstone_cost: 0.00,
     is_preorder: false,
     is_consignment: false,
     reviews: []
@@ -80,16 +76,15 @@ const productsData = {
   p5: {
     id: "p5",
     name: "Lumina Premium CZ Solitaire Studs",
-    image: "images/earrings/5/WhatsApp Image 2026-06-12 at 2.25.32 PM.jpeg",
+    image: "images/earrings/5/WhatsApp Image 2026-06-15 at 11.04.50 PM.jpeg",
     gallery: [
-      "images/earrings/5/WhatsApp Image 2026-06-12 at 2.25.32 PM.jpeg",
-      "images/earrings/5/WhatsApp Image 2026-06-12 at 2.26.26 PM.jpeg"
+      "images/earrings/5/WhatsApp Image 2026-06-15 at 11.04.50 PM.jpeg"
     ],
     category: "Earrings",
     description: "Classic four-prong stud earrings holding flawless AAAAA-grade simulated cubic zirconia solitaires. Plated in premium platinum-finish base alloy. Anti-tarnish coated for lasting color protection. Versatile and timeless, ideal for office wear and special occasions.",
     gold_weight_grams: 0.0,
-    base_price_making: 150.00,
-    gemstone_cost: 150.00,
+    base_price_making: 149.00,
+    gemstone_cost: 0.00,
     is_preorder: false,
     is_consignment: false,
     reviews: []
@@ -105,13 +100,46 @@ const productsData = {
     category: "Earrings",
     description: "Elegant starburst danglers featuring pave-set CZ stone arrays that capture and reflect light. Plated in highly polished 18K rose gold. Includes premium anti-tarnish coating for lasting color protection. Hypoallergenic posts make them comfortable for sensitive ears.",
     gold_weight_grams: 0.0,
-    base_price_making: 150.00,
-    gemstone_cost: 150.00,
+    base_price_making: 149.00,
+    gemstone_cost: 0.00,
+    is_preorder: false,
+    is_consignment: false,
+    reviews: []
+  },
+  p7: {
+    id: "p7",
+    name: "Nisha Geometric Gold Drops",
+    image: "images/earrings/7/WhatsApp Image 2026-06-15 at 11.04.48 PM (2).jpeg",
+    gallery: [
+      "images/earrings/7/WhatsApp Image 2026-06-15 at 11.04.48 PM (2).jpeg"
+    ],
+    category: "Earrings",
+    description: "Chic geometric hexagonal drop earrings with an elegant ribbed/shell design top stud. Fully anti-tarnish treated with a high-shine yellow gold finish over a premium base alloy. Modern, bold, and extremely lightweight.",
+    gold_weight_grams: 0.0,
+    base_price_making: 149.00,
+    gemstone_cost: 0.00,
+    is_preorder: false,
+    is_consignment: false,
+    reviews: []
+  },
+  p8: {
+    id: "p8",
+    name: "Riya Twisted Gold Hoops",
+    image: "images/earrings/8/WhatsApp Image 2026-06-15 at 11.04.51 PM.jpeg",
+    gallery: [
+      "images/earrings/8/WhatsApp Image 2026-06-15 at 11.04.51 PM.jpeg"
+    ],
+    category: "Earrings",
+    description: "Stunning twisted rope hoop earrings plated in premium yellow gold finish. Comes with a secure click-lock post. Sweat-proof, waterproof, anti-tarnish treated, and perfect for adding texture to any look.",
+    gold_weight_grams: 0.0,
+    base_price_making: 149.00,
+    gemstone_cost: 0.00,
     is_preorder: false,
     is_consignment: false,
     reviews: []
   }
 };
+
 
 // State Variables
 let activeProduct = 'p1';
@@ -177,8 +205,8 @@ function calculateProductPrice() {
   
   // Stone premiums
   let stonePremium = 0;
-  if (activeStone === 'emerald') stonePremium = 400.00;
-  else if (activeStone === 'pearl') stonePremium = 250.00;
+  if (activeStone === 'emerald') stonePremium = 0.00;
+  else if (activeStone === 'pearl') stonePremium = 0.00;
   
   let finalPrice = basePrice + goldCost + stonePremium;
   
@@ -919,7 +947,26 @@ async function loadDynamicProducts() {
   if (dbProducts.length === 0) {
     const cached = localStorage.getItem('avanika_simulated_products');
     if (cached) {
-      dbProducts = JSON.parse(cached);
+      try {
+        const parsed = JSON.parse(cached);
+        const hasNewProducts = parsed.some(p => p.id === 'p7') && parsed.some(p => p.id === 'p8');
+        const correctPricing = parsed.every(p => {
+          if (p.id && p.id.startsWith('p')) {
+            const priceVal = p.base_price_making !== undefined ? parseFloat(p.base_price_making) : (p.price ? parseFloat(p.price.replace(/[^0-9.]/g, '')) : 149);
+            return priceVal === 149;
+          }
+          return true;
+        });
+        if (!hasNewProducts || !correctPricing) {
+          dbProducts = Object.values(productsData);
+          localStorage.setItem('avanika_simulated_products', JSON.stringify(dbProducts));
+        } else {
+          dbProducts = parsed;
+        }
+      } catch (err) {
+        dbProducts = Object.values(productsData);
+        localStorage.setItem('avanika_simulated_products', JSON.stringify(dbProducts));
+      }
     } else {
       // Seed cached list from productsData
       dbProducts = Object.values(productsData);
@@ -937,7 +984,7 @@ async function loadDynamicProducts() {
       category: prod.category,
       description: prod.description,
       gold_weight_grams: parseFloat(prod.gold_weight_grams || 0),
-      base_price_making: parseFloat(prod.base_price_making || 300.00),
+      base_price_making: parseFloat(prod.base_price_making !== undefined ? prod.base_price_making : 149.00),
       gemstone_cost: parseFloat(prod.gemstone_cost || 0),
       is_preorder: prod.is_preorder || false,
       is_consignment: prod.is_consignment || false,
