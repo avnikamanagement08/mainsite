@@ -1083,7 +1083,7 @@ em {
 .product-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.7s ease;
 }
 
@@ -2740,7 +2740,7 @@ em {
 .product-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 /* ===== CHECKOUT PAGE LAYOUT & STYLES ===== */
@@ -4399,7 +4399,7 @@ em {
 .qv-main-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform var(--transition);
 }
 
