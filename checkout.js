@@ -439,7 +439,7 @@ async function captureAbandonedCart() {
 // Deduct inventory stock levels on payment success
 async function deductInventoryStock() {
   for (const item of checkoutCart) {
-    const skuId = `${item.product_id}-${item.size || '6'}-${item.metal === '18K Yellow Gold' ? 'yellowgold' : item.metal === '18K Rose Gold' ? 'rosegold' : 'platinum'}-${item.stone === 'CZ Solitaire' ? 'diamond' : item.stone === 'Simulated Emerald' ? 'emerald' : 'pearl'}`;
+    const skuId = `${item.product_id}-${item.size || '6'}-${item.metal === 'Gold-Tone' ? 'yellowgold' : item.metal === 'Rose Gold-Tone' ? 'rosegold' : 'platinum'}-${item.stone === 'CZ Solitaire' ? 'diamond' : item.stone === 'Simulated Emerald' ? 'emerald' : 'pearl'}`;
     
     if (window.isSupabaseConfigured && window.supabaseClient) {
       try {
