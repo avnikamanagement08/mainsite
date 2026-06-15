@@ -16,7 +16,9 @@ CREATE TABLE IF NOT EXISTS public.reviews (
 
 ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow public read access to reviews" ON public.reviews;
 CREATE POLICY "Allow public read access to reviews" ON public.reviews FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow public insert access to reviews" ON public.reviews;
 CREATE POLICY "Allow public insert access to reviews" ON public.reviews FOR INSERT WITH CHECK (true);
 
 
@@ -37,8 +39,11 @@ CREATE TABLE IF NOT EXISTS public.products (
 
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow public read access to products" ON public.products;
 CREATE POLICY "Allow public read access to products" ON public.products FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow admin insert access to products" ON public.products;
 CREATE POLICY "Allow admin insert access to products" ON public.products FOR INSERT TO authenticated WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow admin update access to products" ON public.products;
 CREATE POLICY "Allow admin update access to products" ON public.products FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
 
 
@@ -54,8 +59,11 @@ CREATE TABLE IF NOT EXISTS public.inventory (
 
 ALTER TABLE public.inventory ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow public read access to inventory" ON public.inventory;
 CREATE POLICY "Allow public read access to inventory" ON public.inventory FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow admin insert access to inventory" ON public.inventory;
 CREATE POLICY "Allow admin insert access to inventory" ON public.inventory FOR INSERT TO authenticated WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow public update access to inventory" ON public.inventory;
 CREATE POLICY "Allow public update access to inventory" ON public.inventory FOR UPDATE USING (true) WITH CHECK (true);
 
 
@@ -70,8 +78,11 @@ CREATE TABLE IF NOT EXISTS public.reservations (
 
 ALTER TABLE public.reservations ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow public read access to reservations" ON public.reservations;
 CREATE POLICY "Allow public read access to reservations" ON public.reservations FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow public insert access to reservations" ON public.reservations;
 CREATE POLICY "Allow public insert access to reservations" ON public.reservations FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow public delete access to reservations" ON public.reservations;
 CREATE POLICY "Allow public delete access to reservations" ON public.reservations FOR DELETE USING (true);
 
 
@@ -88,8 +99,11 @@ CREATE TABLE IF NOT EXISTS public.promo_codes (
 
 ALTER TABLE public.promo_codes ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow public read access to promo_codes" ON public.promo_codes;
 CREATE POLICY "Allow public read access to promo_codes" ON public.promo_codes FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow admin insert access to promo_codes" ON public.promo_codes;
 CREATE POLICY "Allow admin insert access to promo_codes" ON public.promo_codes FOR INSERT TO authenticated WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow admin update access to promo_codes" ON public.promo_codes;
 CREATE POLICY "Allow admin update access to promo_codes" ON public.promo_codes FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
 
 
@@ -102,7 +116,9 @@ CREATE TABLE IF NOT EXISTS public.gold_rates (
 
 ALTER TABLE public.gold_rates ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow public read access to gold_rates" ON public.gold_rates;
 CREATE POLICY "Allow public read access to gold_rates" ON public.gold_rates FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow admin update access to gold_rates" ON public.gold_rates;
 CREATE POLICY "Allow admin update access to gold_rates" ON public.gold_rates FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
 
 
@@ -115,8 +131,11 @@ CREATE TABLE IF NOT EXISTS public.loyalty_points (
 
 ALTER TABLE public.loyalty_points ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow public read access to loyalty_points" ON public.loyalty_points;
 CREATE POLICY "Allow public read access to loyalty_points" ON public.loyalty_points FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow public insert access to loyalty_points" ON public.loyalty_points;
 CREATE POLICY "Allow public insert access to loyalty_points" ON public.loyalty_points FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow public update access to loyalty_points" ON public.loyalty_points;
 CREATE POLICY "Allow public update access to loyalty_points" ON public.loyalty_points FOR UPDATE USING (true) WITH CHECK (true);
 
 
@@ -130,8 +149,11 @@ CREATE TABLE IF NOT EXISTS public.wishlists (
 
 ALTER TABLE public.wishlists ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow public select access to wishlists" ON public.wishlists;
 CREATE POLICY "Allow public select access to wishlists" ON public.wishlists FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow public insert access to wishlists" ON public.wishlists;
 CREATE POLICY "Allow public insert access to wishlists" ON public.wishlists FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow public delete access to wishlists" ON public.wishlists;
 CREATE POLICY "Allow public delete access to wishlists" ON public.wishlists FOR DELETE USING (true);
 
 
@@ -146,8 +168,11 @@ CREATE TABLE IF NOT EXISTS public.abandoned_carts (
 
 ALTER TABLE public.abandoned_carts ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow public select access to abandoned_carts" ON public.abandoned_carts;
 CREATE POLICY "Allow public select access to abandoned_carts" ON public.abandoned_carts FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow public insert access to abandoned_carts" ON public.abandoned_carts;
 CREATE POLICY "Allow public insert access to abandoned_carts" ON public.abandoned_carts FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow public update access to abandoned_carts" ON public.abandoned_carts;
 CREATE POLICY "Allow public update access to abandoned_carts" ON public.abandoned_carts FOR UPDATE USING (true) WITH CHECK (true);
 
 
@@ -162,7 +187,9 @@ CREATE TABLE IF NOT EXISTS public.sent_emails (
 
 ALTER TABLE public.sent_emails ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow admin select access to sent_emails" ON public.sent_emails;
 CREATE POLICY "Allow admin select access to sent_emails" ON public.sent_emails FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Allow public insert access to sent_emails" ON public.sent_emails;
 CREATE POLICY "Allow public insert access to sent_emails" ON public.sent_emails FOR INSERT WITH CHECK (true);
 
 
@@ -188,8 +215,11 @@ CREATE TABLE IF NOT EXISTS public.orders (
 
 ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow public insert access to orders" ON public.orders;
 CREATE POLICY "Allow public insert access to orders" ON public.orders FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow public read access to orders" ON public.orders;
 CREATE POLICY "Allow public read access to orders" ON public.orders FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow admin update access to orders" ON public.orders;
 CREATE POLICY "Allow admin update access to orders" ON public.orders FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
 
 
@@ -198,9 +228,11 @@ INSERT INTO storage.buckets (id, name, public)
 VALUES ('review-images', 'review-images', true)
 ON CONFLICT (id) DO NOTHING;
 
+DROP POLICY IF EXISTS "Allow public read from review-images bucket" ON storage.objects;
 CREATE POLICY "Allow public read from review-images bucket" ON storage.objects
     FOR SELECT USING (bucket_id = 'review-images');
 
+DROP POLICY IF EXISTS "Allow anonymous upload to review-images bucket" ON storage.objects;
 CREATE POLICY "Allow anonymous upload to review-images bucket" ON storage.objects
     FOR INSERT WITH CHECK (bucket_id = 'review-images');
 
@@ -244,9 +276,13 @@ CREATE TABLE IF NOT EXISTS public.circle_subscribers (
 
 ALTER TABLE public.circle_subscribers ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow public insert access to circle_subscribers" ON public.circle_subscribers;
 CREATE POLICY "Allow public insert access to circle_subscribers" ON public.circle_subscribers FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow public select access to circle_subscribers" ON public.circle_subscribers;
 CREATE POLICY "Allow public select access to circle_subscribers" ON public.circle_subscribers FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow admin update access to circle_subscribers" ON public.circle_subscribers;
 CREATE POLICY "Allow admin update access to circle_subscribers" ON public.circle_subscribers FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow admin delete access to circle_subscribers" ON public.circle_subscribers;
 CREATE POLICY "Allow admin delete access to circle_subscribers" ON public.circle_subscribers FOR DELETE TO authenticated USING (true);
 
 
@@ -263,8 +299,11 @@ CREATE TABLE IF NOT EXISTS public.traffic_logs (
 
 ALTER TABLE public.traffic_logs ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow public insert access to traffic_logs" ON public.traffic_logs;
 CREATE POLICY "Allow public insert access to traffic_logs" ON public.traffic_logs FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow public select access to traffic_logs" ON public.traffic_logs;
 CREATE POLICY "Allow public select access to traffic_logs" ON public.traffic_logs FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow admin delete access to traffic_logs" ON public.traffic_logs;
 CREATE POLICY "Allow admin delete access to traffic_logs" ON public.traffic_logs FOR DELETE TO authenticated USING (true);
 
 
