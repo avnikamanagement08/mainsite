@@ -456,6 +456,15 @@ if (hamburger && navLinksContainer) {
     hamburger.classList.toggle('open');
     navLinksContainer.classList.toggle('mobile-open');
   });
+
+  // Close mobile drawer when clicking a link
+  const navLinks = navLinksContainer.querySelectorAll('.nav-link');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navLinksContainer.classList.remove('mobile-open');
+    });
+  });
 }
 
 // ===== PARALLAX EFFECT (HERO IMAGE & CARDS) =====
