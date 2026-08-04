@@ -4756,15 +4756,19 @@ em {
     justify-content: center;
     display: inline-flex;
   }
-}
-
-/* Promo Banner Section styles */
+}/* Promo Banner Section styles */
 .promo-banner-section {
   width: 100%;
   max-width: 1200px;
   margin: 1.5rem auto 2.5rem;
-  padding: 0 1rem;
+  padding: 0 5%;
   box-sizing: border-box;
+}
+
+@media (min-width: 1200px) {
+  .promo-banner-section {
+    padding: 0;
+  }
 }
 
 .promo-banner-link {
@@ -4799,7 +4803,7 @@ em {
 @media (max-width: 768px) {
   .promo-banner-section {
     margin: 1rem auto 2rem;
-    padding: 0 12px;
+    padding: 0 5%;
   }
   .promo-banner-link {
     border-radius: 12px;
