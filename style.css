@@ -4749,3 +4749,51 @@ em {
     display: inline-flex;
   }
 }
+
+/* Promo Banner Section styles */
+.promo-banner-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 1.5rem auto 2.5rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.promo-banner-link {
+  display: block;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgba(212, 175, 55, 0.2); /* Subtle gold border */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+  position: relative;
+  background: #0d1612; /* Brand background dark green/black fallback */
+}
+
+.promo-banner-link:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 45px rgba(212, 175, 55, 0.15); /* Soft gold shadow on hover */
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+.promo-banner-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.promo-banner-link:hover .promo-banner-img {
+  transform: scale(1.025);
+}
+
+/* Mobile responsive margins for banner */
+@media (max-width: 768px) {
+  .promo-banner-section {
+    margin: 1rem auto 2rem;
+    padding: 0 12px;
+  }
+  .promo-banner-link {
+    border-radius: 12px;
+  }
+}
