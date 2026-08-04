@@ -1183,7 +1183,7 @@ async function loadDynamicProducts() {
     if (cached) {
       try {
         const parsed = JSON.parse(cached);
-        const hasNewProducts = parsed.some(p => p.id === 'p7') && parsed.some(p => p.id === 'p8');
+        const hasNewProducts = parsed.some(p => p.id === 'p7') && parsed.some(p => p.id === 'p8') && parsed.some(p => p.id === 'p9') && parsed.some(p => p.id === 'p10');
         const correctPricing = parsed.every(p => {
           if (p.id && p.id.startsWith('p')) {
             const priceVal = p.base_price_making !== undefined ? parseFloat(p.base_price_making) : (p.price ? parseFloat(p.price.replace(/[^0-9.]/g, '')) : 149);
@@ -1480,7 +1480,9 @@ const allProductsDatabase = {
     image: "images/earrings/5/WhatsApp Image 2026-06-15 at 11.04.50 PM.jpeg", 
     category: "Earrings",
     gallery: [
-      "images/earrings/5/WhatsApp Image 2026-06-15 at 11.04.50 PM.jpeg"
+      "images/earrings/5/WhatsApp Image 2026-06-15 at 11.04.50 PM.jpeg",
+      "images/earrings/5/WhatsApp Image 2026-08-04 at 7.27.58 PM.jpeg",
+      "images/earrings/5/WhatsApp Image 2026-08-04 at 7.31.26 PM.jpeg"
     ],
     description: "Classic four-prong stud earrings holding flawless AAAAA-grade simulated cubic zirconia solitaires. Finished in a premium silver-tone. Anti-tarnish coated for lasting color protection. Versatile and timeless, ideal for office wear and special occasions."
   },
@@ -1488,10 +1490,11 @@ const allProductsDatabase = {
     id: "p6", 
     name: "Tara Rose Gold Starburst Dangles", 
     price: "₹149", 
-    image: "images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg", 
+    image: "images/earrings/6/WhatsApp Image 2026-08-04 at 7.27.54 PM.jpeg", 
     category: "Earrings",
     gallery: [
-      "images/earrings/6/WhatsApp Image 2026-06-12 at 3.18.11 PM.jpeg",
+      "images/earrings/6/WhatsApp Image 2026-08-04 at 7.27.54 PM.jpeg",
+      "images/earrings/6/WhatsApp Image 2026-08-04 at 7.27.57 PM.jpeg",
       "images/earrings/6/WhatsApp Image 2026-06-12 at 3.21.40 PM.jpeg"
     ],
     description: "Elegant starburst danglers featuring pave-set CZ stone arrays that capture and reflect light. Finished in highly polished rose gold-tone. Includes premium anti-tarnish coating for lasting color protection. Hypoallergenic posts make them comfortable for sensitive ears."
@@ -1503,7 +1506,9 @@ const allProductsDatabase = {
     image: "images/earrings/7/WhatsApp Image 2026-06-15 at 11.04.48 PM (2).jpeg",
     category: "Earrings",
     gallery: [
-      "images/earrings/7/WhatsApp Image 2026-06-15 at 11.04.48 PM (2).jpeg"
+      "images/earrings/7/WhatsApp Image 2026-06-15 at 11.04.48 PM (2).jpeg",
+      "images/earrings/7/WhatsApp Image 2026-08-04 at 7.31.27 PM.jpeg",
+      "images/earrings/7/WhatsApp Image 2026-08-04 at 7.31.28 PM.jpeg"
     ],
     description: "Chic geometric hexagonal drop earrings with an elegant ribbed/shell design top stud. Fully anti-tarnish treated with a high-shine yellow gold finish over a premium base alloy. Modern, bold, and extremely lightweight."
   },
@@ -1517,6 +1522,30 @@ const allProductsDatabase = {
       "images/earrings/8/WhatsApp Image 2026-06-15 at 11.04.51 PM.jpeg"
     ],
     description: "Stunning twisted rope hoop earrings finished in a premium gold-tone. Comes with a secure click-lock post. Sweat-proof, waterproof, anti-tarnish treated, and perfect for adding texture to any look."
+  },
+  "p9": {
+    id: "p9",
+    name: "Kriti Floral Jhumkas",
+    price: "₹149",
+    image: "images/earrings/9/WhatsApp Image 2026-08-04 at 7.31.27 PM.jpeg",
+    category: "Earrings",
+    gallery: [
+      "images/earrings/9/WhatsApp Image 2026-08-04 at 7.31.27 PM.jpeg",
+      "images/earrings/9/WhatsApp Image 2026-08-04 at 7.31.28 PM.jpeg"
+    ],
+    description: "Exquisite floral motif stud earrings adorned with intricate hand-set Kundan stones and delicate pearl drops. Finished in highly polished warm gold-tone. Coated with our signature anti-tarnish shield."
+  },
+  "p10": {
+    id: "p10",
+    name: "Gauri Pearl Cascade Jhumkas",
+    price: "₹149",
+    image: "images/earrings/10/WhatsApp Image 2026-08-04 at 7.33.56 PM.jpeg",
+    category: "Earrings",
+    gallery: [
+      "images/earrings/10/WhatsApp Image 2026-08-04 at 7.33.56 PM.jpeg",
+      "images/earrings/10/WhatsApp Image 2026-08-04 at 7.34.49 PM.jpeg"
+    ],
+    description: "Traditional style jhumka earrings featuring a detailed gold-tone bell-cap embellished with cascading clusters of faux pearls. Offers a lightweight fit, hypoallergenic alloy posts, and superior tarnish resistance."
   }
 };
 
