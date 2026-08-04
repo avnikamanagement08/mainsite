@@ -1666,11 +1666,10 @@ em {
 
 .footer-bottom-links a:hover { color: var(--gold); }
 
-/* ===== BACK TO TOP ===== */
 .back-to-top {
   position: fixed;
-  bottom: 2.5rem;
-  right: 2.5rem;
+  bottom: 95px;
+  right: 30px;
   width: 46px; height: 46px;
   background: var(--gold);
   color: var(--black);
@@ -2500,8 +2499,7 @@ em {
 
 @media (max-width: 768px) {
 
-  /* Hide less critical social and wishlist buttons in the header on mobile to free up horizontal space */
-  .nav-actions .nav-icon-btn[aria-label="Instagram"],
+  /* Hide less critical wishlist button in the header on mobile to free up horizontal space */
   .nav-actions .nav-icon-btn[aria-label="Wishlist"] {
     display: none !important;
   }
@@ -2517,6 +2515,16 @@ em {
   }
   #gatewayMobileLinkContainer {
     display: block !important;
+  }
+
+  /* Slide floating buttons above the sticky mobile cart and stack them */
+  .whatsapp-float-btn {
+    bottom: 70px !important;
+    right: 20px !important;
+  }
+  .back-to-top {
+    bottom: 140px !important;
+    right: 25px !important;
   }
 }
 
@@ -4795,5 +4803,16 @@ em {
   }
   .promo-banner-link {
     border-radius: 12px;
+  }
+}
+
+/* Hide mobile-only links on desktop */
+.mobile-only-link {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-only-link {
+    display: block;
   }
 }
