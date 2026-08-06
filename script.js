@@ -2084,12 +2084,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.querySelector('.promo-slider-container');
   if (!container) return;
 
+  const wrapper = container.querySelector('.promo-slider-wrapper');
   const slides = container.querySelectorAll('.promo-slide');
   const dots = container.querySelectorAll('.promo-dot');
   const prevBtn = container.querySelector('.promo-slider-btn.prev');
   const nextBtn = container.querySelector('.promo-slider-btn.next');
   let currentSlide = 0;
   let autoSlideInterval;
+
+  function updateHeight() {
+    const activeSlideEl = slides[currentSlide];
+    if (!activeSlideEl) return;
+    const img = activeSlideEl.querySelector('.promo-banner-img');
+    if (img && img.clientHeight > 0) {
+      container.style.height = `${img.clientHeight}px`;
+    } else if (img) {
+      img.addEventListener('load', () => {
+        container.style.height = `${img.clientHeight}px`;
+      }, { once: true });
+    }
+  }
 
   function showSlide(index) {
     if (index < 0) {
@@ -2100,6 +2114,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     currentSlide = index;
     
+    if (wrapper) {
+      wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    updateHeight();
+
     slides.forEach((slide, idx) => {
       if (idx === currentSlide) {
         slide.classList.add('active');
@@ -2193,8 +2213,12 @@ document.addEventListener('DOMContentLoaded', () => {
     startAutoSlide();
   });
 
-  // Initialize auto-slide
+  // Window resize handler
+  window.addEventListener('resize', updateHeight);
+
+  // Initialize auto-slide and height
   startAutoSlide();
+  setTimeout(updateHeight, 300);
 });
 
 
