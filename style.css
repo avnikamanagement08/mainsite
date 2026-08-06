@@ -4979,3 +4979,14 @@ em {
     display: block;
   }
 }
+
+/* Hide all stars, ratings and reviews */
+.product-rating, 
+.qv-rating, 
+.stars, 
+.rating-count, 
+.testi-stars, 
+.reviews-section, 
+.write-review-btn {
+  display: none !important;
+}

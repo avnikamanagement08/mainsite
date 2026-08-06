@@ -207,7 +207,7 @@ function resizeCanvas() {
 }
 
 // ===== MAGNETIC HOVER BUTTONS =====
-const magneticBtns = document.querySelectorAll('.btn-primary, .btn-ghost, .nav-logo, .nav-link, .testi-btn, .cart-toggle-btn');
+const magneticBtns = document.querySelectorAll('.btn-primary, .btn-ghost, .nav-logo, .nav-link, .cart-toggle-btn');
 magneticBtns.forEach(btn => {
   btn.addEventListener('mousemove', (e) => {
     const rect = btn.getBoundingClientRect();
@@ -337,65 +337,7 @@ function updateClarityGauge(score) {
   }
 }
 
-// ===== TESTIMONIALS SLIDER =====
-const testiTrack = document.getElementById('testiTrack');
-const testiDots = document.querySelectorAll('.testi-dot');
-const testiCards = document.querySelectorAll('.testi-card');
-let currentTesti = 0;
-let autoPlayInterval;
-
-function goToTesti(index) {
-  currentTesti = (index + testiCards.length) % testiCards.length;
-  
-  gsap.to(testiTrack, {
-    x: `-${currentTesti * 100}%`,
-    duration: 0.8,
-    ease: 'power3.out'
-  });
-
-  testiDots.forEach((dot, i) => {
-    dot.classList.toggle('active', i === currentTesti);
-  });
-}
-
-function startAutoPlay() {
-  autoPlayInterval = setInterval(() => {
-    goToTesti(currentTesti + 1);
-  }, 6000);
-}
-
-function stopAutoPlay() {
-  clearInterval(autoPlayInterval);
-}
-
-const testiNextBtn = document.getElementById('testiNext');
-const testiPrevBtn = document.getElementById('testiPrev');
-
-if (testiNextBtn) {
-  testiNextBtn.addEventListener('click', () => {
-    stopAutoPlay();
-    goToTesti(currentTesti + 1);
-    startAutoPlay();
-  });
-}
-
-if (testiPrevBtn) {
-  testiPrevBtn.addEventListener('click', () => {
-    stopAutoPlay();
-    goToTesti(currentTesti - 1);
-    startAutoPlay();
-  });
-}
-
-testiDots.forEach((dot, i) => {
-  dot.addEventListener('click', () => {
-    stopAutoPlay();
-    goToTesti(i);
-    startAutoPlay();
-  });
-});
-
-if (testiTrack) startAutoPlay();
+// ===== TESTIMONIALS SLIDER REMOVED =====
 
 // ===== NAVBAR SCROLL EFFECT =====
 const navbar = document.getElementById('navbar');
@@ -1208,6 +1150,14 @@ async function loadDynamicProducts() {
     }
   }
 
+  // Store hardcoded galleries before clearing
+  const hardcodedGalleries = {};
+  for (const key in allProductsDatabase) {
+    if (allProductsDatabase[key] && allProductsDatabase[key].gallery) {
+      hardcodedGalleries[key] = allProductsDatabase[key].gallery;
+    }
+  }
+
   // Clear existing items in allProductsDatabase reference safely
   for (const key in allProductsDatabase) {
     delete allProductsDatabase[key];
@@ -1224,7 +1174,7 @@ async function loadDynamicProducts() {
       compare_at_price: "₹" + rawCompare.toFixed(0),
       image: prod.image,
       category: prod.category,
-      gallery: prod.gallery || [prod.image],
+      gallery: prod.gallery || hardcodedGalleries[prod.id] || [prod.image],
       description: prod.description
     };
   });

@@ -1057,11 +1057,12 @@ async function loadDynamicProducts() {
 
   // Populate dynamic database records into productsData
   dbProducts.forEach(prod => {
+    const existing = productsData[prod.id];
     productsData[prod.id] = {
       id: prod.id,
       name: prod.name,
       image: prod.image,
-      gallery: prod.gallery || [prod.image],
+      gallery: prod.gallery || (existing ? existing.gallery : [prod.image]),
       category: prod.category,
       description: prod.description,
       gold_weight_grams: parseFloat(prod.gold_weight_grams || 0),
@@ -1069,7 +1070,7 @@ async function loadDynamicProducts() {
       gemstone_cost: parseFloat(prod.gemstone_cost || 0),
       is_preorder: prod.is_preorder || false,
       is_consignment: prod.is_consignment || false,
-      reviews: productsData[prod.id] ? (productsData[prod.id].reviews || []) : []
+      reviews: existing ? (existing.reviews || []) : []
     };
   });
 }
