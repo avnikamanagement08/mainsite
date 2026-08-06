@@ -1558,8 +1558,19 @@ async function fetchProductsData() {
   if (products.length === 0) {
     const cached = localStorage.getItem('avanika_simulated_products');
     if (cached) {
-      products = JSON.parse(cached);
-    } else {
+      try {
+        const parsed = JSON.parse(cached);
+        const hasNewProducts = parsed.some(p => p.id === 'p11') && parsed.some(p => p.id === 'p12');
+        if (!hasNewProducts) {
+          products = [];
+        } else {
+          products = parsed;
+        }
+      } catch (e) {
+        products = [];
+      }
+    }
+    if (products.length === 0) {
       products = [
         { id: "p1", name: "Meera Anti-Tarnish Kundan Chandbalis", category: "Earrings", image: "images/earrings/1/WhatsApp Image 2026-08-05 at 7.11.41 PM.jpeg", description: "Handcrafted traditional Indian Kundan Chandbalis, finished in a premium gold-tone over a lightweight alloy base. Adorned with cluster CZ stones and premium faux pearls. Features our advanced anti-tarnish guard for lasting color protection. Lightweight and perfect for ethnic celebrations.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
         { id: "p2", name: "Aura Celestial Hoops", category: "Earrings", image: "images/earrings/2/WhatsApp Image 2026-08-05 at 7.11.36 PM.jpeg", description: "Minimalist, daily-wear geometric hoop earrings with a high-shine gold-tone finish. Fitted with a secure click-lock latch. Fully anti-tarnish treated for lasting color protection. Waterproof, sweat-proof, and designed to match both Western and casual outfits.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },

@@ -1030,7 +1030,7 @@ async function loadDynamicProducts() {
     if (cached) {
       try {
         const parsed = JSON.parse(cached);
-        const hasNewProducts = parsed.some(p => p.id === 'p7') && parsed.some(p => p.id === 'p8') && parsed.some(p => p.id === 'p9') && parsed.some(p => p.id === 'p10');
+        const hasNewProducts = parsed.some(p => p.id === 'p11') && parsed.some(p => p.id === 'p12');
         const correctPricing = parsed.every(p => {
           if (p.id && p.id.startsWith('p')) {
             const priceVal = p.base_price_making !== undefined ? parseFloat(p.base_price_making) : (p.price ? parseFloat(p.price.replace(/[^0-9.]/g, '')) : 149);
