@@ -1304,7 +1304,8 @@ em {
   .gallery-item.item-2, 
   .gallery-item.item-3, 
   .gallery-item.item-4 {
-    height: 200px;
+    height: auto;
+    aspect-ratio: 3 / 4;
     margin-top: 0 !important;
   }
 }
