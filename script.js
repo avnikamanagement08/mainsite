@@ -2077,3 +2077,125 @@ if (qvBuyNowBtn) {
 }
 
 
+// =========================================================================
+// ===== PROMO BANNER SLIDER LOGIC =====
+// =========================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.querySelector('.promo-slider-container');
+  if (!container) return;
+
+  const slides = container.querySelectorAll('.promo-slide');
+  const dots = container.querySelectorAll('.promo-dot');
+  const prevBtn = container.querySelector('.promo-slider-btn.prev');
+  const nextBtn = container.querySelector('.promo-slider-btn.next');
+  let currentSlide = 0;
+  let autoSlideInterval;
+
+  function showSlide(index) {
+    if (index < 0) {
+      index = slides.length - 1;
+    } else if (index >= slides.length) {
+      index = 0;
+    }
+    
+    currentSlide = index;
+    
+    slides.forEach((slide, idx) => {
+      if (idx === currentSlide) {
+        slide.classList.add('active');
+      } else {
+        slide.classList.remove('active');
+      }
+    });
+
+    dots.forEach((dot, idx) => {
+      if (idx === currentSlide) {
+        dot.classList.add('active');
+      } else {
+        dot.classList.remove('active');
+      }
+    });
+  }
+
+  function nextSlide() {
+    showSlide(currentSlide + 1);
+  }
+
+  function prevSlide() {
+    showSlide(currentSlide - 1);
+  }
+
+  // Event Listeners
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      prevSlide();
+      resetAutoSlide();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      nextSlide();
+      resetAutoSlide();
+    });
+  }
+
+  dots.forEach((dot) => {
+    dot.addEventListener('click', (e) => {
+      e.preventDefault();
+      const slideTo = parseInt(dot.getAttribute('data-slide-to'));
+      showSlide(slideTo);
+      resetAutoSlide();
+    });
+  });
+
+  // Swipe support for touch devices
+  let startX = 0;
+  let endX = 0;
+  container.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+
+  container.addEventListener('touchend', (e) => {
+    endX = e.changedTouches[0].clientX;
+    handleSwipe();
+  }, { passive: true });
+
+  function handleSwipe() {
+    const threshold = 50; // min swipe distance in px
+    if (startX - endX > threshold) {
+      nextSlide();
+      resetAutoSlide();
+    } else if (endX - startX > threshold) {
+      prevSlide();
+      resetAutoSlide();
+    }
+  }
+
+  // Auto-slide functionality
+  function startAutoSlide() {
+    autoSlideInterval = setInterval(nextSlide, 5000); // 5s interval
+  }
+
+  function resetAutoSlide() {
+    clearInterval(autoSlideInterval);
+    startAutoSlide();
+  }
+
+  // Pause on hover
+  container.addEventListener('mouseenter', () => {
+    clearInterval(autoSlideInterval);
+  });
+
+  container.addEventListener('mouseleave', () => {
+    startAutoSlide();
+  });
+
+  // Initialize auto-slide
+  startAutoSlide();
+});
+
+
+

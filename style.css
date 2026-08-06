@@ -4783,34 +4783,128 @@ em {
   .promo-banner-section {
     padding: 0;
   }
+}/* Promo Banner Slider styles */
+.promo-slider-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  background: #0d1612;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
 }
-
+.promo-slider-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 45px rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.4);
+}
+.promo-slider-wrapper {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.promo-slide {
+  grid-area: 1 / 1 / 2 / 2;
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s;
+  z-index: 1;
+}
+.promo-slide.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
 .promo-banner-link {
   display: block;
   overflow: hidden;
   border-radius: 16px;
-  border: 1px solid rgba(212, 175, 55, 0.2); /* Subtle gold border */
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
-  position: relative;
-  background: #0d1612; /* Brand background dark green/black fallback */
+  background: transparent;
+  transition: none;
+  border: none;
+  box-shadow: none;
 }
-
 .promo-banner-link:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 45px rgba(212, 175, 55, 0.15); /* Soft gold shadow on hover */
-  border-color: rgba(212, 175, 55, 0.4);
+  transform: none;
+  box-shadow: none;
+  border-color: transparent;
 }
-
 .promo-banner-img {
   width: 100%;
   height: auto;
   display: block;
   transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
-
 .promo-banner-link:hover .promo-banner-img {
-  transform: scale(1.025);
+  transform: scale(1.015);
+}
+
+/* Slider Buttons */
+.promo-slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(13, 22, 18, 0.7);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+.promo-slider-btn:hover {
+  background: rgba(212, 175, 55, 0.9);
+  color: #000;
+  border-color: var(--gold);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+}
+.promo-slider-btn.prev {
+  left: 20px;
+}
+.promo-slider-btn.next {
+  right: 20px;
+}
+.promo-slider-container:hover .promo-slider-btn {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Slider Indicators */
+.promo-slider-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+  background: rgba(13, 22, 18, 0.6);
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.15);
+}
+.promo-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.promo-dot.active {
+  background: var(--gold);
+  transform: scale(1.2);
+  box-shadow: 0 0 8px var(--gold);
 }
 
 /* Mobile responsive margins for banner */
@@ -4819,8 +4913,32 @@ em {
     margin: 1rem auto 2rem;
     padding: 0 5%;
   }
+  .promo-slider-container {
+    border-radius: 12px;
+  }
   .promo-banner-link {
     border-radius: 12px;
+  }
+  .promo-slider-btn {
+    width: 36px;
+    height: 36px;
+    opacity: 0.8;
+    visibility: visible;
+  }
+  .promo-slider-btn.prev {
+    left: 10px;
+  }
+  .promo-slider-btn.next {
+    right: 10px;
+  }
+  .promo-slider-dots {
+    bottom: 12px;
+    padding: 4px 8px;
+    gap: 8px;
+  }
+  .promo-dot {
+    width: 6px;
+    height: 6px;
   }
 }
 

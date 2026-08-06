@@ -203,9 +203,36 @@
 
   <!-- ===== PROMO BANNER SECTION ===== -->
   <section class="promo-banner-section reveal-up">
-    <a href="#newsletterForm" class="promo-banner-link" aria-label="Avanika Mystery Box Upcoming Launch - Stay Tuned">
-      <img src="images/mystery_box_banner.png?v=3" alt="Avanika Mystery Box Upcoming Launch" class="promo-banner-img" />
-    </a>
+    <div class="promo-slider-container">
+      <div class="promo-slider-wrapper">
+        <!-- Slide 1: Mystery Box -->
+        <div class="promo-slide active" data-slide="0">
+          <a href="#newsletterForm" class="promo-banner-link" aria-label="Avanika Mystery Box Upcoming Launch - Stay Tuned">
+            <img src="images/mystery_box_banner.png?v=3" alt="Avanika Mystery Box Upcoming Launch" class="promo-banner-img" />
+          </a>
+        </div>
+        <!-- Slide 2: Necklaces Collection -->
+        <div class="promo-slide" data-slide="1">
+          <a href="#newsletterForm" class="promo-banner-link" aria-label="Avanika Upcoming Necklaces Collection - Stay Tuned">
+            <img src="images/necklaces_banner.jpg?v=1" alt="Avanika Upcoming Necklaces Collection" class="promo-banner-img" />
+          </a>
+        </div>
+      </div>
+      
+      <!-- Slider Arrows -->
+      <button class="promo-slider-btn prev" aria-label="Previous Slide">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="promo-slider-btn next" aria-label="Next Slide">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <!-- Slider Indicators -->
+      <div class="promo-slider-dots">
+        <span class="promo-dot active" data-slide-to="0"></span>
+        <span class="promo-dot" data-slide-to="1"></span>
+      </div>
+    </div>
   </section>
 
 
