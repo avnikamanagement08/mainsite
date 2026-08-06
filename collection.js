@@ -10,12 +10,14 @@ const productsData = {
   p1: {
     id: "p1",
     name: "Meera Anti-Tarnish Kundan Chandbalis",
-    image: "images/earrings/1/WhatsApp Image 2026-06-15 at 11.04.48 PM (1).jpeg",
+    image: "images/earrings/1/WhatsApp Image 2026-08-05 at 7.11.41 PM.jpeg",
     gallery: [
-      "images/earrings/1/WhatsApp Image 2026-06-15 at 11.04.48 PM (1).jpeg"
+      "images/earrings/1/WhatsApp Image 2026-08-05 at 7.11.41 PM.jpeg",
+      "images/earrings/1/WhatsApp Image 2026-08-05 at 7.11.42 PM.jpeg",
+      "images/earrings/1/WhatsApp Image 2026-08-05 at 7.11.42 Pc.jpeg"
     ],
     category: "Earrings",
-    description: "Handcrafted traditional Indian Kundan Chandbalis, finished in a premium gold-tone over a lightweight alloy base. Adorned with cluster CZ stones and premium faux pearls. Features our advanced anti-tarnish guard for lasting color protection. Hypoallergenic, lightweight, and perfect for ethnic celebrations.",
+    description: "Handcrafted traditional Indian Kundan Chandbalis, finished in a premium gold-tone over a lightweight alloy base. Adorned with cluster CZ stones and premium faux pearls. Features our advanced anti-tarnish guard for lasting color protection. Lightweight and perfect for ethnic celebrations.",
     gold_weight_grams: 0.0,
     base_price_making: 149.00,
     gemstone_cost: 0.00,
@@ -26,9 +28,11 @@ const productsData = {
   p2: {
     id: "p2",
     name: "Aura Celestial Hoops",
-    image: "images/earrings/2/WhatsApp Image 2026-06-15 at 11.04.48 PM.jpeg",
+    image: "images/earrings/2/WhatsApp Image 2026-08-05 at 7.11.36 PM.jpeg",
     gallery: [
-      "images/earrings/2/WhatsApp Image 2026-06-15 at 11.04.48 PM.jpeg"
+      "images/earrings/2/WhatsApp Image 2026-08-05 at 7.11.36 PM.jpeg",
+      "images/earrings/2/WhatsApp Image 2026-08-05 at 7.11.36 PM (1).jpeg",
+      "images/earrings/2/WhatsApp Image 2026-08-05 at 7.11.37 PM.jpeg"
     ],
     category: "Earrings",
     description: "Minimalist, daily-wear geometric hoop earrings with a high-shine gold-tone finish. Fitted with a secure click-lock latch. Fully anti-tarnish treated for lasting color protection. Waterproof, sweat-proof, and designed to match both Western and casual outfits.",
@@ -42,10 +46,11 @@ const productsData = {
   p3: {
     id: "p3",
     name: "Ziya Simulated Emerald Drop Jhumkas",
-    image: "images/earrings/3/WhatsApp Image 2026-06-15 at 11.04.51 PM (1).jpeg",
+    image: "images/earrings/3/WhatsApp Image 2026-08-05 at 7.11.37 PM.jpeg",
     gallery: [
-      "images/earrings/3/WhatsApp Image 2026-06-15 at 11.04.51 PM (1).jpeg",
-      "images/earrings/3/WhatsApp Image 2026-06-12 at 10.53.22 AM.jpeg"
+      "images/earrings/3/WhatsApp Image 2026-08-05 at 7.11.37 PM.jpeg",
+      "images/earrings/3/WhatsApp Image 2026-08-05 at 7.11.38 PM.jpeg",
+      "images/earrings/3/WhatsApp Image 2026-08-05 at 7.11.38 PM (1).jpeg"
     ],
     category: "Earrings",
     description: "Fusion dangle jhumkas with vibrant simulated emerald drops suspended from a micro-pave cubic zirconia floral stud. Finished in a premium gold-tone. Features advanced anti-tarnish protection for lasting color. Extremely lightweight and comfortable.",
@@ -59,10 +64,11 @@ const productsData = {
   p4: {
     id: "p4",
     name: "Avni Royal Kundan Pearl Drops",
-    image: "images/earrings/4/WhatsApp Image 2026-06-12 at 2.19.55 PM.jpeg",
+    image: "images/earrings/4/WhatsApp Image 2026-08-05 at 7.11.43 PM.jpeg",
     gallery: [
-      "images/earrings/4/WhatsApp Image 2026-06-12 at 2.19.55 PM.jpeg",
-      "images/earrings/4/WhatsApp Image 2026-06-12 at 2.20.37 PM.jpeg"
+      "images/earrings/4/WhatsApp Image 2026-08-05 at 7.11.43 PM.jpeg",
+      "images/earrings/4/WhatsApp Image 2026-08-05 at 7.11.43 PM (1).jpeg",
+      "images/earrings/4/WhatsApp Image 2026-08-05 at 7.11.44 PM.jpeg"
     ],
     category: "Earrings",
     description: "Regal drop earrings featuring hand-set Kundan stones and suspended organic shell pearls. Finished in an antique gold-tone. Protected with an anti-tarnish barrier and designed for long-lasting wear. The perfect accessory for wedding and bridal wear.",
@@ -101,7 +107,7 @@ const productsData = {
       "images/earrings/6/WhatsApp Image 2026-06-12 at 3.21.40 PM.jpeg"
     ],
     category: "Earrings",
-    description: "Elegant starburst danglers featuring pave-set CZ stone arrays that capture and reflect light. Finished in highly polished rose gold-tone. Includes premium anti-tarnish coating for lasting color protection. Hypoallergenic posts make them comfortable for sensitive ears.",
+    description: "Elegant starburst danglers featuring pave-set CZ stone arrays that capture and reflect light. Finished in highly polished rose gold-tone. Includes premium anti-tarnish coating for lasting color protection. Comfortable posts make them perfect for daily wear.",
     gold_weight_grams: 0.0,
     base_price_making: 149.00,
     gemstone_cost: 0.00,
@@ -130,9 +136,10 @@ const productsData = {
   p8: {
     id: "p8",
     name: "Riya Twisted Hoops",
-    image: "images/earrings/8/WhatsApp Image 2026-06-15 at 11.04.51 PM.jpeg",
+    image: "images/earrings/8/WhatsApp Image 2026-08-05 at 7.11.39 PM.jpeg",
     gallery: [
-      "images/earrings/8/WhatsApp Image 2026-06-15 at 11.04.51 PM.jpeg"
+      "images/earrings/8/WhatsApp Image 2026-08-05 at 7.11.39 PM.jpeg",
+      "images/earrings/8/WhatsApp Image 2026-08-05 at 7.11.39 PM (1).jpeg"
     ],
     category: "Earrings",
     description: "Stunning twisted rope hoop earrings finished in a premium gold-tone. Comes with a secure click-lock post. Sweat-proof, waterproof, anti-tarnish treated, and perfect for adding texture to any look.",
@@ -169,7 +176,42 @@ const productsData = {
       "images/earrings/10/WhatsApp Image 2026-08-04 at 7.34.49 PM.jpeg"
     ],
     category: "Earrings",
-    description: "Traditional style jhumka earrings featuring a detailed gold-tone bell-cap embellished with cascading clusters of faux pearls. Offers a lightweight fit, hypoallergenic alloy posts, and superior tarnish resistance.",
+    description: "Traditional style jhumka earrings featuring a detailed gold-tone bell-cap embellished with cascading clusters of faux pearls. Offers a lightweight fit, premium alloy posts, and superior tarnish resistance.",
+    gold_weight_grams: 0.0,
+    base_price_making: 149.00,
+    gemstone_cost: 0.00,
+    is_preorder: false,
+    is_consignment: false,
+    reviews: []
+  },
+  p11: {
+    id: "p11",
+    name: "Veda Pearl Hoop Dangles",
+    image: "images/earrings/11/WhatsApp Image 2026-08-05 at 7.11.39 PM.jpeg",
+    gallery: [
+      "images/earrings/11/WhatsApp Image 2026-08-05 at 7.11.39 PM.jpeg",
+      "images/earrings/11/WhatsApp Image 2026-08-05 at 7.11.40 PM.jpeg"
+    ],
+    category: "Earrings",
+    description: "Chic modern gold-plated hoop earrings featuring elegant suspended organic pearls. Finished with a premium anti-tarnish coating. Extremely lightweight and versatile.",
+    gold_weight_grams: 0.0,
+    base_price_making: 149.00,
+    gemstone_cost: 0.00,
+    is_preorder: false,
+    is_consignment: false,
+    reviews: []
+  },
+  p12: {
+    id: "p12",
+    name: "Aditi Royal Drop Earrings",
+    image: "images/earrings/12/WhatsApp Image 2026-08-05 at 7.11.40 PM.jpeg",
+    gallery: [
+      "images/earrings/12/WhatsApp Image 2026-08-05 at 7.11.40 PM.jpeg",
+      "images/earrings/12/WhatsApp Image 2026-08-05 at 7.11.40 PM (1).jpeg",
+      "images/earrings/12/WhatsApp Image 2026-08-05 at 7.11.41 PM.jpeg"
+    ],
+    category: "Earrings",
+    description: "Delicately handcrafted gold-plated drop earrings adorned with sparkling cluster CZ stones. Anti-tarnish coated for lasting color. Perfect for special occasions.",
     gold_weight_grams: 0.0,
     base_price_making: 149.00,
     gemstone_cost: 0.00,
