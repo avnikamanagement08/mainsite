@@ -4808,15 +4808,23 @@ em {
 .promo-slide {
   grid-area: 1 / 1 / 2 / 2;
   width: 100%;
+  display: none;
   opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s;
   z-index: 1;
 }
 .promo-slide.active {
+  display: block;
   opacity: 1;
-  visibility: visible;
   z-index: 2;
+  animation: promoFadeIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+@keyframes promoFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .promo-banner-link {
   display: block;
