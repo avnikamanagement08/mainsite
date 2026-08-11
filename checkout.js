@@ -122,6 +122,27 @@ function calculateGST(item) {
 function updatePriceSummary() {
   const itemCount = checkoutCart.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = checkoutCart.reduce((sum, item) => sum + (item.price * item.quantity), 0); // INR
+
+  // Hide COD payment method if the currency is not INR
+  const codCard = document.querySelector('.payment-method-card[data-method="cod"]');
+  if (codCard) {
+    if (currentCurrency !== 'INR') {
+      codCard.style.display = 'none';
+      if (selectedPaymentMode === 'cod') {
+        selectedPaymentMode = 'prepaid';
+        // Update UI highlight
+        const prepaidCard = document.querySelector('.payment-method-card[data-method="prepaid"]');
+        if (prepaidCard) {
+          document.querySelectorAll('.payment-method-card').forEach(c => c.classList.remove('selected'));
+          prepaidCard.classList.add('selected');
+          const radio = prepaidCard.querySelector('input[type="radio"]');
+          if (radio) radio.checked = true;
+        }
+      }
+    } else {
+      codCard.style.display = 'flex';
+    }
+  }
   
   // Flipkart style delivery charge: Free above 899, else 50
   const deliveryCharge = (subtotal >= 899 || subtotal === 0) ? 0 : 50; // INR
@@ -742,6 +763,24 @@ function printInvoiceReceipt() {
 // Document Load Actions
 document.addEventListener('DOMContentLoaded', () => {
   loadCart();
+
+  // Load selected payment mode from localStorage
+  selectedPaymentMode = localStorage.getItem('avanika_payment_mode') || 'prepaid';
+
+  // Sync UI with loaded payment mode
+  const initialCards = document.querySelectorAll('.payment-method-card');
+  initialCards.forEach(card => {
+    const method = card.getAttribute('data-method');
+    const radio = card.querySelector('input[type="radio"]');
+    if (method === selectedPaymentMode) {
+      card.classList.add('selected');
+      if (radio) radio.checked = true;
+    } else {
+      card.classList.remove('selected');
+      if (radio) radio.checked = false;
+    }
+  });
+
   renderCartItems();
   updatePriceSummary();
 
@@ -902,10 +941,13 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
+          if (options.key === 'rzp_test_AVNIKA2026') {
+            throw new Error('Placeholder Razorpay key detected - bypassing to local simulated UPI gateway.');
+          }
           const rzp = new Razorpay(options);
           rzp.open();
         } catch (err) {
-          console.warn('Razorpay SDK failed to open. Falling back to local UPI QR code overlay:', err);
+          console.warn('Razorpay fallback triggered:', err.message || err);
           showUPIQRCodeFallback(orderId, payableINR);
         }
       } else {

@@ -630,6 +630,7 @@ function updateCartUI() {
   
   // 3. Prepaid order discount: Instant 100 Rs off if Prepaid selected
   const paymentMode = document.querySelector('input[name="paymentMode"]:checked')?.value || 'prepaid';
+  localStorage.setItem('avanika_payment_mode', paymentMode);
   const prepaidDiscount = paymentMode === 'prepaid' ? 100 : 0;
   
   // Calculate Grand Total
@@ -1125,7 +1126,7 @@ async function loadDynamicProducts() {
     if (cached) {
       try {
         const parsed = JSON.parse(cached);
-        const hasNewProducts = parsed.some(p => p.id === 'p11') && parsed.some(p => p.id === 'p12');
+        const hasNewProducts = parsed.some(p => p.id === 'p11') && parsed.some(p => p.id === 'p12') && parsed.some(p => p.id === 'p15');
         const correctPricing = parsed.every(p => {
           if (p.id && p.id.startsWith('p')) {
             const priceVal = p.base_price_making !== undefined ? parseFloat(p.base_price_making) : (p.price ? parseFloat(p.price.replace(/[^0-9.]/g, '')) : 149);
@@ -1150,17 +1151,12 @@ async function loadDynamicProducts() {
     }
   }
 
-  // Store hardcoded galleries before clearing
+  // Store hardcoded galleries before updating
   const hardcodedGalleries = {};
   for (const key in allProductsDatabase) {
     if (allProductsDatabase[key] && allProductsDatabase[key].gallery) {
       hardcodedGalleries[key] = allProductsDatabase[key].gallery;
     }
-  }
-
-  // Clear existing items in allProductsDatabase reference safely
-  for (const key in allProductsDatabase) {
-    delete allProductsDatabase[key];
   }
 
   // Populate dynamic database records
@@ -1174,7 +1170,7 @@ async function loadDynamicProducts() {
       compare_at_price: "₹" + rawCompare.toFixed(0),
       image: prod.image,
       category: prod.category,
-      gallery: prod.gallery || hardcodedGalleries[prod.id] || [prod.image],
+      gallery: prod.gallery || hardcodedGalleries[prod.id] || (allProductsDatabase[prod.id] ? allProductsDatabase[prod.id].gallery : [prod.image]),
       description: prod.description
     };
   });
@@ -1528,6 +1524,42 @@ const allProductsDatabase = {
       "images/earrings/12/aditi_3.jpeg"
     ],
     description: "Delicately handcrafted gold-plated drop earrings adorned with sparkling cluster CZ stones. Anti-tarnish coated for lasting color. Perfect for special occasions."
+  },
+  "p13": {
+    id: "p13",
+    name: "Avni Royal Kundan Pearl Choker",
+    price: "₹149",
+    image: "images/necklace/1/avni_necklace_1.jpeg",
+    category: "Necklaces",
+    gallery: [
+      "images/necklace/1/avni_necklace_1.jpeg",
+      "images/necklace/1/avni_necklace_2.jpeg"
+    ],
+    description: "Handcrafted royal Kundan choker featuring intricate gold plating, delicate pearl hangings, and an adjustable drawstring closure. Perfect for bridal and luxury occasion wear."
+  },
+  "p14": {
+    id: "p14",
+    name: "Ziya Simulated Emerald Choker Set",
+    price: "₹149",
+    image: "images/necklace/2/ziya_necklace_1.jpeg",
+    category: "Necklaces",
+    gallery: [
+      "images/necklace/2/ziya_necklace_1.jpeg",
+      "images/necklace/2/ziya_necklace_2.jpeg"
+    ],
+    description: "Exquisite gold-tone choker set studded with simulated teardrop emeralds and micro-pave CZ accents. Elegant, anti-tarnish, and includes matching drop earrings."
+  },
+  "p15": {
+    id: "p15",
+    name: "Meera Anti-Tarnish Kundan Necklace",
+    price: "₹149",
+    image: "images/necklace/3/meera_necklace_1.jpeg",
+    category: "Necklaces",
+    gallery: [
+      "images/necklace/3/meera_necklace_1.jpeg",
+      "images/necklace/3/meera_necklace_2.jpeg"
+    ],
+    description: "A stunning traditional Kundan neckpiece designed with floral accents, premium anti-tarnish coating, and premium green glass-bead drops."
   }
 };
 

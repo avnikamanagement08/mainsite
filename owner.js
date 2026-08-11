@@ -1560,7 +1560,7 @@ async function fetchProductsData() {
     if (cached) {
       try {
         const parsed = JSON.parse(cached);
-        const hasNewProducts = parsed.some(p => p.id === 'p11') && parsed.some(p => p.id === 'p12');
+        const hasNewProducts = parsed.some(p => p.id === 'p11') && parsed.some(p => p.id === 'p12') && parsed.some(p => p.id === 'p15');
         if (!hasNewProducts) {
           products = [];
         } else {
@@ -1583,7 +1583,10 @@ async function fetchProductsData() {
         { id: "p9", name: "Kriti Floral Jhumkas", category: "Earrings", image: "images/earrings/9/kriti_1.jpeg", description: "Exquisite floral motif stud earrings adorned with intricate hand-set Kundan stones and delicate pearl drops. Finished in highly polished warm gold-tone. Coated with our signature anti-tarnish shield.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
         { id: "p10", name: "Gauri Pearl Cascade Jhumkas", category: "Earrings", image: "images/earrings/10/gauri_1.jpeg", description: "Traditional style jhumka earrings featuring a detailed gold-tone bell-cap embellished with cascading clusters of faux pearls. Offers a lightweight fit, premium alloy posts, and superior tarnish resistance.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
         { id: "p11", name: "Veda Pearl Hoop Dangles", category: "Earrings", image: "images/earrings/11/veda_1.jpeg", description: "Chic modern gold-plated hoop earrings featuring elegant suspended organic pearls. Finished with a premium anti-tarnish coating. Extremely lightweight and versatile.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
-        { id: "p12", name: "Aditi Royal Drop Earrings", category: "Earrings", image: "images/earrings/12/aditi_1.jpeg", description: "Delicately handcrafted gold-plated drop earrings adorned with sparkling cluster CZ stones. Anti-tarnish coated for lasting color. Perfect for special occasions.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 }
+        { id: "p12", name: "Aditi Royal Drop Earrings", category: "Earrings", image: "images/earrings/12/aditi_1.jpeg", description: "Delicately handcrafted gold-plated drop earrings adorned with sparkling cluster CZ stones. Anti-tarnish coated for lasting color. Perfect for special occasions.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p13", name: "Avni Royal Kundan Pearl Choker", category: "Necklaces", image: "images/necklace/1/avni_necklace_1.jpeg", description: "Handcrafted royal Kundan choker featuring intricate gold plating, delicate pearl hangings, and an adjustable drawstring closure. Perfect for bridal and luxury occasion wear.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p14", name: "Ziya Simulated Emerald Choker Set", category: "Necklaces", image: "images/necklace/2/ziya_necklace_1.jpeg", description: "Exquisite gold-tone choker set studded with simulated teardrop emeralds and micro-pave CZ accents. Elegant, anti-tarnish, and includes matching drop earrings.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 },
+        { id: "p15", name: "Meera Anti-Tarnish Kundan Necklace", category: "Necklaces", image: "images/necklace/3/meera_necklace_1.jpeg", description: "A stunning traditional Kundan neckpiece designed with floral accents, premium anti-tarnish coating, and premium green glass-bead drops.", base_price_making: 149, gold_weight_grams: 0, gemstone_cost: 0, stock: 10 }
       ];
       localStorage.setItem('avanika_simulated_products', JSON.stringify(products));
     }

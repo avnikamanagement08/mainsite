@@ -218,6 +218,57 @@ const productsData = {
     is_preorder: false,
     is_consignment: false,
     reviews: []
+  },
+  p13: {
+    id: "p13",
+    name: "Avni Royal Kundan Pearl Choker",
+    image: "images/necklace/1/avni_necklace_1.jpeg",
+    gallery: [
+      "images/necklace/1/avni_necklace_1.jpeg",
+      "images/necklace/1/avni_necklace_2.jpeg"
+    ],
+    category: "Necklaces",
+    description: "Handcrafted royal Kundan choker featuring intricate gold plating, delicate pearl hangings, and an adjustable drawstring closure. Perfect for bridal and luxury occasion wear.",
+    gold_weight_grams: 0.0,
+    base_price_making: 149.00,
+    gemstone_cost: 0.00,
+    is_preorder: false,
+    is_consignment: false,
+    reviews: []
+  },
+  p14: {
+    id: "p14",
+    name: "Ziya Simulated Emerald Choker Set",
+    image: "images/necklace/2/ziya_necklace_1.jpeg",
+    gallery: [
+      "images/necklace/2/ziya_necklace_1.jpeg",
+      "images/necklace/2/ziya_necklace_2.jpeg"
+    ],
+    category: "Necklaces",
+    description: "Exquisite gold-tone choker set studded with simulated teardrop emeralds and micro-pave CZ accents. Elegant, anti-tarnish, and includes matching drop earrings.",
+    gold_weight_grams: 0.0,
+    base_price_making: 149.00,
+    gemstone_cost: 0.00,
+    is_preorder: false,
+    is_consignment: false,
+    reviews: []
+  },
+  p15: {
+    id: "p15",
+    name: "Meera Anti-Tarnish Kundan Necklace",
+    image: "images/necklace/3/meera_necklace_1.jpeg",
+    gallery: [
+      "images/necklace/3/meera_necklace_1.jpeg",
+      "images/necklace/3/meera_necklace_2.jpeg"
+    ],
+    category: "Necklaces",
+    description: "A stunning traditional Kundan neckpiece designed with floral accents, premium anti-tarnish coating, and premium green glass-bead drops.",
+    gold_weight_grams: 0.0,
+    base_price_making: 149.00,
+    gemstone_cost: 0.00,
+    is_preorder: false,
+    is_consignment: false,
+    reviews: []
   }
 };
 
@@ -246,10 +297,10 @@ function formatPrice(priceInINR) {
 // 2. MOCK VARIANT INVENTORY INITIALIZER
 function initVariantInventory() {
   let simulatedInv = localStorage.getItem('avanika_simulated_inventory');
-  // Reinitialize if it doesn't exist or is missing the new product p6
-  if (!simulatedInv || !simulatedInv.includes('p6')) {
+  // Reinitialize if it doesn't exist or is missing the new product p15
+  if (!simulatedInv || !simulatedInv.includes('p15')) {
     const defaultInv = {};
-    const products = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6'];
+    const products = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15'];
     const sizes = ['6', '7', '8'];
     const metals = ['yellowgold', 'rosegold', 'platinum'];
     const stones = ['diamond', 'emerald', 'pearl'];
@@ -1030,7 +1081,7 @@ async function loadDynamicProducts() {
     if (cached) {
       try {
         const parsed = JSON.parse(cached);
-        const hasNewProducts = parsed.some(p => p.id === 'p11') && parsed.some(p => p.id === 'p12');
+        const hasNewProducts = parsed.some(p => p.id === 'p11') && parsed.some(p => p.id === 'p12') && parsed.some(p => p.id === 'p15');
         const correctPricing = parsed.every(p => {
           if (p.id && p.id.startsWith('p')) {
             const priceVal = p.base_price_making !== undefined ? parseFloat(p.base_price_making) : (p.price ? parseFloat(p.price.replace(/[^0-9.]/g, '')) : 149);
@@ -1104,6 +1155,43 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('detailImg').alt = `${productsData[activeProduct].name} - Avanika Premium Handcrafted Jewelry`;
     document.getElementById('detailTitle').textContent = productsData[activeProduct].name;
     document.getElementById('detailDesc').textContent = productsData[activeProduct].description;
+  }
+
+  // Parse category parameter from URL query string
+  const catParam = params.get('category');
+  if (catParam) {
+    catalogActiveCategory = catParam;
+    // Update the visual active state on filter buttons
+    const catFilterBtns = document.querySelectorAll('.cat-filter-btn');
+    catFilterBtns.forEach(btn => {
+      if (btn.getAttribute('data-category').toLowerCase() === catParam.toLowerCase()) {
+        btn.classList.add('active');
+        btn.style.borderColor = 'var(--gold)';
+        btn.style.color = 'var(--gold)';
+        btn.style.background = 'var(--black-1)';
+      } else {
+        btn.classList.remove('active');
+        btn.style.borderColor = 'var(--black-4)';
+        btn.style.color = 'var(--cream-muted)';
+        btn.style.background = 'var(--black-1)';
+      }
+    });
+
+    // Select the first product matching this category as active if activeProduct does not belong to this category
+    if (!productsData[activeProduct] || productsData[activeProduct].category.toLowerCase() !== catParam.toLowerCase()) {
+      const firstMatchingProduct = Object.values(productsData).find(p => p.category.toLowerCase() === catParam.toLowerCase());
+      if (firstMatchingProduct) {
+        activeProduct = firstMatchingProduct.id;
+        const sizeGroup = document.getElementById('sizeGroup');
+        if (sizeGroup) {
+          sizeGroup.style.display = (firstMatchingProduct.category === 'Rings') ? 'flex' : 'none';
+        }
+        document.getElementById('detailImg').src = firstMatchingProduct.image;
+        document.getElementById('detailImg').alt = `${firstMatchingProduct.name} - Avanika Premium Handcrafted Jewelry`;
+        document.getElementById('detailTitle').textContent = firstMatchingProduct.name;
+        document.getElementById('detailDesc').textContent = firstMatchingProduct.description;
+      }
+    }
   }
 
   // 2. Load reviews & price

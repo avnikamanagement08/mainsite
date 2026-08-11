@@ -260,7 +260,10 @@ VALUES
 ('p9', 'Kriti Floral Jhumkas', 'Earrings', 'images/earrings/9/kriti_1.jpeg', 'Exquisite floral motif stud earrings adorned with intricate hand-set Kundan stones and delicate pearl drops. Finished in highly polished warm gold-tone. Coated with our signature anti-tarnish shield.', 10, 149.00, 0.00),
 ('p10', 'Gauri Pearl Cascade Jhumkas', 'Earrings', 'images/earrings/10/gauri_1.jpeg', 'Traditional style jhumka earrings featuring a detailed gold-tone bell-cap embellished with cascading clusters of faux pearls. Offers a lightweight fit, premium alloy posts, and superior tarnish resistance.', 10, 149.00, 0.00),
 ('p11', 'Veda Pearl Hoop Dangles', 'Earrings', 'images/earrings/11/veda_1.jpeg', 'Chic modern gold-plated hoop earrings featuring elegant suspended organic pearls. Finished with a premium anti-tarnish coating. Extremely lightweight and versatile.', 10, 149.00, 0.00),
-('p12', 'Aditi Royal Drop Earrings', 'Earrings', 'images/earrings/12/aditi_1.jpeg', 'Delicately handcrafted gold-plated drop earrings adorned with sparkling cluster CZ stones. Anti-tarnish coated for lasting color. Perfect for special occasions.', 10, 149.00, 0.00)
+('p12', 'Aditi Royal Drop Earrings', 'Earrings', 'images/earrings/12/aditi_1.jpeg', 'Delicately handcrafted gold-plated drop earrings adorned with sparkling cluster CZ stones. Anti-tarnish coated for lasting color. Perfect for special occasions.', 10, 149.00, 0.00),
+('p13', 'Avni Royal Kundan Pearl Choker', 'Necklaces', 'images/necklace/1/avni_necklace_1.jpeg', 'Handcrafted royal Kundan choker featuring intricate gold plating, delicate pearl hangings, and an adjustable drawstring closure. Perfect for bridal and luxury occasion wear.', 10, 149.00, 0.00),
+('p14', 'Ziya Simulated Emerald Choker Set', 'Necklaces', 'images/necklace/2/ziya_necklace_1.jpeg', 'Exquisite gold-tone choker set studded with simulated teardrop emeralds and micro-pave CZ accents. Elegant, anti-tarnish, and includes matching drop earrings.', 10, 149.00, 0.00),
+('p15', 'Meera Anti-Tarnish Kundan Necklace', 'Necklaces', 'images/necklace/3/meera_necklace_1.jpeg', 'A stunning traditional Kundan neckpiece designed with floral accents, premium anti-tarnish coating, and premium green glass-bead drops.', 10, 149.00, 0.00)
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   category = EXCLUDED.category,
